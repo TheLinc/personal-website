@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+
+/* Reset some basic elements */
+body {
+    @apply bg-[#0E1117] text-white m-0;
+}
+
+section{
+    @apply content-center min-h-screen;
+}
+
+.section-header{
+    @apply text-4xl font-semibold;
+}
+
+.section-subheader{
+    @apply text-2xl font-semibold p-2;
+}
+
+.section-container{
+    /* @apply bg-[#161B22] text-white; */
+    @apply bg-[#161B22] text-white rounded-xl max-w-[500px] m-2;
+}
+
+.section-content{
+    @apply text-[#8b949e]
+}
+
+.skill-card-container{
+    @apply grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1;
+}
