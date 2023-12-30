@@ -22,7 +22,6 @@ section{
 }
 
 .section-container{
-    /* @apply bg-[#161B22] text-white; */
     @apply bg-[#161B22] text-white rounded-xl max-w-[500px] m-2;
 }
 

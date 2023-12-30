@@ -1,0 +1,79 @@
+:root {
+    --color-primary: #81c2de;
+    --color-primary-light: #b4f5ff;
+    --color-primary-dark: #4f92ac;
+    --color-white: #FFFBFA;
+    --color-black: #000;
+}
+
+.wrapper {
+    background-image: linear-gradient(to bottom right, rgba(var(--color-primary),1),rgba(var(--color-primary-dark),1));
+    transition: all .4s ease-out;
+}
+
+.wrapper__links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-link--linkedin {
+    color: #2d76b0;
+}
+
+.social-link--github {
+    color: #5236E9;
+}
+
+.social-link--instagram {
+    color: #9a2970;
+}
+
+.social-link--dribbble {
+    color: #b53561;
+}
+
+.social-link .social-svg {
+    width: 4.8rem;
+    height: 4.8rem;
+}
+
+.social-link .social-svg .social-group__icon {
+    fill: var(--color-white);
+    transition: all .2s;
+}
+
+.social-link .social-svg .social-group__inner-circle {
+    fill: transparent;
+    transition: all .2s;
+}
+
+.social-link .social-svg .social-group__outline {
+    stroke: var(--color-white);
+    transform-origin: 50% 50%;
+    transition: all .2s;
+}
+
+.social-link:hover .social-group__icon {
+    fill: var(--color-white);
+    transition: all .45s;
+}
+
+.social-link:hover .social-group__inner-circle {
+    fill: currentColor;
+    transition: all .45s;
+}
+
+.social-link:hover .social-group__inner-circle--instagram {
+    fill: url(#simpleInsta) !important;
+}
+
+.social-link:hover .social-group__inner-circle--github{
+    fill: url(#simpleGithub) !important;
+}
+
+.social-link:hover .social-group__outline {
+    stroke: currentColor;
+    transform: scale(1.1);
+    transition: all .45s;
+}
