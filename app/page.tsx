@@ -371,8 +371,8 @@ export default function Home() {
                         <div className='section-content'>
                             here is some resume content
                             {/* {JSON.stringify(mousePosition)} */}
-                            <div className="w-screen h-screen bg-gray-700 flex justify-center items-center">
-                                <button id="button" className="group rounded-md shadow bg-blue-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
+                            <div className="w-screen h-screen flex justify-center items-center">
+                                <button id="button" className="group rounded-md shadow bg-gradient-to-r from-purple-500 to-cyan-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
                                     <div className="relative w-12 h-12 bg-white bg-opacity-20 text-white flex justify-center items-center transition-all"><svg id="arrow" className="w-4 h-4 transition-all group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                                     </svg>
