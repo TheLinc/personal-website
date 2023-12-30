@@ -127,8 +127,63 @@ const projects: Array<{ name: string; image: string; tags:string[]; desc: string
         link: 'https://www.sweetacularcookies.com/'
     }
 ]; 
-  
 
+const button = document.getElementById("button");
+const arrow = document.getElementById("arrow");
+const progress = document.getElementById("progress");
+const check = document.getElementById("check");
+
+// Time for the download animation itself
+let loadingTime = 1000;
+let blocked = false;
+
+if(button && arrow && progress && check){
+    button.addEventListener("click", () => {
+        if(blocked) return;
+        blocked = true;
+        
+        arrow.classList.add("animate-down");
+
+        let percent = 0;
+        let load = setInterval(() => {
+            percent++;
+            progress.style.height = percent + "%";
+        }, loadingTime / 100);
+
+        setTimeout(() => {
+            clearInterval(load);
+
+            setTimeout(() => {
+            progress.classList.remove("bg-opacity-20");
+            progress.classList.add("bg-opacity-0");
+            check.classList.remove("w-0");
+            check.classList.add("w-5");
+
+            setTimeout(() => {
+                check.classList.add("w-0");
+                check.classList.remove("w-5");
+                setTimeout(() => {
+                reset();
+                }, 1000);
+            }, 1000);
+            }, 500);
+        }, loadingTime);
+    });
+}
+
+function reset() {
+    if (progress && arrow){
+        progress.style.height = "0%";
+        arrow.classList.remove("animate-down");
+
+        setTimeout(() => {
+            progress.classList.remove("bg-opacity-0");
+            progress.classList.add("bg-opacity-20");
+            blocked = false;
+        }, 200)
+    }
+}
+  
 export default function Home() {
     return (
         <main>
@@ -316,7 +371,7 @@ export default function Home() {
                         <div className='section-content'>
                             here is some resume content
                             {/* {JSON.stringify(mousePosition)} */}
-                            {/* <div className="w-screen h-screen bg-gray-700 flex justify-center items-center">
+                            <div className="w-screen h-screen bg-gray-700 flex justify-center items-center">
                                 <button id="button" className="group rounded-md shadow bg-blue-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
                                     <div className="relative w-12 h-12 bg-white bg-opacity-20 text-white flex justify-center items-center transition-all"><svg id="arrow" className="w-4 h-4 transition-all group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -328,7 +383,7 @@ export default function Home() {
                                     </div>
                                     <p className="px-5">Files.zip</p>
                                 </button>
-                            </div> */}
+                            </div>
                         </div>
                     </section>
                     <section className='pl-2 pt-6 md:pl-10'>
