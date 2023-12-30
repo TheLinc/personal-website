@@ -4,7 +4,28 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
 
-/* Reset some basic elements */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #888;
+    border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-800;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 body {
     @apply bg-[#0E1117] text-white m-0;
 }

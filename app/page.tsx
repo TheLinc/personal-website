@@ -390,7 +390,7 @@ export default function Home() {
                             </div>
                         </div>
                     </section>
-                    <section className='pl-2 pt-6 md:pl-10'>
+                    <section className='pl-2 pt-6 md:pl-10 hidden'>
                         <div className='section-header'>
                             Resume/CV
                         </div>
@@ -461,7 +461,7 @@ export default function Home() {
                             <div className='p-2 inline-flex flex-col sm:flex-row items-center'>
                                 <div className="wrapper p-4 bg-gray-800 rounded-full w-full max-w-[500px]">
                                     <div className="wrapper__links">
-                                        <a className="social-link social-link--dribbble" id="dribbble">
+                                        <a className="social-link social-link--dribbble" id="dribbble" href="mailto:lincolnlaylor@gmail.com">
                                             <svg className="social-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                                                 <title>
                                                     Mail
@@ -473,7 +473,7 @@ export default function Home() {
                                                 </g>
                                             </svg>
                                         </a>
-                                        <a className="social-link social-link--github" id="github" href="https://github.com/TheLinc">
+                                        <a className="social-link social-link--github" id="github" href="https://github.com/TheLinc" target="_blank">
                                             <svg className="social-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                                                 <title>
                                                     github
@@ -491,7 +491,7 @@ export default function Home() {
                                                 </g>
                                             </svg>
                                         </a>
-                                        <a className="social-link social-link--linkedin" id="linkedin" href="https://www.linkedin.com/in/lincolnlaylor/">
+                                        <a className="social-link social-link--linkedin" id="linkedin" href="https://www.linkedin.com/in/lincolnlaylor/" target="_blank">
                                             <svg className="social-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                                                 <title>
                                                     linkedin
