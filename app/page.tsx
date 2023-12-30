@@ -1,8 +1,8 @@
-import Image from 'next/image'
-import { Patua_One } from 'next/font/google';
+'use client';
+
 import SkillCard from '../components/SkillCard';
-import angular from '../public/images/webDevSkills/angular.png';
 import ProjectCard from '@/components/ProjectCard';
+import { useEffect } from 'react';
 
 // Web Development
 const webDevelopmentSkills: Array<{ name: string; image: string }> = [
@@ -103,23 +103,30 @@ const projects: Array<{ name: string; image: string; tags:string[]; desc: string
         image: 'images/projects/play.png',
         tags: ['React', 'Node.js', 'Firebase', 'Git', 'API'],
         desc: 'Web-Application and Search Engine that allows users to find which streaming services have their favorite movies and TV shows. This project was constructed using React, Firebase Firestore, Firebase Hosting, and public APIs. Firestore caches users searches and movie data to reduce API calls and increase response time',
-        link: 'https://www.pipestream.com'
+        link: 'https://www.pipestream.app'
     },
     { 
         name: 'Mask Detection Model', 
         image: 'images/projects/mask.png',
-        tags: ['Python', 'TensorFlow', 'Numpy', 'Keras', 'Sklearn', 'Git'],
+        tags: ['Machine Learning', 'Python', 'TensorFlow', 'Numpy', 'Keras', 'Sklearn', 'Git'],
         desc: 'Developed a machine learning model to detect if a person is wearing a mask. Implemented libraries such as Tensorflow, Sklearn, Numpy, and Pandas to create the model and demonstrate functionality. Used Keras to create model layers for deep learning',
-        link: 'https://www.google.com'
+        link: 'https://github.com/TheLinc/Mask_Detection_ML'
+    },
+    {
+        name: 'NuViu - Smart Cane',
+        image: 'images/projects/white-cane.png',
+        tags: ['Arduino', '3D Printing', 'Git', 'XBee', 'Electrical Engineering', 'Machine Learning'],
+        desc: 'Designed and developed a smart cane that uses ultrasonic sensors to detect obstacles and notify the user. Using a chest mounted camera, NVIDIA Jetson and ML the cane was able to read signs and relay the information to the user. The project was developed using Arduino and 3D printed parts.',
+        link: ''
     },
     { 
         name: 'Sweetacular Cookies', 
         image: 'images/projects/cookie.png',
         tags: ['Wix', 'Research', 'Freelance'],
         desc: 'This project was developed for a clients small business. The client wanted a website that would allow customers to view their products and contact them for orders. The website was developed using Wix and was designed to be simple and easy to use. The website was also designed to be responsive and mobile friendly',
-        link: 'https://www.google.com'
+        link: 'https://www.sweetacularcookies.com/'
     }
-];  
+]; 
   
 
 export default function Home() {
@@ -284,11 +291,11 @@ export default function Home() {
                         </div>
                     </section>
                     <section className='mt-14 bg-cover bg-opacity-75' style={{backgroundImage: "url(images/project-background.png)"}}>
-                        <div className='pl-2 pt-14 md:pl-10 project-section'>
+                        <div className='pl-2 pt-10 md:pl-10 project-section'>
                             <div className='section-header'>
                                 Projects
                             </div>
-                            <div className='flex flex-row pt-10 justify-center'>
+                            <div className='pt-2 md:pt-8 justify-center'>
                                 {projects.map((project, index) => (
                                     <ProjectCard 
                                         key={index}
@@ -308,6 +315,20 @@ export default function Home() {
                         </div>
                         <div className='section-content'>
                             here is some resume content
+                            {/* {JSON.stringify(mousePosition)} */}
+                            {/* <div className="w-screen h-screen bg-gray-700 flex justify-center items-center">
+                                <button id="button" className="group rounded-md shadow bg-blue-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
+                                    <div className="relative w-12 h-12 bg-white bg-opacity-20 text-white flex justify-center items-center transition-all"><svg id="arrow" className="w-4 h-4 transition-all group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                    </svg>
+                                    <svg id="check" className="absolute z-10 w-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <div id="progress" className="absolute w-full h-0 bg-white bg-opacity-20 top-0 duration-200"></div>
+                                    </div>
+                                    <p className="px-5">Files.zip</p>
+                                </button>
+                            </div> */}
                         </div>
                     </section>
                     <section className='pl-2 pt-6 md:pl-10'>
