@@ -4,7 +4,7 @@ import ExperienceCard from '@/components/ExperienceCard';
 import SkillCard from '../components/SkillCard';
 import ProjectCard from '@/components/ProjectCard';
 import '@/css/socials.css';
-import { CiMail } from "react-icons/ci";
+import { useEffect } from 'react';
 
 // Web Development
 const webDevelopmentSkills: Array<{ name: string; image: string }> = [
@@ -215,58 +215,248 @@ const experience: Array<{ image: string; name: string; title: string; pos: strin
 //         }, 200)
 //     }
 // }
-  
+
+// const observer = new IntersectionObserver((entries) => {
+//     entries.forEach((entry) => {
+//         if (entry.isIntersecting) {
+//             entry.target.classList.add('show-intro');
+//         } else {
+//             entry.target.classList.remove('show-intro');
+//         }
+//     });
+// });
+
+// var hiddenElements = null;
+// var hiddenIntro = null;
+// if (typeof document !== 'undefined') {
+//     hiddenElements = document.querySelectorAll('.hidden');
+//     hiddenIntro = document.querySelectorAll('.intro .hidden');
+// }
+
+// hiddenElements?.forEach((element) => observer.observe(element));
+// const observer = new IntersectionObserver((entries) => {
+//     entries.forEach((entry) => {
+//         if (entry.target.id === "about" && entry.isIntersecting) {
+//             entry.target.classList.add("animate-fade-right");
+//             observer.unobserve(entry.target); 
+//         }
+//     });
+// });
+
+
 export default function Home() {
+    
+    useEffect(() => {
+        const aboutElement = document.getElementById("about");
+
+        const projectSection = document.querySelectorAll('.project-section');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        const skillSection = document.querySelectorAll('.skill-section');
+        const skillSubsection = document.querySelectorAll('.skill-subsection');
+
+        const contactSection = document.querySelectorAll('.contact-section');
+        const contactIcon = document.querySelectorAll('.contact-icon');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.target.id === "about" && entry.isIntersecting) {
+                    entry.target.classList.add("animate-fade-right");
+                    observer.unobserve(entry.target); 
+                } else if (entry.target.classList.contains("project-section") && entry.isIntersecting) {
+                    projectCards[0].classList.remove("hidden");
+                    projectCards[1].classList.remove("hidden");
+                    projectCards[2].classList.remove("hidden");
+                    projectCards[3].classList.remove("hidden");
+
+                    projectCards[0].classList.add("animate-fade-right");
+                    projectCards[1].classList.add("animate-fade-right");
+                    projectCards[2].classList.add("animate-fade-right");
+                    projectCards[3].classList.add("animate-fade-right");
+
+                    projectCards[0].classList.add("animate-ease-out");
+                    projectCards[1].classList.add("animate-ease-out");
+                    projectCards[2].classList.add("animate-ease-out");
+                    projectCards[3].classList.add("animate-ease-out");
+
+                    projectCards[0].classList.add("animate-delay-[500ms]");
+                    projectCards[1].classList.add("animate-delay-[1000ms]");
+                    projectCards[2].classList.add("animate-delay-[1500ms]");
+                    projectCards[3].classList.add("animate-delay-[2000ms]");
+
+                    projectCards[0].classList.add("backdrop-blur");
+                    projectCards[1].classList.add("backdrop-blur");
+                    projectCards[2].classList.add("backdrop-blur");
+                    projectCards[3].classList.add("backdrop-blur");
+
+                    observer.unobserve(entry.target);
+                } else if (entry.target.classList.contains("skill-section") && entry.isIntersecting) {
+                    skillSubsection[0].classList.remove("hidden");
+                    skillSubsection[1].classList.remove("hidden");
+                    skillSubsection[2].classList.remove("hidden");
+                    skillSubsection[3].classList.remove("hidden");
+                    skillSubsection[4].classList.remove("hidden");
+
+                    skillSubsection[0].classList.add("animate-fade");
+                    skillSubsection[1].classList.add("animate-fade");
+                    skillSubsection[2].classList.add("animate-fade");
+                    skillSubsection[3].classList.add("animate-fade");
+                    skillSubsection[4].classList.add("animate-fade");
+
+                    skillSubsection[0].classList.add("animate-ease-out");
+                    skillSubsection[1].classList.add("animate-ease-out");
+                    skillSubsection[2].classList.add("animate-ease-out");
+                    skillSubsection[3].classList.add("animate-ease-out");
+                    skillSubsection[4].classList.add("animate-ease-out");
+
+                    skillSubsection[0].classList.add("animate-duration-[1500ms]");
+                    skillSubsection[1].classList.add("animate-duration-[1500ms]");
+                    skillSubsection[2].classList.add("animate-duration-[1500ms]");
+                    skillSubsection[3].classList.add("animate-duration-[1500ms]");
+                    skillSubsection[4].classList.add("animate-duration-[1500ms]");
+
+                    skillSubsection[0].classList.add("animate-delay-[500ms]");
+                    skillSubsection[1].classList.add("animate-delay-[800ms]");
+                    skillSubsection[2].classList.add("animate-delay-[1100ms]");
+                    skillSubsection[3].classList.add("animate-delay-[1400ms]");
+                    skillSubsection[4].classList.add("animate-delay-[1700ms]");
+
+                    observer.unobserve(entry.target);
+                } else if (entry.target.classList.contains("contact-section") && entry.isIntersecting) {
+                    contactIcon[0].classList.remove("hidden");
+                    contactIcon[1].classList.remove("hidden");
+                    contactIcon[2].classList.remove("hidden");
+
+                    contactIcon[0].classList.add("animate-jump-in");
+                    contactIcon[1].classList.add("animate-jump-in");
+                    contactIcon[2].classList.add("animate-jump-in");
+
+                    contactIcon[0].classList.add("animate-ease-out");
+                    contactIcon[1].classList.add("animate-ease-out");
+                    contactIcon[2].classList.add("animate-ease-out");
+
+                    contactIcon[0].classList.add("animate-duration-[1500ms]");
+                    contactIcon[1].classList.add("animate-duration-[1500ms]");
+                    contactIcon[2].classList.add("animate-duration-[1500ms]");
+
+                    contactIcon[0].classList.add("animate-delay-[500ms]");
+                    contactIcon[1].classList.add("animate-delay-[800ms]");
+                    contactIcon[2].classList.add("animate-delay-[1100ms]");
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }); 
+
+        if (aboutElement) {
+            observer.observe(aboutElement);
+        }
+
+        if (projectSection) {
+            observer.observe(projectSection[0]);
+        }
+
+        if (skillSection) {
+            observer.observe(skillSection[0]);
+        }
+
+        if (contactSection) {
+            observer.observe(contactSection[0]);
+        }
+
+    }, []);
+
     return (
         <main>
-            <div className='flex flex-col w-full h-full'>
-                <div className='pl-2 pt-6 md:pl-16 md:pt-40 gap-5 max-w-[750px]'>
-                    <div>
-                        <h1 className='text-[50px] font-semibold'>
-                            Hello, my name is Lincoln.
-                            <div>
-                                I am a
-                                <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 break-normal'>
-                                    {" "}
-                                    Software Developer
-                                </span>
+            <div className='flex flex-col w-full h-full items-center'>
+                <div className='h-screen gap-5'>
+                    <div className='animate-fade-up animate-delay-1000'>
+                        <div className="lamp">
+                            <div className="lava">
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob"></div>
+                                <div className="blob top"></div>
+                                {/* <div className="blob bottom"></div> */}
                             </div>
-                        </h1>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                            <defs>
+                                <filter id="goo">
+                                    <feGaussianBlur
+                                    in="SourceGraphic"
+                                    stdDeviation="10"
+                                    result="blur"
+                                    />
+                                    <feColorMatrix
+                                    in="blur"
+                                    mode="matrix"
+                                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                                    result="goo"
+                                    />
+                                    <feBlend in="SourceGraphic" in2="goo" />
+                                </filter>
+                            </defs>
+                        </svg>
+                        <div className='pl-2 md:pt-20 gap-5 max-w-[750px]'>
+                            <div>
+                                <h1 className='text-[50px] font-semibold'>
+                                    Hello, my name is Lincoln.
+                                    <div>
+                                        I am a
+                                        <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 break-normal mix-blend-difference'>
+                                            {" "}
+                                            <b>Software Developer</b>
+                                        </span>
+                                    </div>
+                                </h1>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className='pt-6 md:pt-40 gap-5'>
+                <div className='pt-6 md:pt-0 gap-5 w-full'>
                     <section className='pl-2 pt-6 md:pl-10'>
                         <div className='section-header'>
                             About me
                         </div>
-                        <div className='section-content text-base max-w-[750px] pl-2 pt-4'>
-                            <div>
-                                Hey there, I'm Lincoln, a software sorcerer armed with a 
-                                computer engineering degree from the University of Ottawa. 
-                                By day, I'm in the digital trenches, choreographing code that 
-                                dances on the edge of technological brilliance.
+                        <div className='flex flex-col-reverse md:flex-row section-content' id='about'>
+                            <div className='text-base max-w-[750px] pl-2 pt-4'>
+                                <div>
+                                    Hey there, I'm Lincoln, a software sorcerer armed with a 
+                                    computer engineering degree from the University of Ottawa. 
+                                    By day, I'm in the digital trenches, choreographing code that 
+                                    dances on the edge of technological brilliance.
+                                </div>
+                                <div className='pt-2'>
+                                    When I'm not conquering the binary ballroom, you'll catch me at the gym, 
+                                    lifting weights with the precision of a caffeinated cat on a keyboard. 
+                                    Rumor has it my biceps are as robust as my bug-fixing skills. Video games? 
+                                    I don't just play; I turn pixels into a symphony of victory. Boss battles? 
+                                    Child's play.
+                                </div>
+                                <div className='pt-2'>
+                                    In a world of 1s and 0s, I'm the hero you need—a software sorcerer by day and a 
+                                    digital dynamo by night. Whether crafting elegant code or conquering the virtual realm, 
+                                    I bring intelligence and humor to every endeavor. Cheers to the digital adventures ahead!
+                                </div>
                             </div>
-                            <div className='pt-2'>
-                                When I'm not conquering the binary ballroom, you'll catch me at the gym, 
-                                lifting weights with the precision of a caffeinated cat on a keyboard. 
-                                Rumor has it my biceps are as robust as my bug-fixing skills. Video games? 
-                                I don't just play; I turn pixels into a symphony of victory. Boss battles? 
-                                Child's play.
-                            </div>
-                            <div className='pt-2'>
-                                In a world of 1s and 0s, I'm the hero you need—a software sorcerer by day and a 
-                                digital dynamo by night. Whether crafting elegant code or conquering the virtual realm, 
-                                I bring intelligence and humor to every endeavor. Cheers to the digital adventures ahead!
+                            <div className='flex flex-shrink-0 p-4 justify-center sm:justify-start md:p-2 md:pl-8'>
+                                <img className="h-full rounded-full border border-8 border-gray-800 max-h-[300px]" src="images/about/wizard.png"/>
                             </div>
                         </div>
                     </section>
-                    <section className='pl-2 pt-6 md:pl-10'>
+                    <section className='pl-2 pt-6 md:pt-0 md:pl-10 skill-section'>
                         <div className='section-header'>
                             Skills
                         </div>
-                        <div className='flex flex-wrap flex-row'>
+                        <div className='flex flex-wrap flex-row justify-center sm:justify-start'>
                             <div className='flex flex-wrap flex-col'>
-                                <div className='bg-[#161B22] text-white rounded-xl max-w-[500px] m-2'>
+                                <div className='bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 hidden skill-subsection'>
                                     <div className='section-subheader'>
                                         Frontend Development
                                     </div>
@@ -295,8 +485,8 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='flex flex-wrap flex-col hidden lg:flex'>
-                                <div className='bg-[#161B22] text-white rounded-xl max-w-[500px] m-2'>
+                            <div className='flex flex-wrap flex-col lg:flex'>
+                                <div className='bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 hidden skill-subsection'>
                                     <div className='section-subheader'>
                                         Backend Development
                                     </div>
@@ -310,7 +500,7 @@ export default function Home() {
                                         ))}
                                     </div>
                                 </div>
-                                <div className='bg-[#161B22] text-white rounded-xl max-w-[500px] m-2'>
+                                <div className='bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 hidden skill-subsection'>
                                     <div className='section-subheader'>
                                         Design & Prototyping
                                     </div>
@@ -326,7 +516,7 @@ export default function Home() {
                                 </div>
                             </div>
                             <div className='flex flex-wrap flex-col'>
-                                <div className='bg-[#161B22] text-white rounded-xl max-w-[325px] m-2'>
+                                <div className='bg-[#161B22] text-white rounded-xl max-w-[325px] m-2 hidden skill-subsection'>
                                     <div className='section-subheader'>
                                         Cloud Services
                                     </div>
@@ -340,7 +530,7 @@ export default function Home() {
                                         ))}
                                     </div>
                                 </div>
-                                <div className='bg-[#161B22] text-white rounded-xl max-w-[325px] m-2'>
+                                <div className='bg-[#161B22] text-white rounded-xl max-w-[325px] m-2 hidden skill-subsection'>
                                     <div className='section-subheader'>
                                         Containerization & Versioning
                                     </div>
@@ -371,32 +561,33 @@ export default function Home() {
                             </div>
                         </div>
                     </section>
-                    <section className='mt-14 bg-cover bg-opacity-75' style={{backgroundImage: "url(images/project-background.png)"}}>
+                    <section className='mt-14 bg-cover backdrop-opacity-25' style={{backgroundImage: "url(images/project-background.png)"}}>
                         <div className='pl-2 pt-10 md:pl-10 project-section'>
                             <div className='section-header'>
                                 Projects
                             </div>
                             <div className='pt-2 md:pt-8 justify-center'>
                                 {projects.map((project, index) => (
-                                    <ProjectCard 
-                                        key={index}
-                                        name={project.name}
-                                        image={project.image} 
-                                        tags={project.tags}
-                                        desc={project.desc}
-                                        link={project.link}
-                                    />
+                                    <div key={index} className='project-card inline-block hidden'>
+                                        <ProjectCard 
+                                            name={project.name}
+                                            image={project.image} 
+                                            tags={project.tags}
+                                            desc={project.desc}
+                                            link={project.link}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </div>
                     </section>
-                    <section className='pl-2 pt-6 md:pl-10 hidden'>
+                    {/* <section className='pl-2 pt-6 md:pl-10 hidden'>
                         <div className='section-header'>
                             Resume/CV
                         </div>
                         <div className='section-content'>
                             here is some resume content
-                            {/* {JSON.stringify(mousePosition)} */}
+                            {JSON.stringify(mousePosition)}
                             <div className="h-screen flex justify-center items-center">
                                 <button id="button" className="group rounded-md shadow bg-gradient-to-r from-purple-500 to-cyan-500 text-white cursor-pointer flex justify-between items-center overflow-hidden transition-all hover:glow">
                                     <div className="relative w-12 h-12 bg-white bg-opacity-20 text-white flex justify-center items-center transition-all">
@@ -412,7 +603,7 @@ export default function Home() {
                                 </button>
                             </div>
                         </div>
-                    </section>
+                    </section> */}
                     <section className='pl-2 pt-6 md:pl-10'>
                         <div className='section-header'>
                             Experience
@@ -431,13 +622,13 @@ export default function Home() {
                             </div>
                         </div>
                     </section>
-                    <section className='pl-2 pt-6 md:pl-10'>
+                    <section className='pl-2 pt-6 md:pl-10 contact-section'>
                         <div className='section-header'>
                             Contact
                         </div>
                         <div className='grid grid-cols-1 sm:grid-cols-2 gap-1 section-content'>
                             <div className='p-2 inline-flex flex-col max-w-[500px]'>
-                                <div className='pt-2'>
+                                <div className='pt-2 text-white'>
                                     Interested or have questions? Let's Connect?
                                 </div>
                                 <div className='pt-2'>
@@ -461,7 +652,7 @@ export default function Home() {
                             <div className='p-2 inline-flex flex-col sm:flex-row items-center'>
                                 <div className="wrapper p-4 bg-gray-800 rounded-full w-full max-w-[500px]">
                                     <div className="wrapper__links">
-                                        <a className="social-link social-link--dribbble" id="dribbble" href="mailto:lincolnlaylor@gmail.com">
+                                        <a className="social-link social-link--email contact-icon hidden" id="email" href="mailto:lincolnlaylor@gmail.com">
                                             <svg className="social-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                                                 <title>
                                                     Mail
@@ -473,7 +664,7 @@ export default function Home() {
                                                 </g>
                                             </svg>
                                         </a>
-                                        <a className="social-link social-link--github" id="github" href="https://github.com/TheLinc" target="_blank">
+                                        <a className="social-link social-link--github contact-icon hidden" id="github" href="https://github.com/TheLinc" target="_blank">
                                             <svg className="social-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                                                 <title>
                                                     github
@@ -491,7 +682,7 @@ export default function Home() {
                                                 </g>
                                             </svg>
                                         </a>
-                                        <a className="social-link social-link--linkedin" id="linkedin" href="https://www.linkedin.com/in/lincolnlaylor/" target="_blank">
+                                        <a className="social-link social-link--linkedin contact-icon hidden" id="linkedin" href="https://www.linkedin.com/in/lincolnlaylor/" target="_blank">
                                             <svg className="social-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
                                                 <title>
                                                     linkedin

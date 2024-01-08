@@ -8,7 +8,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ image, name, tags, desc, link }) => {
     return (
-        <div className='inline-flex flex-col border border-gray-800 rounded-xl w-[350px] bg-black backdrop-blur bg-opacity-35 m-2 p-4 h-[550px]'>
+        <div className='inline-flex flex-col border border-gray-800 rounded-xl w-[350px] bg-black transition card-blur bg-opacity-35 m-2 p-4 h-[550px]'>
             <div className="flex items-center pt-4">
                 <div className='inline-flex h-12 w-auto'>
                     <img className='m-w-full h-full' src={image} alt={name} />  
@@ -20,9 +20,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ image, name, tags, desc, link
             <div className='flex flex-col h-full'>
                 <div className='p-2 pt-4 h-[115px]'>
                     {tags.map((tag, index) => (
-                        <div key={index} className='inline-block bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full m-1 p-[1px]'>
-                            <span className='flex bg-gray-800 text-white rounded pl-2 pr-2 rounded-full'>{tag}</span>
-                        </div>
+                        <span key={index} className='inline-block bg-gray-800 text-white rounded pl-2 pr-2 m-1 rounded-full'>{tag}</span>
                     ))}
                 </div>
                 <div className='p-4 pb-2 pt-2 section-content'>
@@ -31,7 +29,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ image, name, tags, desc, link
                 <div className='p-4 mt-auto'>
                     {link && (
                         link.includes("github") ? (
-                            <button className='inline-block bg-gradient-to-r from-purple-500 to-cyan-500 border-0 rounded m-1 p-[1px] hover:brightness-125'>
+                            <button className='inline-block bg-gradient-to-r from-purple-500 to-cyan-500 border-0 rounded m-1 p-[1px] transition ease-in-out hover:-translate-y-1'>
                                 <span className="flex w-full bg-gray-800 text-white rounded p-2">
                                     View Project
                                     <div className='inline-block pl-2 h-6'>
@@ -40,7 +38,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ image, name, tags, desc, link
                                 </span>
                             </button>
                         ) : (
-                            <button className='inline-block bg-gradient-to-r from-purple-500 to-cyan-500 border-0 rounded m-1 p-[1px] hover:brightness-125'>
+                            <button className='inline-block bg-gradient-to-r from-purple-500 to-cyan-500 border-0 rounded m-1 p-[1px] transition ease-in-out hover:-translate-y-1'>
                                 <div className="flex w-full bg-gray-800 text-white rounded p-2">
                                     View Project
                                     <div className='inline-block pl-2 h-6'>
