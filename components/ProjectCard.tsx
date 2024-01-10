@@ -8,7 +8,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ image, name, tags, desc, link }) => {
     return (
-        <div className='inline-flex flex-col border border-gray-800 rounded-xl w-[350px] bg-black transition card-blur bg-opacity-35 m-2 p-4 h-[550px]'>
+        <div className='inline-flex flex-col border border-gray-800 rounded-xl w-[350px] bg-black transition card-blur bg-opacity-35 m-2 p-4 h-[550px] text-left'>
             <div className="flex items-center pt-4">
                 <div className='inline-flex h-12 w-auto'>
                     <img className='m-w-full h-full' src={image} alt={name} />  
