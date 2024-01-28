@@ -1,11 +1,12 @@
 "use client";
 
-import ExperienceCard from "@/components/ExperienceCard";
-import SkillCard from "../components/SkillCard";
+import ExperienceCard from "@/components/Experience/ExperienceCard";
+import SkillCard from "@/components/Skills/SkillCard";
 import ProjectCard from "@/components/ProjectCard";
+import AboutMeCard from "@/components/AboutMe/AboutME";
+
 import "@/css/socials.css";
 import { useEffect } from "react";
-import AboutMeCard from "@/components/AboutMe/AboutME";
 
 // Web Development
 const webDevelopmentSkills: Array<{ name: string; image: string }> = [
@@ -160,30 +161,49 @@ const experience: Array<{
   image: string;
   name: string;
   title: string;
+  desc: string[];
+  size?: string;
   pos: string;
 }> = [
   {
     image: "images/experience/os.png",
     name: "Opinion System",
     title: "Software Developer",
+    desc: [],
     pos: "left",
   },
   {
     image: "images/experience/GBatteries.png",
     name: "GBatteries",
     title: "Full Stack Developer",
+    desc: [
+      "As the lead Engineer, successfully developed a Python application to simulate the company's existing hardware. Implemented rigorous unit tests integrated into a CI/CD Pipeline, ensuring the application's reliability. Containerized the application using Docker and seamlessly distributed it to Amazon ECS through the CI/CD Pipeline for efficient deployment.",
+      "Designed and distributed a shared library via PyPI, revolutionizing software development by enabling the import of a singular package, thus eliminating the need for redundant code. This contributed significantly to streamlining the development process.",
+      "Contributed to the development of a Binary Data Collection application using Python, leveraging socket servers for seamless communication between containers. The inclusion of binary data significantly increased the volume of data points available for data analytics, enhancing the organization's capabilities in this domain."
+    ],
     pos: "right",
   },
   {
     image: "images/experience/trading-central.png",
     name: "Trading Central",
     title: "Software Developer",
-    pos: "left",
+    desc: [
+      "Spearheaded the reconstruction of the front-end for two React.js applications as the primary engineer. Leveraged JSX, HTML, and CSS to revamp the user interface. These applications seamlessly interacted with APIs to showcase stock analysis data, with the design blueprint derived from Figma designs.",
+      "Contributed significantly to the development of a new web-based application by creating adaptable Angular components. Utilized Typescript, HTML, and CSS to craft responsive interfaces. Additionally, gained proficiency in crafting SVGs, showcasing a diverse skill set in web development."
+    ],
+    pos: "left"
   },
   {
     image: "images/experience/cra.png",
     name: "Canada Revenue Agency (CRA)",
     title: "IT Analyst & Developer",
+    desc: [
+      "Led pioneering research to revolutionize the organization's approach to interacting with testing data, introducing a more efficient and effective methodology.",
+      "Established connections with diverse companies, engaging in meaningful discussions about their products and solutions to stay abreast of industry best practices.",
+      "Conducted extensive research on advanced data masking/obfuscation techniques, data fabrication, and data security, contributing valuable insights to enhance the organization's data protection strategies.",
+      "Innovatively developed and implemented automated testing scripts specifically tailored for the organization's custom Jira features, utilizing UFT to streamline and optimize testing processes."
+    ],
+    size: "l",
     pos: "right",
   },
 ];
@@ -441,7 +461,7 @@ export default function Home() {
                 </filter>
               </defs>
             </svg>
-            <div className="gap-5 max-w-[750px]">
+            <div className="gap-5 max-w-[750px] pl-1 sm:pl-0">
               <div>
                 <h1 className="text-[50px] font-semibold">
                   Hello, my name is Lincoln.
@@ -463,23 +483,19 @@ export default function Home() {
             <div className="flex flex-col-reverse md:flex-row section-content" id="about">
               <div className="grow max-w-[600px]">
                 <div className="pt-4">
-                  <div className="uppercase  font-bold pr-2">Name:</div>
+                  <div className="uppercase font-bold pr-2">Name:</div>
                   <div>Lincoln Laylor</div>
                 </div>
                 <div className="pt-4">
-                  <div className="uppercase  font-bold pr-2">Height:</div>
-                  <div>5'8" (or 5'9" depending on who you ask)</div>
-                </div>
-                <div className="pt-4">
-                  <div className="uppercase  font-bold pr-2">Profession:</div>
+                  <div className="uppercase font-bold pr-2">Profession:</div>
                   <div>Software Developer</div>
                 </div>
                 <div className="pt-4">
-                  <div className="uppercase  font-bold pr-2">Graduating School:</div>
+                  <div className="uppercase font-bold pr-2">Graduating School:</div>
                   <div>University of Ottawa - 2023</div>
                 </div>
                 <div className="pt-4">
-                  <div className="uppercase  font-bold pr-2">Graduating Program:</div>
+                  <div className="uppercase font-bold pr-2">Graduating Program:</div>
                   <div>Computer Engineering</div>
                 </div>
                 <div className="pt-4">
@@ -514,7 +530,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="pl-2 pt-6 md:pt-0 md:pl-10 skill-section">
+          <section className="pl-2 pt-6 text-center sm:text-left md:pt-0 md:pl-10 skill-section">
             <div className="section-header">Skills</div>
             <div className="flex flex-wrap flex-row justify-center sm:justify-start">
               <div className="flex flex-wrap flex-col">
@@ -612,7 +628,7 @@ export default function Home() {
             </div>
           </section>
           <section
-            className="mt-14 bg-cover backdrop-opacity-25"
+            className="mt-14 bg-cover backdrop-opacity-25 pl-2 sm: pl-0"
             style={{ backgroundImage: "url(images/project-background.png)" }}
           >
             <div className="items-center pl-2 pt-10 md:pl-0 project-section">
@@ -667,6 +683,8 @@ export default function Home() {
                     image={experience.image}
                     name={experience.name}
                     title={experience.title}
+                    desc={experience.desc}
+                    size={experience.size}
                     pos={experience.pos}
                   />
                 ))}
@@ -678,7 +696,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 section-content">
               <div className="p-2 inline-flex flex-col max-w-[500px]">
                 <div className="pt-2 text-white">
-                  Interested or have questions? Let's Connect?
+                  Interested or have questions? Let's Connect!
                 </div>
                 <div className="pt-2">
                   Whether you're on the lookout for cutting-edge code, exploring
