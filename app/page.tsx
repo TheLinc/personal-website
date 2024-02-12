@@ -8,6 +8,26 @@ import AboutMeCard from "@/components/AboutMe/AboutME";
 import "@/css/socials.css";
 import { useEffect } from "react";
 
+// Personal Acheivements
+const personalAcheivements: Array<{ name: string; image: string }> = [
+  {
+    name: "Two Plate Bench Press",
+    image: "images/personalAcheivements/bench.png"
+  },
+  {
+    name: "Tutor Code",
+    image: "images/personalAcheivements/tutor.png"
+  },
+  {
+    name: "Code Commits",
+    image: "images/personalAcheivements/commits.png"
+  },
+  {
+    name: "AWS Certification",
+    image: "images/personalAcheivements/aws.png"
+  }
+]
+
 // Web Development
 const webDevelopmentSkills: Array<{ name: string; image: string }> = [
   {
@@ -478,59 +498,73 @@ export default function Home() {
           </div>
         </div>
         <div className="pt-6 md:pt-8 gap-5 w-full">
-          <section className="pl-2 pt-6 md:pl-10">
-            <div className="section-header">About me</div>
-            <div className="flex flex-col-reverse md:flex-row section-content" id="about">
-              <div className="grow max-w-[600px]">
-                <div className="pt-4">
-                  <div className="uppercase font-bold pr-2">Name:</div>
-                  <div>Lincoln Laylor</div>
-                </div>
-                <div className="pt-4">
-                  <div className="uppercase font-bold pr-2">Profession:</div>
-                  <div>Software Developer</div>
-                </div>
-                <div className="pt-4">
-                  <div className="uppercase font-bold pr-2">Graduating School:</div>
-                  <div>University of Ottawa - 2023</div>
-                </div>
-                <div className="pt-4">
-                  <div className="uppercase font-bold pr-2">Graduating Program:</div>
-                  <div>Computer Engineering</div>
-                </div>
-                <div className="pt-4">
-                  <div className="uppercase font-bold pr-2">Bio:</div>
+          <section className="pl-2 pr-2 pt-6 md:pl-10 md:pr-10">
+            <div className="section-header text-center sm:text-left">About me</div>
+            <div className="flex flex-col bg-[#010409] rounded-xl mt-4">
+              <div className="flex items-center flex-col-reverse md:flex-row section-content pt-2" id="about">
+                <div className="grow max-w-[600px] p-2 m-2 pt-10 md:pt-0">
                   <div>
+                    <div className="uppercase font-bold pr-2">Name:</div>
+                    <div>Lincoln Laylor</div>
+                  </div>
+                  <div className="pt-4">
+                    <div className="uppercase font-bold pr-2">Profession:</div>
+                    <div>Software Developer</div>
+                  </div>
+                  <div className="pt-4">
+                    <div className="uppercase font-bold pr-2">Graduating School:</div>
+                    <div>University of Ottawa - 2023</div>
+                  </div>
+                  <div className="pt-4">
+                    <div className="uppercase font-bold pr-2">Graduating Program:</div>
+                    <div>Computer Engineering</div>
+                  </div>
+                  <div className="pt-4">
+                    <div className="uppercase font-bold pr-2">Bio:</div>
                     <div>
-                      Hey there, I'm Lincoln, a software sorcerer armed with a
-                      computer engineering degree from the University of Ottawa. By
-                      day, I'm in the digital trenches, choreographing code that
-                      dances on the edge of technological brilliance.
+                      <div>
+                        Hey there, I'm Lincoln, a software sorcerer armed with a
+                        computer engineering degree from the University of Ottawa. By
+                        day, I'm in the digital trenches, choreographing code that
+                        dances on the edge of technological brilliance.
+                      </div>
+                      <div className="pt-2">
+                        When I'm not conquering the binary ballroom, you'll catch me
+                        at the gym, lifting weights with the precision of a
+                        caffeinated cat on a keyboard. Rumor has it my biceps are as
+                        robust as my bug-fixing skills. Video games? I don't just
+                        play; I turn pixels into a symphony of victory. Boss battles?
+                        Child's play.
+                      </div>
+                      <div className="pt-2">
+                        In a world of 1s and 0s, I'm the hero you need—a software
+                        sorcerer by day and a digital dynamo by night. Whether
+                        crafting elegant code or conquering the virtual realm, I bring
+                        intelligence and humor to every endeavor. Cheers to the
+                        digital adventures ahead!
+                      </div>
                     </div>
-                    <div className="pt-2">
-                      When I'm not conquering the binary ballroom, you'll catch me
-                      at the gym, lifting weights with the precision of a
-                      caffeinated cat on a keyboard. Rumor has it my biceps are as
-                      robust as my bug-fixing skills. Video games? I don't just
-                      play; I turn pixels into a symphony of victory. Boss battles?
-                      Child's play.
-                    </div>
-                    <div className="pt-2">
-                      In a world of 1s and 0s, I'm the hero you need—a software
-                      sorcerer by day and a digital dynamo by night. Whether
-                      crafting elegant code or conquering the virtual realm, I bring
-                      intelligence and humor to every endeavor. Cheers to the
-                      digital adventures ahead!
-                    </div>
+                  </div>
+                </div>
+                <div className="p-8 pt-0 h-[500px] aspect-[3/2] max-w-[350px] min-w-[300px]">
+                  <AboutMeCard />
                 </div>
               </div>
-            </div>
-              <div className="p-8 pl-12 pt-0 h-[500px]">
-                <AboutMeCard />
+              <div className="p-4 pb-6 m-4 flex flex-col border border-4 border-white rounded-xl max-w-[850px]">
+                <div className="flex pb-2 uppercase">
+                  Personal Acheivements 
+                </div>
+                <div className="flex justify-around">
+                  {personalAcheivements.map((achievement, index) => (
+                    <div key={index} className="w-[150px]">
+                      <img src={achievement.image} alt={achievement.name} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
-          <section className="pl-2 pt-6 text-center sm:text-left md:pt-0 md:pl-10 skill-section">
+          <section className="pl-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section">
             <div className="section-header">Skills</div>
             <div className="flex flex-wrap flex-row justify-center sm:justify-start">
               <div className="flex flex-wrap flex-col">
