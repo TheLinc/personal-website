@@ -1,5 +1,10 @@
 .skill-item {
     position: relative;
+    text-align: center;
+    background: linear-gradient(135deg, #393F46 0%, #202328 50%) no-repeat;
+    background-clip: padding-box;
+    border-color: transparent;
+    border-radius: 1rem;
 }
 
 .skill-item::before {
@@ -8,11 +13,8 @@
     right: 0;
     bottom: 0;
     left: 0;
-    margin: -1px;
-    pointer-events: none;
+    margin: 1px;
     content: "";
-    border: 1.5px solid rgba(255,255,255,.12);
-    border-radius: inherit;
-    -webkit-mask-image: linear-gradient(135deg, #fff 0%, transparent 50%);
-    mask-image: linear-gradient(135deg, #fff 0%, transparent 50%);
+    background-color: #202328;
+    border-radius: .85rem;
 }

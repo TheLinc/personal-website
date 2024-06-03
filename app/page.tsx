@@ -2,11 +2,12 @@
 
 import ExperienceCard from "@/components/Experience/ExperienceCard";
 import SkillCard from "@/components/Skills/SkillCard";
-import ProjectCard from "@/components/ProjectCard";
-import AboutMeCard from "@/components/AboutMe/AboutME";
+import ProjectCard from "@/components/Project/ProjectCard";
+import AboutMeCard from "@/components/AboutMe/AboutMe";
 
 import "@/css/socials.css";
 import { useEffect } from "react";
+import TypingAnimation from "@/components/TypingAnimation/TypingAnimation";
 
 // Personal Acheivements
 const personalAcheivements: Array<{ name: string; image: string }> = [
@@ -443,8 +444,8 @@ export default function Home() {
   return (
     <main>
       <div className="flex flex-col w-full h-full items-center">
-        <div className="flex items-center w-full h-screen gap-5">
-          <div className="flex justify-center w-full animate-fade-up animate-delay-1000">
+        <div className="flex flex-row items-center w-full h-screen gap-5">
+          <div className="flex flex-col items-center w-full animate-fade-up animate-delay-1000">
             <div className="lamp">
               <div className="lava">
                 <div className="blob"></div>
@@ -455,8 +456,6 @@ export default function Home() {
                 <div className="blob"></div>
                 <div className="blob"></div>
                 <div className="blob"></div>
-                {/* <div className="blob top"></div> */}
-                {/* <div className="blob bottom"></div> */}
               </div>
             </div>
             <svg
@@ -486,72 +485,80 @@ export default function Home() {
                 <h1 className="text-[50px] font-semibold">
                   Hello, my name is Lincoln.
                   <div>
-                    I am a
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 break-normal mix-blend-difference">
-                      {" "}
-                      <b>Software Developer</b>
-                    </span>
+                    <div className="inline-block h-[85px]">I am a {" "}</div>
+                    <div className="inline-block h-[85px] ml-2">
+                      {" "}<TypingAnimation />
+                    </div>
                   </div>
                 </h1>
               </div>
             </div>
+            <a className="mt-[200px] arrow-down" href="#about" onClick={(e) => {
+              e.preventDefault();
+              const aboutSection = document.querySelector('#about');
+              if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}>
+              <span className="bottom"></span>
+            </a>
           </div>
         </div>
         <div className="pt-6 md:pt-8 gap-5 w-full">
-          <section className="pl-2 pr-2 pt-6 md:pl-10 md:pr-10">
+          <section className="pl-2 pr-2 pt-6 md:pl-10 md:pr-10" id="about">
             <div className="section-header text-center sm:text-left">About me</div>
-            <div className="flex flex-col bg-[#010409] rounded-xl mt-4">
-              <div className="flex items-center flex-col-reverse md:flex-row section-content pt-2" id="about">
-                <div className="grow max-w-[600px] p-2 m-2 pt-10 md:pt-0">
-                  <div>
-                    <div className="uppercase font-bold pr-2">Name:</div>
-                    <div>Lincoln Laylor</div>
-                  </div>
-                  <div className="pt-4">
-                    <div className="uppercase font-bold pr-2">Profession:</div>
-                    <div>Software Developer</div>
-                  </div>
-                  <div className="pt-4">
-                    <div className="uppercase font-bold pr-2">Graduating School:</div>
-                    <div>University of Ottawa - 2023</div>
-                  </div>
-                  <div className="pt-4">
-                    <div className="uppercase font-bold pr-2">Graduating Program:</div>
-                    <div>Computer Engineering</div>
-                  </div>
-                  <div className="pt-4">
-                    <div className="uppercase font-bold pr-2">Bio:</div>
-                    <div>
+            {/* <div className="flex flex-col bg-[#010409] rounded-xl mt-4">
+                    <div className="flex items-center flex-col-reverse md:flex-row section-content pt-2">
+                    <div className="grow max-w-[600px] p-2 m-2 pt-10 md:pt-0">
                       <div>
+                      <div className="uppercase font-bold pr-2">Name:</div>
+                      <div>Lincoln Laylor</div>
+                      </div>
+                      <div className="pt-4">
+                      <div className="uppercase font-bold pr-2">Profession:</div>
+                      <div>Software Developer</div>
+                      </div>
+                      <div className="pt-4">
+                      <div className="uppercase font-bold pr-2">Graduating School:</div>
+                      <div>University of Ottawa - 2023</div>
+                      </div>
+                      <div className="pt-4">
+                      <div className="uppercase font-bold pr-2">Graduating Program:</div>
+                      <div>Computer Engineering</div>
+                      </div>
+                      <div className="pt-4">
+                      <div className="uppercase font-bold pr-2">Bio:</div>
+                      <div>
+                        <div>
                         Hey there, I'm Lincoln, a software sorcerer armed with a
                         computer engineering degree from the University of Ottawa. By
                         day, I'm in the digital trenches, choreographing code that
                         dances on the edge of technological brilliance.
-                      </div>
-                      <div className="pt-2">
+                        </div>
+                        <div className="pt-2">
                         When I'm not conquering the binary ballroom, you'll catch me
                         at the gym, lifting weights with the precision of a
                         caffeinated cat on a keyboard. Rumor has it my biceps are as
                         robust as my bug-fixing skills. Video games? I don't just
                         play; I turn pixels into a symphony of victory. Boss battles?
                         Child's play.
-                      </div>
-                      <div className="pt-2">
+                        </div>
+                        <div className="pt-2">
                         In a world of 1s and 0s, I'm the hero you need—a software
                         sorcerer by day and a digital dynamo by night. Whether
                         crafting elegant code or conquering the virtual realm, I bring
                         intelligence and humor to every endeavor. Cheers to the
                         digital adventures ahead!
+                        </div>
+                      </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="p-8 pt-0 h-[500px] aspect-[3/2] max-w-[350px] min-w-[300px]">
-                  <AboutMeCard />
-                </div>
-              </div>
-              <div className="p-4 pb-6 m-4 flex flex-col border border-4 border-white rounded-xl max-w-[850px]">
-                <div className="flex pb-2 uppercase">
+                    <div className="p-8 pt-0 h-[500px] aspect-[3/2] max-w-[350px] min-w-[300px]">
+                      <AboutMeCard />
+                    </div>
+                    </div>
+                    <div className="p-4 pb-6 m-4 flex flex-col border border-4 border-white rounded-xl max-w-[850px]">
+                    <div className="flex
                   Personal Acheivements 
                 </div>
                 <div className="flex justify-around">
@@ -562,7 +569,10 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
+
+            <AboutMeCard />
+
           </section>
           <section className="pl-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section">
             <div className="section-header">Skills</div>
@@ -661,29 +671,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section
-            className="mt-14 bg-cover backdrop-opacity-25 pl-2 sm: pl-0"
-            style={{ backgroundImage: "url(images/project-background.png)" }}
-          >
-            <div className="items-center pl-2 pt-10 md:pl-0 project-section">
-              <div className="section-header text-center sm:text-left">
-                Projects
-              </div>
-              <div className="pt-2 md:pt-8 justify-center text-center">
-                {projects.map((project, index) => (
-                  <div key={index} className="project-card inline-block hidden">
-                    <ProjectCard
-                      name={project.name}
-                      image={project.image}
-                      tags={project.tags}
-                      desc={project.desc}
-                      link={project.link}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
           {/* <section className='pl-2 pt-6 md:pl-10 hidden'>
                         <div className='section-header'>
                             Resume/CV
@@ -724,6 +711,26 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          </section>
+          <section className="items-center pl-2 pt-10 md:pl-0 project-section relative overflow-hidden">
+              <div className="section-header text-center sm:text-left">
+                Projects
+              </div>
+              <div className="pt-2 md:pt-8 justify-center text-center relative z-10">
+                {projects.map((project, index) => (
+                  <div key={index} className="project-card inline-block m-2 hidden rounded-xl">
+                    <ProjectCard
+                      name={project.name}
+                      image={project.image}
+                      tags={project.tags}
+                      desc={project.desc}
+                      link={project.link}
+                    />
+                  </div>
+                ))}
+              </div>
+              <img src=".\images\projects\design\project-shape-2.webp" className="design-shape-2 w-[600px] h-[350px] aspect-auto"/>
+              <img src=".\images\projects\design\project-shape-1.webp" className="design-shape-1 w-[706px] h-[338px] aspect-auto" />
           </section>
           <section className="pl-2 pt-6 md:pl-10 contact-section">
             <div className="section-header">Contact</div>
