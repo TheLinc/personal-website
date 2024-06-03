@@ -486,7 +486,7 @@ export default function Home() {
                   Hello, my name is Lincoln.
                   <div>
                     <div className="inline-block h-[85px]">I am a {" "}</div>
-                    <div className="inline-block h-[85px] ml-2">
+                    <div className="inline-block h-[85px] ml-[14px]">
                       {" "}<TypingAnimation />
                     </div>
                   </div>
