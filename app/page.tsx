@@ -3,11 +3,12 @@
 import ExperienceCard from "@/components/Experience/ExperienceCard";
 import SkillCard from "@/components/Skills/SkillCard";
 import ProjectCard from "@/components/Project/ProjectCard";
-import AboutMeCard from "@/components/AboutMe/AboutMe";
+// import AboutMeCard from "@/components/AboutMe/AboutMe";
 
 import "@/css/socials.css";
 import { useEffect } from "react";
 import TypingAnimation from "@/components/TypingAnimation/TypingAnimation";
+import InteractiveToken from "@/components/InteractiveToken/InteractiveToken";
 
 // Personal Acheivements
 const personalAcheivements: Array<{ name: string; image: string }> = [
@@ -571,8 +572,46 @@ export default function Home() {
               </div>
             </div> */}
 
-            <AboutMeCard />
-
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <div className="pt-2">
+                  Hey there, I'm Lincoln, a software sorcerer armed with a
+                  computer engineering degree from the University of Ottawa. By
+                  day, I'm in the digital trenches, choreographing code that
+                  dances on the edge of technological brilliance.
+                  </div>
+                  <div className="pt-2">
+                  When I'm not conquering the binary ballroom, you'll catch me
+                  at the gym, lifting weights with the precision of a
+                  caffeinated cat on a keyboard. Rumor has it my biceps are as
+                  robust as my bug-fixing skills. Video games? I don't just
+                  play; I turn pixels into a symphony of victory. Boss battles?
+                  Child's play.
+                  </div>
+                  <div className="pt-2">
+                  In a world of 1s and 0s, I'm the hero you need—a software
+                  sorcerer by day and a digital dynamo by night. Whether
+                  crafting elegant code or conquering the virtual realm, I bring
+                  intelligence and humor to every endeavor. Cheers to the
+                  digital adventures ahead!
+                  </div>
+              </div>
+              <div>
+                <InteractiveToken image="images/about/profile-photo.png" />
+              </div>
+              <div className="flex flex-col bg-gray-800 rounded rounded-md p-4">
+                <div>
+                  Badges
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  {personalAcheivements.map((achievement, index) => (
+                    <div key={index} className="w-[100px]">
+                      <img src={achievement.image} alt={achievement.name} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
           <section className="pl-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section">
             <div className="section-header">Skills</div>
