@@ -3,11 +3,11 @@
 import ExperienceCard from "@/components/Experience/ExperienceCard";
 import SkillCard from "@/components/Skills/SkillCard";
 import ProjectCard from "@/components/Project/ProjectCard";
+import TypingAnimation from "@/components/TypingAnimation/TypingAnimation";
 import AboutMeCard from "@/components/AboutMe/AboutMe";
 
 import "@/css/socials.css";
 import { useEffect } from "react";
-import TypingAnimation from "@/components/TypingAnimation/TypingAnimation";
 
 // Personal Acheivements
 const personalAcheivements: Array<{ name: string; image: string }> = [
@@ -571,7 +571,7 @@ export default function Home() {
               </div>
             </div> */}
 
-            <AboutMeCard />
+            <AboutMeCard/>
 
           </section>
           <section className="pl-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section">
