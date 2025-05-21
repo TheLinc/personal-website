@@ -15,3 +15,7 @@
     /* width: 400px; */
     max-height: 800px;
 }
+
+.experience-card .hidden {
+    display: none;
+}

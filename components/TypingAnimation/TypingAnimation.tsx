@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-const words = ['Full-Stack Developer.', 'Passionate Learner.', 'Software Engineer.'];
+const words = [
+  "Full-Stack Developer.",
+  "Passionate Learner.",
+  "Software Engineer.",
+];
 
 const TypingAnimation = () => {
   const [wordIndex, setWordIndex] = useState(0);
@@ -34,7 +38,11 @@ const TypingAnimation = () => {
     return () => clearInterval(interval);
   }, [isDeleting]);
 
-  return <div className='inline-block text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 break-normal mix-blend-difference'>{words[wordIndex].substring(0, letterIndex)}</div>;
+  return (
+    <div className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 break-normal mix-blend-difference">
+      {words[wordIndex].substring(0, letterIndex)}
+    </div>
+  );
 };
 
 export default TypingAnimation;

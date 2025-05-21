@@ -1,8 +1,12 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+/* @import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap'); */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+
 
 /* width */
 ::-webkit-scrollbar {
@@ -24,10 +28,6 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-body {
-    @apply bg-[#0E1117] text-white m-0;
 }
 
 section {
@@ -72,10 +72,6 @@ section {
 
 .animate-up {
     transform: translateY(-250%) !important
-}
-
-.hidden {
-    display: none;
 }
 
 /* Lava lamp animation */
@@ -296,13 +292,6 @@ section {
     }
 }
 
-.hidden {
-    opacity: 0;
-    filter: blup(5px);
-    transform: translate(-100%);
-    transition: all 1s;
-}
-
 .show {
     opacity: 1;
     filter: blur(0);
@@ -312,8 +301,14 @@ section {
 
 
 /* Project section */
-.project-section {
-    background: linear-gradient(to bottom, var(--base-color-scale-gray-9, #0d1117), var(--base-color-scale-gray-7, #21252c));
+/* .project-section .mySwiper .swiper-slide {
+    width: 350px;
+} */
+
+.swiper {
+  overflow: visible !important;
+  /* max-width: 170px;
+  max-height: 253px; */
 }
 
 .project-section .design-shape-1,
@@ -363,7 +358,7 @@ section {
     text-align: center;
     width: 4em;
     height: 4em;
-    border: 0.5em solid #333;
+    border: 0.5em solid;
     border-radius: 50%;
 }
 
@@ -373,8 +368,8 @@ section {
     margin-top: 0.6em;
     width: 1.4em;
     height: 1.4em;
-    border-top: 0.5em solid #333;
-    border-right: 0.5em solid #333;
+    /* border-top: 0.5em solid #333;
+    border-right: 0.5em solid #333; */
     -moz-transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
     transform: rotate(135deg);

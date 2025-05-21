@@ -4,69 +4,46 @@ import ExperienceCard from "@/components/Experience/ExperienceCard";
 import SkillCard from "@/components/Skills/SkillCard";
 import ProjectCard from "@/components/Project/ProjectCard";
 import TypingAnimation from "@/components/TypingAnimation/TypingAnimation";
-import AboutMeCard from "@/components/AboutMe/AboutMe";
-import InteractiveToken from "@/components/InteractiveToken/InteractiveToken";
 
 import "@/css/socials.css";
-import { useEffect } from "react";
-// import AboutMeCard from "@/components/AboutMe/AboutMe";
-
-
-
-
-// Personal Acheivements
-const personalAcheivements: Array<{ name: string; image: string }> = [
-  {
-    name: "Two Plate Bench Press",
-    image: "images/personalAcheivements/bench.png"
-  },
-  {
-    name: "Tutor Code",
-    image: "images/personalAcheivements/tutor.png"
-  },
-  {
-    name: "Code Commits",
-    image: "images/personalAcheivements/commits.png"
-  },
-  {
-    name: "AWS Certification",
-    image: "images/personalAcheivements/aws.png"
-  }
-]
+import LayoutCard from "@/components/LayoutCard/LayoutCard";
+import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
+import DownArrowIcon from "@/public/images/general/DownArrowIcon";
+import Image from "next/image";
 
 // Web Development
 const webDevelopmentSkills: Array<{ name: string; image: string }> = [
   {
     name: "React",
-    image: "images/webDevSkills/react.png",
+    image: "/images/webDevSkills/react.png",
   },
   {
     name: "Angular",
-    image: "images/webDevSkills/angular.png",
+    image: "/images/webDevSkills/angular.png",
   },
   {
     name: "Node.js",
-    image: "images/webDevSkills/node.png",
+    image: "/images/webDevSkills/node.png",
   },
   {
     name: "JavaScript",
-    image: "images/webDevSkills/js.png",
+    image: "/images/webDevSkills/js.png",
   },
   {
     name: "TypeScript",
-    image: "images/webDevSkills/ts.png",
+    image: "/images/webDevSkills/ts.png",
   },
   {
     name: "Bootstrap",
-    image: "images/webDevSkills/bootstrap.png",
+    image: "/images/webDevSkills/bootstrap.png",
   },
   {
     name: "TailwindCSS",
-    image: "images/webDevSkills/tailwind.png",
+    image: "/images/webDevSkills/tailwind.png",
   },
   {
     name: "HTML/CSS",
-    image: "images/webDevSkills/html.png",
+    image: "/images/webDevSkills/html.png",
   },
 ];
 
@@ -74,19 +51,19 @@ const webDevelopmentSkills: Array<{ name: string; image: string }> = [
 const backendDevelopmentSkills: Array<{ name: string; image: string }> = [
   {
     name: "Python",
-    image: "images/backendDevSkills/python.png",
+    image: "/images/backendDevSkills/python.png",
   },
   {
     name: "Java",
-    image: "images/backendDevSkills/java.png",
+    image: "/images/backendDevSkills/java.png",
   },
   {
     name: "SQL",
-    image: "images/backendDevSkills/sql.png",
+    image: "/images/backendDevSkills/sql.png",
   },
   {
     name: "C/C++",
-    image: "images/backendDevSkills/c.png",
+    image: "/images/backendDevSkills/c.png",
   },
 ];
 
@@ -94,11 +71,11 @@ const backendDevelopmentSkills: Array<{ name: string; image: string }> = [
 const cloudServices: Array<{ name: string; image: string }> = [
   {
     name: "AWS",
-    image: "images/cloudSkills/aws.png",
+    image: "/images/cloudSkills/aws.png",
   },
   {
     name: "Firebase",
-    image: "images/cloudSkills/firebase.png",
+    image: "/images/cloudSkills/firebase.png",
   },
 ];
 
@@ -106,11 +83,11 @@ const cloudServices: Array<{ name: string; image: string }> = [
 const containerizationAndVersioning: Array<{ name: string; image: string }> = [
   {
     name: "Docker",
-    image: "images/containerizationSkills/docker.png",
+    image: "/images/containerizationSkills/docker.png",
   },
   {
     name: "Git",
-    image: "images/containerizationSkills/git.png",
+    image: "/images/containerizationSkills/git.png",
   },
 ];
 
@@ -118,36 +95,69 @@ const containerizationAndVersioning: Array<{ name: string; image: string }> = [
 const designAndPrototyping: Array<{ name: string; image: string }> = [
   {
     name: "Figma",
-    image: "images/designSkills/figma.png",
+    image: "/images/designSkills/figma.png",
   },
   {
     name: "Shopify",
-    image: "images/designSkills/shopify.png",
+    image: "/images/designSkills/shopify.png",
   },
   {
     name: "Wix",
-    image: "images/designSkills/wix.png",
+    image: "/images/designSkills/wix.png",
   },
 ];
 
-// Projects
-const projects: Array<{
+export interface IProject {
   name: string;
   image: string;
   tags: string[];
   desc: string;
-  link: string;
-}> = [
+  link?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  images?: string[];
+  inDev?: boolean;
+}
+
+// Projects
+const projects: Array<IProject> = [
+  {
+    name: "Spotlight",
+    image: "images/projects/spotlight/spotlight-logo.png",
+    tags: ["React Native", "Expo", "Firebase", "Supabase", "Git"],
+    desc: "Mobile App combining YouTube and Netflix features, enabling content creators to upload and organize amateur content into structured shows. Built with React Native, Firebase, Supabase, Expo, and React Native Paper.",
+    imageWidth: 170,
+    imageHeight: 253,
+    images: [
+      "/images/projects/spotlight/spotlight1.png",
+      "/images/projects/spotlight/spotlight2.png",
+      "/images/projects/spotlight/spotlight3.png",
+      "/images/projects/spotlight/spotlight4.png",
+      "/images/projects/spotlight/spotlight5.png",
+      "/images/projects/spotlight/spotlight6.png",
+      "/images/projects/spotlight/spotlight7.png",
+      "/images/projects/spotlight/spotlight8.png",
+      "/images/projects/spotlight/spotlight9.png",
+    ],
+    inDev: true,
+  },
   {
     name: "Pipestream",
-    image: "images/projects/play.png",
+    image: "images/projects/pipestream/play.png",
     tags: ["React", "Node.js", "Firebase", "Git", "API"],
-    desc: "Web-Application and Search Engine that allows users to find which streaming services have their favorite movies and TV shows. This project was constructed using React, Firebase Firestore, Firebase Hosting, and public APIs. Firestore caches users searches and movie data to reduce API calls and increase response time",
+    desc: "Web-Application and Search Engine that allows users to find which streaming services have their favorite movies and TV shows. This project was constructed using React, Firebase Firestore, Firebase Hosting, and public APIs. Firestore caches users searches and movie data to reduce API calls and increase response time.",
     link: "https://www.pipestream.app",
+    imageWidth: 1000,
+    imageHeight: 500,
+    images: [
+      "/images/projects/pipestream/pipestream1.png",
+      "/images/projects/pipestream/pipestream2.png",
+      "/images/projects/pipestream/pipestream3.png",
+    ],
   },
   {
     name: "Mask Detection Model",
-    image: "images/projects/mask.png",
+    image: "images/projects/maskDetection/mask.png",
     tags: [
       "Machine Learning",
       "Python",
@@ -157,8 +167,11 @@ const projects: Array<{
       "Sklearn",
       "Git",
     ],
-    desc: "Developed a machine learning model to detect if a person is wearing a mask. Implemented libraries such as Tensorflow, Sklearn, Numpy, and Pandas to create the model and demonstrate functionality. Used Keras to create model layers for deep learning",
+    desc: "Developed a machine learning model to detect if a person is wearing a mask. Implemented libraries such as Tensorflow, Sklearn, Numpy, and Pandas to create the model and demonstrate functionality. Used Keras to create model layers for deep learning.",
     link: "https://github.com/TheLinc/Mask_Detection_ML",
+    imageWidth: 1000,
+    imageHeight: 500,
+    images: ["/images/projects/maskDetection/maskCode.png"],
   },
   {
     name: "NuViu - Smart Cane",
@@ -176,10 +189,16 @@ const projects: Array<{
   },
   {
     name: "Sweetacular Cookies",
-    image: "images/projects/cookie.png",
+    image: "images/projects/sweetacularcookies/sweetacularcookies-logo.png",
     tags: ["Wix", "Research", "Freelance"],
-    desc: "This project was developed for a clients small business. The client wanted a website that would allow customers to view their products and contact them for orders. The website was developed using Wix and was designed to be simple and easy to use. The website was also designed to be responsive and mobile friendly",
+    desc: "This project was developed for a clients small business. The client wanted a website that would allow customers to view their products and contact them for orders. The website was developed using Wix and was designed to be simple and easy to use. The website was also designed to be responsive and mobile friendly.",
     link: "https://www.sweetacularcookies.com/",
+    imageHeight: 917,
+    imageWidth: 1834,
+    images: [
+      "/images/projects/sweetacularcookies/sweetacularcookies1.png",
+      "/images/projects/sweetacularcookies/sweetacularcookies2.png",
+    ],
   },
 ];
 
@@ -195,7 +214,14 @@ const experience: Array<{
     image: "images/experience/os.png",
     name: "Opinion System",
     title: "Software Developer",
-    desc: [],
+    desc: [
+      "Implemented a responsive design overhaul with Next.js and Material UI, leading to marked gains in accessibility and user satisfaction.",
+      "Led the redevelopment of web tools using PHP and JavaScript, enhancing front-end scalability and boosting overall system performance.",
+      "Oversaw mobile development for a new animation feature in React Native, ensuring task management and clear communication to meet quality standards.",
+      "Played a crucial role in overhauling back-end infrastructure with MySQL and Symfony, optimizing database interactions for improved efficiency.",
+      "Fostered a team-oriented environment, promoting open communication and collaboration to drive project success and enhance user experience.",
+      "Developed chrome extension that utilizes the GitLab API to provide our team with custom GitLab actions",
+    ],
     pos: "left",
   },
   {
@@ -203,9 +229,10 @@ const experience: Array<{
     name: "GBatteries",
     title: "Full Stack Developer",
     desc: [
-      "As the lead Engineer, successfully developed a Python application to simulate the company's existing hardware. Implemented rigorous unit tests integrated into a CI/CD Pipeline, ensuring the application's reliability. Containerized the application using Docker and seamlessly distributed it to Amazon ECS through the CI/CD Pipeline for efficient deployment.",
-      "Designed and distributed a shared library via PyPI, revolutionizing software development by enabling the import of a singular package, thus eliminating the need for redundant code. This contributed significantly to streamlining the development process.",
-      "Contributed to the development of a Binary Data Collection application using Python, leveraging socket servers for seamless communication between containers. The inclusion of binary data significantly increased the volume of data points available for data analytics, enhancing the organization's capabilities in this domain."
+      "Developed Python app to simulate hardware, enhancing testing efficiency and reducing errors.",
+      "Created and deployed Docker containers on Amazon ECS, streamlining software distribution.",
+      "Built PyPI library to simplify code reuse, boosting developer productivity and code quality.",
+      "Implemented socket servers for data collection, improving analytics with richer data points.",
     ],
     pos: "right",
   },
@@ -214,20 +241,23 @@ const experience: Array<{
     name: "Trading Central",
     title: "Software Developer",
     desc: [
-      "Spearheaded the reconstruction of the front-end for two React.js applications as the primary engineer. Leveraged JSX, HTML, and CSS to revamp the user interface. These applications seamlessly interacted with APIs to showcase stock analysis data, with the design blueprint derived from Figma designs.",
-      "Contributed significantly to the development of a new web-based application by creating adaptable Angular components. Utilized Typescript, HTML, and CSS to craft responsive interfaces. Additionally, gained proficiency in crafting SVGs, showcasing a diverse skill set in web development."
+      "Engineered React.js front-end for stock analysis apps, enhancing user interaction and data display.",
+      "Built Angular components for new web app, mastering SVGs and improving design integration.",
+      "Collaborated on API integration, ensuring seamless data flow and user experience.",
+      "Utilized Figma designs to create responsive layouts, boosting application accessibility.",
+      "Enhanced front-end functionality, contributing to overall project success and user satisfaction.",
     ],
-    pos: "left"
+    pos: "left",
   },
   {
     image: "images/experience/cra.png",
     name: "Canada Revenue Agency (CRA)",
     title: "IT Analyst & Developer",
     desc: [
-      "Led pioneering research to revolutionize the organization's approach to interacting with testing data, introducing a more efficient and effective methodology.",
-      "Established connections with diverse companies, engaging in meaningful discussions about their products and solutions to stay abreast of industry best practices.",
+      "Led research to improve the organization's approach to interacting with testing data, introducing a more efficient and effective methodology.",
+      "Established connections with diverse companies, engaging in meaningful discussions about their products and solutions to maintain industry best practices.",
       "Conducted extensive research on advanced data masking/obfuscation techniques, data fabrication, and data security, contributing valuable insights to enhance the organization's data protection strategies.",
-      "Innovatively developed and implemented automated testing scripts specifically tailored for the organization's custom Jira features, utilizing UFT to streamline and optimize testing processes."
+      "Developed and implemented automated testing scripts specifically tailored for the organization's custom Jira features, utilizing UFT to streamline and optimize testing processes.",
     ],
     size: "l",
     pos: "right",
@@ -318,137 +348,142 @@ const experience: Array<{
 // });
 
 export default function Home() {
-  useEffect(() => {
-    const aboutElement = document.getElementById("about");
+  // useEffect(() => {
+  //   const aboutElement = document.getElementById("about");
 
-    const projectSection = document.querySelectorAll(".project-section");
-    const projectCards = document.querySelectorAll(".project-card");
+  //   const projectSection = document.querySelectorAll(".project-section");
+  //   const projectCards = document.querySelectorAll(".project-card");
 
-    const skillSection = document.querySelectorAll(".skill-section");
-    const skillSubsection = document.querySelectorAll(".skill-subsection");
+  //   const skillSection = document.querySelectorAll(".skill-section");
+  //   const skillSubsection = document.querySelectorAll(".skill-subsection");
 
-    const contactSection = document.querySelectorAll(".contact-section");
-    const contactIcon = document.querySelectorAll(".contact-icon");
+  //   const contactSection = document.querySelectorAll(".contact-section");
+  //   const contactIcon = document.querySelectorAll(".contact-icon");
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.target.id === "about" && entry.isIntersecting) {
-          entry.target.classList.add("animate-fade-right");
-          observer.unobserve(entry.target);
-        } else if (
-          entry.target.classList.contains("project-section") &&
-          entry.isIntersecting
-        ) {
-          projectCards[0].classList.remove("hidden");
-          projectCards[1].classList.remove("hidden");
-          projectCards[2].classList.remove("hidden");
-          projectCards[3].classList.remove("hidden");
+  //   const observer = new IntersectionObserver((entries) => {
+  //     entries.forEach((entry) => {
+  //       if (entry.target.id === "about" && entry.isIntersecting) {
+  //         entry.target.classList.add("animate-fade-right");
+  //         observer.unobserve(entry.target);
+  //       } else if (
+  //         entry.target.classList.contains("project-section") &&
+  //         entry.isIntersecting
+  //       ) {
+  //         projectCards[0].classList.remove("hidden");
+  //         projectCards[1].classList.remove("hidden");
+  //         projectCards[2].classList.remove("hidden");
+  //         projectCards[3].classList.remove("hidden");
 
-          projectCards[0].classList.add("animate-fade-right");
-          projectCards[1].classList.add("animate-fade-right");
-          projectCards[2].classList.add("animate-fade-right");
-          projectCards[3].classList.add("animate-fade-right");
+  //         projectCards[0].classList.add("animate-fade-right");
+  //         projectCards[1].classList.add("animate-fade-right");
+  //         projectCards[2].classList.add("animate-fade-right");
+  //         projectCards[3].classList.add("animate-fade-right");
 
-          projectCards[0].classList.add("animate-ease-out");
-          projectCards[1].classList.add("animate-ease-out");
-          projectCards[2].classList.add("animate-ease-out");
-          projectCards[3].classList.add("animate-ease-out");
+  //         projectCards[0].classList.add("animate-ease-out");
+  //         projectCards[1].classList.add("animate-ease-out");
+  //         projectCards[2].classList.add("animate-ease-out");
+  //         projectCards[3].classList.add("animate-ease-out");
 
-          projectCards[0].classList.add("animate-delay-[500ms]");
-          projectCards[1].classList.add("animate-delay-[1000ms]");
-          projectCards[2].classList.add("animate-delay-[1500ms]");
-          projectCards[3].classList.add("animate-delay-[2000ms]");
+  //         projectCards[0].classList.add("animate-delay-[500ms]");
+  //         projectCards[1].classList.add("animate-delay-[1000ms]");
+  //         projectCards[2].classList.add("animate-delay-[1500ms]");
+  //         projectCards[3].classList.add("animate-delay-[2000ms]");
 
-          projectCards[0].classList.add("backdrop-blur");
-          projectCards[1].classList.add("backdrop-blur");
-          projectCards[2].classList.add("backdrop-blur");
-          projectCards[3].classList.add("backdrop-blur");
+  //         projectCards[0].classList.add("backdrop-blur");
+  //         projectCards[1].classList.add("backdrop-blur");
+  //         projectCards[2].classList.add("backdrop-blur");
+  //         projectCards[3].classList.add("backdrop-blur");
 
-          observer.unobserve(entry.target);
-        } else if (
-          entry.target.classList.contains("skill-section") &&
-          entry.isIntersecting
-        ) {
-          skillSubsection[0].classList.remove("hidden");
-          skillSubsection[1].classList.remove("hidden");
-          skillSubsection[2].classList.remove("hidden");
-          skillSubsection[3].classList.remove("hidden");
-          skillSubsection[4].classList.remove("hidden");
+  //         observer.unobserve(entry.target);
+  //       } else if (
+  //         entry.target.classList.contains("skill-section") &&
+  //         entry.isIntersecting
+  //       ) {
+  //         skillSubsection[0].classList.remove("hidden");
+  //         skillSubsection[1].classList.remove("hidden");
+  //         skillSubsection[2].classList.remove("hidden");
+  //         skillSubsection[3].classList.remove("hidden");
+  //         skillSubsection[4].classList.remove("hidden");
 
-          skillSubsection[0].classList.add("animate-fade");
-          skillSubsection[1].classList.add("animate-fade");
-          skillSubsection[2].classList.add("animate-fade");
-          skillSubsection[3].classList.add("animate-fade");
-          skillSubsection[4].classList.add("animate-fade");
+  //         skillSubsection[0].classList.add("animate-fade");
+  //         skillSubsection[1].classList.add("animate-fade");
+  //         skillSubsection[2].classList.add("animate-fade");
+  //         skillSubsection[3].classList.add("animate-fade");
+  //         skillSubsection[4].classList.add("animate-fade");
 
-          skillSubsection[0].classList.add("animate-ease-out");
-          skillSubsection[1].classList.add("animate-ease-out");
-          skillSubsection[2].classList.add("animate-ease-out");
-          skillSubsection[3].classList.add("animate-ease-out");
-          skillSubsection[4].classList.add("animate-ease-out");
+  //         skillSubsection[0].classList.add("animate-ease-out");
+  //         skillSubsection[1].classList.add("animate-ease-out");
+  //         skillSubsection[2].classList.add("animate-ease-out");
+  //         skillSubsection[3].classList.add("animate-ease-out");
+  //         skillSubsection[4].classList.add("animate-ease-out");
 
-          skillSubsection[0].classList.add("animate-duration-[1500ms]");
-          skillSubsection[1].classList.add("animate-duration-[1500ms]");
-          skillSubsection[2].classList.add("animate-duration-[1500ms]");
-          skillSubsection[3].classList.add("animate-duration-[1500ms]");
-          skillSubsection[4].classList.add("animate-duration-[1500ms]");
+  //         skillSubsection[0].classList.add("animate-duration-[1500ms]");
+  //         skillSubsection[1].classList.add("animate-duration-[1500ms]");
+  //         skillSubsection[2].classList.add("animate-duration-[1500ms]");
+  //         skillSubsection[3].classList.add("animate-duration-[1500ms]");
+  //         skillSubsection[4].classList.add("animate-duration-[1500ms]");
 
-          skillSubsection[0].classList.add("animate-delay-[500ms]");
-          skillSubsection[1].classList.add("animate-delay-[800ms]");
-          skillSubsection[2].classList.add("animate-delay-[1100ms]");
-          skillSubsection[3].classList.add("animate-delay-[1400ms]");
-          skillSubsection[4].classList.add("animate-delay-[1700ms]");
+  //         skillSubsection[0].classList.add("animate-delay-[500ms]");
+  //         skillSubsection[1].classList.add("animate-delay-[800ms]");
+  //         skillSubsection[2].classList.add("animate-delay-[1100ms]");
+  //         skillSubsection[3].classList.add("animate-delay-[1400ms]");
+  //         skillSubsection[4].classList.add("animate-delay-[1700ms]");
 
-          observer.unobserve(entry.target);
-        } else if (
-          entry.target.classList.contains("contact-section") &&
-          entry.isIntersecting
-        ) {
-          contactIcon[0].classList.remove("hidden");
-          contactIcon[1].classList.remove("hidden");
-          contactIcon[2].classList.remove("hidden");
+  //         observer.unobserve(entry.target);
+  //       } else if (
+  //         entry.target.classList.contains("contact-section") &&
+  //         entry.isIntersecting
+  //       ) {
+  //         contactIcon[0].classList.remove("hidden");
+  //         contactIcon[1].classList.remove("hidden");
+  //         contactIcon[2].classList.remove("hidden");
 
-          contactIcon[0].classList.add("animate-jump-in");
-          contactIcon[1].classList.add("animate-jump-in");
-          contactIcon[2].classList.add("animate-jump-in");
+  //         contactIcon[0].classList.add("animate-jump-in");
+  //         contactIcon[1].classList.add("animate-jump-in");
+  //         contactIcon[2].classList.add("animate-jump-in");
 
-          contactIcon[0].classList.add("animate-ease-out");
-          contactIcon[1].classList.add("animate-ease-out");
-          contactIcon[2].classList.add("animate-ease-out");
+  //         contactIcon[0].classList.add("animate-ease-out");
+  //         contactIcon[1].classList.add("animate-ease-out");
+  //         contactIcon[2].classList.add("animate-ease-out");
 
-          contactIcon[0].classList.add("animate-duration-[1500ms]");
-          contactIcon[1].classList.add("animate-duration-[1500ms]");
-          contactIcon[2].classList.add("animate-duration-[1500ms]");
+  //         contactIcon[0].classList.add("animate-duration-[1500ms]");
+  //         contactIcon[1].classList.add("animate-duration-[1500ms]");
+  //         contactIcon[2].classList.add("animate-duration-[1500ms]");
 
-          contactIcon[0].classList.add("animate-delay-[500ms]");
-          contactIcon[1].classList.add("animate-delay-[800ms]");
-          contactIcon[2].classList.add("animate-delay-[1100ms]");
+  //         contactIcon[0].classList.add("animate-delay-[500ms]");
+  //         contactIcon[1].classList.add("animate-delay-[800ms]");
+  //         contactIcon[2].classList.add("animate-delay-[1100ms]");
 
-          observer.unobserve(entry.target);
-        }
-      });
-    });
+  //         observer.unobserve(entry.target);
+  //       }
+  //     });
+  //   });
 
-    if (aboutElement) {
-      observer.observe(aboutElement);
-    }
+  //   if (aboutElement) {
+  //     observer.observe(aboutElement);
+  //   }
 
-    if (projectSection) {
-      observer.observe(projectSection[0]);
-    }
+  //   if (projectSection) {
+  //     observer.observe(projectSection[0]);
+  //   }
 
-    if (skillSection) {
-      observer.observe(skillSection[0]);
-    }
+  //   if (skillSection) {
+  //     observer.observe(skillSection[0]);
+  //   }
 
-    if (contactSection) {
-      observer.observe(contactSection[0]);
-    }
-  }, []);
+  //   if (contactSection) {
+  //     observer.observe(contactSection[0]);
+  //   }
+  // }, []);
+
+  // Swiper instance is now handled by the Swiper React component, so no manual instantiation is needed.
 
   return (
     <main>
       <div className="flex flex-col w-full h-full items-center">
+        <div className="self-end">
+          <ThemeToggle />
+        </div>
         <div className="flex flex-row items-center w-full h-screen gap-5">
           <div className="flex flex-col items-center w-full animate-fade-up animate-delay-1000">
             <div className="lamp">
@@ -485,146 +520,85 @@ export default function Home() {
                 </filter>
               </defs>
             </svg>
-            <div className="gap-5 max-w-[750px] pl-1 sm:pl-0">
-              <div>
-                <h1 className="text-[50px] font-semibold">
-                  Hello, my name is Lincoln.
-                  <div>
-                    <div className="inline-block h-[85px]">I am a {" "}</div>
-                    <div className="inline-block h-[85px] ml-[14px]">
-                      {" "}<TypingAnimation />
-                    </div>
+            <div className="gap-5 max-w-[750px] pl-4">
+              <h1 className="text-[50px] font-semibold">
+                Hello, my name is Lincoln.
+                <div>
+                  <div className="inline-block h-[85px] mr-[14px]">I am a </div>
+                  <div className="inline-block h-[85px] ">
+                    {" "}
+                    <TypingAnimation />
                   </div>
-                </h1>
-              </div>
+                </div>
+              </h1>
             </div>
-            <a className="mt-[200px] arrow-down" href="#about" onClick={(e) => {
-              e.preventDefault();
-              const aboutSection = document.querySelector('#about');
-              if (aboutSection) {
-                aboutSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}>
-              <span className="bottom"></span>
+            <a
+              className="mt-[200px] arrow-down w-5 h-5 fill-purple-500 hover:fill-cyan-500 dark:fill-indigo-400 dark:hover:fill-cyan-500"
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                const aboutSection = document.querySelector("#about");
+                if (aboutSection) {
+                  aboutSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              <DownArrowIcon className="w-10 h-10 " />
             </a>
           </div>
         </div>
-        <div className="pt-6 md:pt-8 gap-5 w-full">
-          <section className="pl-2 pr-2 pt-6 md:pl-10 md:pr-10" id="about">
-            <div className="section-header text-center sm:text-left">About me</div>
-            {/* <div className="flex flex-col bg-[#010409] rounded-xl mt-4">
-                    <div className="flex items-center flex-col-reverse md:flex-row section-content pt-2">
-                    <div className="grow max-w-[600px] p-2 m-2 pt-10 md:pt-0">
-                      <div>
-                      <div className="uppercase font-bold pr-2">Name:</div>
-                      <div>Lincoln Laylor</div>
-                      </div>
-                      <div className="pt-4">
-                      <div className="uppercase font-bold pr-2">Profession:</div>
-                      <div>Software Developer</div>
-                      </div>
-                      <div className="pt-4">
-                      <div className="uppercase font-bold pr-2">Graduating School:</div>
-                      <div>University of Ottawa - 2023</div>
-                      </div>
-                      <div className="pt-4">
-                      <div className="uppercase font-bold pr-2">Graduating Program:</div>
-                      <div>Computer Engineering</div>
-                      </div>
-                      <div className="pt-4">
-                      <div className="uppercase font-bold pr-2">Bio:</div>
-                      <div>
-                        <div>
-                        Hey there, I'm Lincoln, a software sorcerer armed with a
-                        computer engineering degree from the University of Ottawa. By
-                        day, I'm in the digital trenches, choreographing code that
-                        dances on the edge of technological brilliance.
-                        </div>
-                        <div className="pt-2">
-                        When I'm not conquering the binary ballroom, you'll catch me
-                        at the gym, lifting weights with the precision of a
-                        caffeinated cat on a keyboard. Rumor has it my biceps are as
-                        robust as my bug-fixing skills. Video games? I don't just
-                        play; I turn pixels into a symphony of victory. Boss battles?
-                        Child's play.
-                        </div>
-                        <div className="pt-2">
-                        In a world of 1s and 0s, I'm the hero you need—a software
-                        sorcerer by day and a digital dynamo by night. Whether
-                        crafting elegant code or conquering the virtual realm, I bring
-                        intelligence and humor to every endeavor. Cheers to the
-                        digital adventures ahead!
-                        </div>
-                      </div>
-                      </div>
-                    </div>
-                    <div className="p-8 pt-0 h-[500px] aspect-[3/2] max-w-[350px] min-w-[300px]">
-                      <AboutMeCard />
-                    </div>
-                    </div>
-                    <div className="p-4 pb-6 m-4 flex flex-col border border-4 border-white rounded-xl max-w-[850px]">
-                    <div className="flex
-                  Personal Acheivements 
-                </div>
-                <div className="flex justify-around">
-                  {personalAcheivements.map((achievement, index) => (
-                    <div key={index} className="w-[150px]">
-                      <img src={achievement.image} alt={achievement.name} />
-                    </div>
-                  ))}
-                </div>
+        <div className="pt-6 md:pt-8 gap-5 flex flex-col items-center">
+          <section
+            className="pl-2 pr-2 pt-6 md:pl-10 md:pr-10 w-full"
+            id="about"
+          >
+            <div className="py-4 section-header text-center sm:text-left">
+              About me
+            </div>
+            <div className="flex flex-col-reverse md:flex-row items-center gap-5">
+              <div className="max-w-150 text-justify text-zinc-600 dark:text-zinc-400 p-2 text-lg">
+                Hey, I'm Lincoln — a full stack developer with a passion for
+                building thoughtful, user-focused software. With 4 years of
+                hands-on experience, I’ve worked across the stack using tools
+                like React, Next.js, PHP, and AWS to deliver fast, accessible,
+                and scalable applications. Right now, I’m focused on Spotlight —
+                a mobile app that blends the best of YouTube and Netflix to help
+                creators organize and share content like full-on shows. It’s
+                been a fun challenge in React Native, Firebase, and Supabase!
+                I’m always diving into new technologies and best practices,
+                whether it’s experimenting with performance optimization,
+                fine-tuning accessibility, or just trying out a new framework on
+                the weekend. I love learning, building, and turning good ideas
+                into real, working products.
+                <br />
+                <span className="font-bold">#PoweredByCoffee </span>
+                <span role="img" aria-label="coffee">
+                  ☕
+                </span>
               </div>
-            </div> */}
-
-            <AboutMeCard/>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <div className="pt-2">
-                  Hey there, I'm Lincoln, a software sorcerer armed with a
-                  computer engineering degree from the University of Ottawa. By
-                  day, I'm in the digital trenches, choreographing code that
-                  dances on the edge of technological brilliance.
-                  </div>
-                  <div className="pt-2">
-                  When I'm not conquering the binary ballroom, you'll catch me
-                  at the gym, lifting weights with the precision of a
-                  caffeinated cat on a keyboard. Rumor has it my biceps are as
-                  robust as my bug-fixing skills. Video games? I don't just
-                  play; I turn pixels into a symphony of victory. Boss battles?
-                  Child's play.
-                  </div>
-                  <div className="pt-2">
-                  In a world of 1s and 0s, I'm the hero you need—a software
-                  sorcerer by day and a digital dynamo by night. Whether
-                  crafting elegant code or conquering the virtual realm, I bring
-                  intelligence and humor to every endeavor. Cheers to the
-                  digital adventures ahead!
-                  </div>
-              </div>
-              <div>
-                <InteractiveToken image="images/about/profile-photo.png" />
-              </div>
-              <div className="flex flex-col bg-gray-800 rounded rounded-md p-4">
-                <div>
-                  Badges
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  {personalAcheivements.map((achievement, index) => (
-                    <div key={index} className="w-[100px]">
-                      <img src={achievement.image} alt={achievement.name} />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div></div>
+              <Image
+                src={"/images/about/action-figure.png"}
+                alt="lincoln action figure"
+                className="w-80 shadow-md rounded-lg my-2"
+                width={1024}
+                height={1536}
+              />
             </div>
           </section>
-          <section className="pl-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section">
+          <section className="w-full p-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section max-w-[1200px]">
             <div className="section-header">Skills</div>
-            <div className="flex flex-wrap flex-row justify-center sm:justify-start">
-              <div className="flex flex-wrap flex-col">
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 hidden skill-subsection">
-                  <div className="section-subheader">Frontend Development</div>
+            <div className="px-2 pt-4 pb-6 text-zinc-600 dark:text-zinc-400 text-lg">
+              Here’s a quick look at the skills and technologies I work with
+              most often. I'm always learning, so this list might be slightly
+              out of date by the time you see it!
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[5px] md:max-w-[700px] lg:max-w-full ">
+              <div className="flex flex-wrap flex-col items-center">
+                <LayoutCard
+                  header="Frontend Development"
+                  className="w-[325px] justify-self-center"
+                >
                   <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-1">
                     {webDevelopmentSkills.map((skill, index) => (
                       <SkillCard
@@ -634,49 +608,12 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                </div>
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 lg:hidden">
-                  <div className="section-subheader">Backend Development</div>
-                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
-                    {backendDevelopmentSkills.map((skill, index) => (
-                      <SkillCard
-                        key={index}
-                        name={skill.name}
-                        image={skill.image}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-wrap flex-col lg:flex">
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 hidden skill-subsection">
-                  <div className="section-subheader">Backend Development</div>
-                  <div className="grid grid-cols-2 gap-1">
-                    {backendDevelopmentSkills.map((skill, index) => (
-                      <SkillCard
-                        key={index}
-                        name={skill.name}
-                        image={skill.image}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[500px] m-2 hidden skill-subsection">
-                  <div className="section-subheader">Design & Prototyping</div>
-                  <div className="grid grid-cols-2 gap-1">
-                    {designAndPrototyping.map((skill, index) => (
-                      <SkillCard
-                        key={index}
-                        name={skill.name}
-                        image={skill.image}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-wrap flex-col">
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[325px] m-2 hidden skill-subsection">
-                  <div className="section-subheader">Cloud Services</div>
+                </LayoutCard>
+                {/* Displayed on md screen, hidden on lg */}
+                <LayoutCard
+                  header="Cloud Services"
+                  className="w-[325px] lg:hidden"
+                >
                   <div className="grid grid-cols-2 gap-1">
                     {cloudServices.map((skill, index) => (
                       <SkillCard
@@ -686,13 +623,12 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                </div>
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[325px] m-2 hidden skill-subsection">
-                  <div className="section-subheader">
-                    Containerization & Versioning
-                  </div>
+                </LayoutCard>
+              </div>
+              <div className="flex flex-wrap flex-col lg:flex items-center">
+                <LayoutCard header="Backend Development" className="w-[325px]">
                   <div className="grid grid-cols-2 gap-1">
-                    {containerizationAndVersioning.map((skill, index) => (
+                    {backendDevelopmentSkills.map((skill, index) => (
                       <SkillCard
                         key={index}
                         name={skill.name}
@@ -700,9 +636,8 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                </div>
-                <div className="bg-[#161B22] text-white rounded-xl max-w-[325px] m-2 lg:hidden">
-                  <div className="section-subheader">Design & Prototyping</div>
+                </LayoutCard>
+                <LayoutCard header="Design & Prototyping" className="w-[325px]">
                   <div className="grid grid-cols-2 gap-1">
                     {designAndPrototyping.map((skill, index) => (
                       <SkillCard
@@ -712,7 +647,56 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                </div>
+                </LayoutCard>
+
+                {/* Displayed on md screen, hidden on lg */}
+                <LayoutCard
+                  header="Containerization & Versioning"
+                  className="w-[325px] lg:hidden"
+                >
+                  <div className="grid grid-cols-2 gap-1">
+                    {containerizationAndVersioning.map((skill, index) => (
+                      <SkillCard
+                        key={index}
+                        name={skill.name}
+                        image={skill.image}
+                      />
+                    ))}
+                  </div>
+                </LayoutCard>
+              </div>
+              <div className="flex flex-wrap flex-col">
+                {/* Displayed on lg screen, hidden on md */}
+                <LayoutCard
+                  header="Cloud Services"
+                  className="w-[325px] hidden lg:flex"
+                >
+                  <div className="grid grid-cols-2 gap-1">
+                    {cloudServices.map((skill, index) => (
+                      <SkillCard
+                        key={index}
+                        name={skill.name}
+                        image={skill.image}
+                      />
+                    ))}
+                  </div>
+                </LayoutCard>
+
+                {/* Displayed on lg screen, hidden on md */}
+                <LayoutCard
+                  header="Containerization & Versioning"
+                  className="w-[325px] hidden lg:flex"
+                >
+                  <div className="grid grid-cols-2 gap-1">
+                    {containerizationAndVersioning.map((skill, index) => (
+                      <SkillCard
+                        key={index}
+                        name={skill.name}
+                        image={skill.image}
+                      />
+                    ))}
+                  </div>
+                </LayoutCard>
               </div>
             </div>
           </section>
@@ -739,10 +723,12 @@ export default function Home() {
                             </div>
                         </div>
                     </section> */}
-          <section className="pl-2 pt-6 md:pl-10">
-            <div className="section-header">Experience</div>
-            <div className="section-content">
-              <div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 pt-10 text-blue-50">
+          <section className="p-2 pt-6 md:pl-10 w-full max-w-[1200px]">
+            <div className="section-header text-center sm:text-left">
+              Experience
+            </div>
+            <div className="section-content section-header text-center sm:text-left">
+              <div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 pt-10 text-blue-50 items-center ">
                 {experience.map((experience, index) => (
                   <ExperienceCard
                     key={index}
@@ -757,28 +743,43 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="items-center pl-2 pt-10 md:pl-0 project-section relative overflow-hidden">
-              <div className="section-header text-center sm:text-left">
-                Projects
-              </div>
-              <div className="pt-2 md:pt-8 justify-center text-center relative z-10">
-                {projects.map((project, index) => (
-                  <div key={index} className="project-card inline-block m-2 hidden rounded-xl">
-                    <ProjectCard
-                      name={project.name}
-                      image={project.image}
-                      tags={project.tags}
-                      desc={project.desc}
-                      link={project.link}
-                    />
-                  </div>
-                ))}
-              </div>
-              <img src=".\images\projects\design\project-shape-2.webp" className="design-shape-2 w-[600px] h-[350px] aspect-auto"/>
-              <img src=".\images\projects\design\project-shape-1.webp" className="design-shape-1 w-[706px] h-[338px] aspect-auto" />
+          <section className="items-center p-2 pt-10 project-section relative overflow-visible overflow-y-hidden max-w-[1200px] w-full">
+            <div className="section-header text-center sm:text-left">
+              Projects
+            </div>
+            <div className="flex flex-col gap-5 mt-5 mb-10">
+              {projects.map((project, index) => (
+                <ProjectCard
+                  key={index}
+                  image={project.image}
+                  name={project.name}
+                  tags={project.tags}
+                  desc={project.desc}
+                  link={project.link}
+                  imageHeight={project.imageHeight}
+                  imageWidth={project.imageWidth}
+                  images={project.images}
+                  inDev={project.inDev}
+                />
+              ))}
+            </div>
+            <Image
+              width={600}
+              height={350}
+              alt="project-shape-2"
+              src="/images/projects/design/project-shape-2.webp"
+              className="design-shape-2 w-[600px] h-[350px] aspect-auto"
+            />
+            <Image
+              width={706}
+              height={338}
+              alt="project-shape-1"
+              src="/images/projects/design/project-shape-1.webp"
+              className="design-shape-1 w-[706px] h-[338px] aspect-auto"
+            />
           </section>
-          <section className="pl-2 pt-6 md:pl-10 contact-section">
-            <div className="section-header">Contact</div>
+          <section className="pl-2 md:pl-10 contact-section">
+            <div className="section-header">Contact Me</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 section-content">
               <div className="p-2 inline-flex flex-col max-w-[500px]">
                 <div className="pt-2 text-white">
