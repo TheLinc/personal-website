@@ -30,10 +30,6 @@
     background: #555;
 }
 
-section {
-    @apply content-center min-h-screen;
-}
-
 .section-header {
     @apply text-4xl font-semibold;
 }
@@ -301,16 +297,6 @@ section {
 
 
 /* Project section */
-/* .project-section .mySwiper .swiper-slide {
-    width: 350px;
-} */
-
-.swiper {
-  overflow: visible !important;
-  /* max-width: 170px;
-  max-height: 253px; */
-}
-
 .project-section .design-shape-1,
 .project-section .design-shape-2 {
     position: absolute;

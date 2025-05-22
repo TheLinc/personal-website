@@ -20,7 +20,7 @@ const ProjectCard: React.FC<IProject> = ({
   inDev = false,
 }) => {
   return (
-    <div className="rounded-md overflow-hidden grid grid-cols-1 sm:grid-cols-2 gap-1 h-full w-full bg-zinc-200/30 dark:bg-gray-800/30 transition backdrop-blur-xl p-4 text-left project z-100">
+    <div className="rounded-md overflow-hidden grid grid-cols-1 sm:grid-cols-2 gap-1 h-full w-full bg-zinc-200/30 dark:bg-gray-600/30 transition backdrop-blur-xl p-4 text-left project z-100">
       <div>
         <div className="flex items-center px-4">
           <div className="inline-flex h-12 w-auto">
@@ -36,7 +36,7 @@ const ProjectCard: React.FC<IProject> = ({
               {tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="inline-block bg-gray-800 text-white rounded pl-2 pr-2 m-1 rounded-full"
+                  className="inline-block bg-gray-800 dark:bg-zinc-200 text-white dark:text-black rounded pl-2 pr-2 m-1 rounded-full"
                 >
                   {tag}
                 </span>
@@ -50,7 +50,7 @@ const ProjectCard: React.FC<IProject> = ({
             {link &&
               (link.includes("github") ? (
                 <button className="inline-block bg-gradient-to-r from-purple-500 to-cyan-500 border-0 rounded m-1 p-[1px] transition ease-in-out hover:-translate-y-1">
-                  <span className="flex w-full bg-gray-800 text-white rounded p-2">
+                  <span className="flex w-full bg-gray-800 dark:bg-zinc-200 text-white dark:text-black rounded p-2">
                     View Project
                     <div className="inline-block pl-2 h-6">
                       <img
@@ -63,7 +63,7 @@ const ProjectCard: React.FC<IProject> = ({
                 </button>
               ) : (
                 <button className="inline-block bg-gradient-to-r from-purple-500 to-cyan-500 border-0 rounded m-1 p-[1px] transition ease-in-out hover:-translate-y-1">
-                  <div className="flex w-full bg-gray-800 text-white rounded p-2">
+                  <div className="flex w-full bg-gray-800 dark:bg-zinc-200 text-white dark:text-black rounded p-2">
                     View Project
                     <div className="inline-block pl-2 h-6">
                       <img
@@ -91,12 +91,20 @@ const ProjectCard: React.FC<IProject> = ({
             effect={"cards"}
             grabCursor={true}
             modules={[EffectCards]}
-            className={`mySwiper max-w-[${imageWidth}px] max-h-[${imageHeight}px]`}
+            className="mb-10"
+            style={{
+              maxWidth: imageWidth,
+              maxHeight: imageHeight,
+            }}
           >
             {images.map((image, index) => (
               <SwiperSlide
                 key={index}
                 className="mt-5 mb-10 rounded-xl overflow-hidden"
+                style={{
+                  maxWidth: imageWidth,
+                  maxHeight: imageHeight,
+                }}
               >
                 <Image
                   src={image}

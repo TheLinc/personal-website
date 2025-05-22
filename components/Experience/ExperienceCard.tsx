@@ -104,7 +104,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           </ul>
         </div>
       </div>
-      <div className="col-start-5 col-end-6 md:mx-auto relative mr-10">
+      <div className="col-start-5 col-end-6 md:mx-auto relative mr-10 md:h-full">
         <div className="h-full w-6 flex items-center justify-center">
           <div className="h-full w-1 bg-zinc-100 dark:bg-gray-800 pointer-events-none"></div>
         </div>
@@ -113,7 +113,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     </div>
   ) : (
     <div className="flex md:contents">
-      <div className="col-start-5 col-end-6 mr-10 md:mx-auto relative">
+      <div className="col-start-5 col-end-6 mr-10 md:mx-auto relative md:h-full">
         <div className="h-full w-6 flex items-center justify-center">
           <div className="h-full w-1 bg-zinc-100 dark:bg-gray-800 pointer-events-none"></div>
         </div>
