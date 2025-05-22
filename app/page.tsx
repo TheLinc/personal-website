@@ -134,7 +134,7 @@ export interface IProject {
 const projects: Array<IProject> = [
   {
     name: "Spotlight",
-    image: "images/projects/spotlight/spotlight-logo.png",
+    image: "/images/projects/spotlight/spotlight-logo.png",
     tags: ["React Native", "Expo", "Firebase", "Supabase", "Git"],
     desc: "Mobile App combining YouTube and Netflix features, enabling content creators to upload and organize amateur content into structured shows. Built with React Native, Firebase, Supabase, Expo, and React Native Paper.",
     imageWidth: 234,
@@ -154,7 +154,7 @@ const projects: Array<IProject> = [
   },
   {
     name: "Pipestream",
-    image: "images/projects/pipestream/play.png",
+    image: "/images/projects/pipestream/play.png",
     tags: ["React", "Node.js", "Firebase", "Git", "API"],
     desc: "Web-Application and Search Engine that allows users to find which streaming services have their favorite movies and TV shows. This project was constructed using React, Firebase Firestore, Firebase Hosting, and public APIs. Firestore caches users searches and movie data to reduce API calls and increase response time.",
     link: "https://www.pipestream.app",
@@ -168,7 +168,7 @@ const projects: Array<IProject> = [
   },
   {
     name: "Mask Detection Model",
-    image: "images/projects/maskDetection/mask.png",
+    image: "/images/projects/maskDetection/mask.png",
     tags: [
       "Machine Learning",
       "Python",
@@ -186,7 +186,7 @@ const projects: Array<IProject> = [
   },
   {
     name: "NuViu - Smart Cane",
-    image: "images/projects/white-cane.png",
+    image: "/images/projects/white-cane.png",
     tags: [
       "Arduino",
       "3D Printing",
@@ -200,7 +200,7 @@ const projects: Array<IProject> = [
   },
   {
     name: "Sweetacular Cookies",
-    image: "images/projects/sweetacularcookies/sweetacularcookies-logo.png",
+    image: "/images/projects/sweetacularcookies/sweetacularcookies-logo.png",
     tags: ["Wix", "Research", "Freelance"],
     desc: "Developed a clean, responsive website for a small business client to showcase their products and streamline customer inquiries. Built using Wix, the site focuses on simplicity and ease of use, ensuring a smooth experience across both desktop and mobile devices. The project helped the client establish a professional online presence and made it easier for customers to connect and place orders.",
     link: "https://www.sweetacularcookies.com/",
@@ -222,7 +222,7 @@ const experience: Array<{
   pos: string;
 }> = [
   {
-    image: "images/experience/os.png",
+    image: "/images/experience/os.png",
     name: "Opinion System",
     title: "Software Developer",
     desc: [
@@ -236,7 +236,7 @@ const experience: Array<{
     pos: "left",
   },
   {
-    image: "images/experience/GBatteries.png",
+    image: "/images/experience/GBatteries.png",
     name: "GBatteries",
     title: "Full Stack Developer",
     desc: [
@@ -248,7 +248,7 @@ const experience: Array<{
     pos: "right",
   },
   {
-    image: "images/experience/trading-central.png",
+    image: "/images/experience/trading-central.png",
     name: "Trading Central",
     title: "Software Developer",
     desc: [
@@ -261,7 +261,7 @@ const experience: Array<{
     pos: "left",
   },
   {
-    image: "images/experience/cra.png",
+    image: "/images/experience/cra.png",
     name: "Canada Revenue Agency (CRA)",
     title: "IT Analyst & Developer",
     desc: [
@@ -355,16 +355,18 @@ export default function Home() {
             </div>
             <div className="flex flex-col-reverse md:flex-row items-center gap-5">
               <div className="max-w-150 text-justify text-zinc-600 dark:text-zinc-400 py-2 px-4 text-lg">
-                Hey, I'm Lincoln — a full stack developer with a passion for
+                Hey, I&#39;m Lincoln — a full stack developer with a passion for
                 building thoughtful, user-focused software. With 4 years of
-                hands-on experience, I’ve worked across the stack using tools
-                like React, Next.js, PHP, and AWS to deliver fast, accessible,
-                and scalable applications. Right now, I’m focused on *Spotlight*
-                — a mobile app that blends the best of YouTube and Netflix to
-                help creators organize and share content like full-on shows.
-                It’s been a fun challenge in React Native, Firebase, and
-                Supabase! I’m always diving into new technologies and best
-                practices, whether it’s experimenting with performance
+                hands-on experience, I&#39;ve worked across the stack using
+                tools like React, Next.js, PHP, and AWS to deliver fast,
+                accessible, and scalable applications. Right now, I&#39;m
+                focused on{" "}
+                <span className="font-semibold italic">Spotlight</span>
+                {" — "}a mobile app that blends the best of YouTube and Netflix
+                to help creators organize and share content like full-on shows.
+                It&#39;s been a fun challenge in React Native, Firebase, and
+                Supabase! I&#39;m always diving into new technologies and best
+                practices, whether it&#39;s experimenting with performance
                 optimization, fine-tuning accessibility, or just trying out a
                 new framework on the weekend. I love learning, building, and
                 turning good ideas into real, working products.
@@ -387,9 +389,9 @@ export default function Home() {
           <section className="w-full p-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section max-w-[1200px] min-h-screen">
             <div className="section-header">Skills</div>
             <div className="px-2 pt-4 pb-6 text-zinc-600 dark:text-zinc-400 text-lg">
-              Here’s a quick look at the skills and technologies I work with
-              most often. I'm always learning, so this list might be slightly
-              out of date by the time you see it!
+              Here&#39;s a quick look at the skills and technologies I work with
+              most often. I&#39;m always learning, so this list might be
+              slightly out of date by the time you see it!
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[5px] md:max-w-[700px] lg:max-w-full ">
               <div className="flex flex-wrap flex-col items-center">

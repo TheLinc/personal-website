@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import "./ExperienceCard.css";
+import Image from "next/image";
 
 interface ExperienceCardProps {
   image: string;
@@ -45,7 +46,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       >
         <div className="flex">
           <div className="inline-flex items-center pr-4">
-            <img className="w-12" src={image} alt={name} />
+            <Image
+              width={48}
+              height={48}
+              className="w-12"
+              src={image}
+              alt={name}
+            />
           </div>
           <div className="inline-flex flex-col flex-grow">
             <h3 className="font-semibold text-lg mb-1 text-zinc-900 dark:text-zinc-100">
@@ -128,7 +135,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       >
         <div className="flex">
           <div className="inline-flex items-center pr-4">
-            <img className="w-12" src={image} alt={name} />
+            <Image
+              width={48}
+              height={48}
+              className="w-12"
+              src={image}
+              alt={name}
+            />
           </div>
           <div className="inline-flex flex-col flex-grow">
             <div className="inline-flex flex-col flex-grow">

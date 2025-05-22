@@ -24,7 +24,13 @@ const ProjectCard: React.FC<IProject> = ({
       <div>
         <div className="flex items-center px-4">
           <div className="inline-flex h-12 w-auto">
-            <img className="m-w-full h-full" src={image} alt={name} />
+            <Image
+              width={48}
+              height={48}
+              className="max-w-full h-full"
+              src={image}
+              alt={name}
+            />
           </div>
           <div className="inline-flex text-zinc-900 dark:text-zinc-100 text-2xl pl-2">
             <h3>{name}</h3>
@@ -53,7 +59,9 @@ const ProjectCard: React.FC<IProject> = ({
                   <span className="flex w-full bg-gray-800 dark:bg-zinc-200 text-white dark:text-black rounded p-2">
                     View Project
                     <div className="inline-block pl-2 h-6">
-                      <img
+                      <Image
+                        width={24}
+                        height={24}
                         className="h-full w-full"
                         src="/images/projects/github.png"
                         alt="github"
@@ -66,7 +74,9 @@ const ProjectCard: React.FC<IProject> = ({
                   <div className="flex w-full bg-gray-800 dark:bg-zinc-200 text-white dark:text-black rounded p-2">
                     View Project
                     <div className="inline-block pl-2 h-6">
-                      <img
+                      <Image
+                        width={24}
+                        height={24}
                         className="h-full w-full"
                         src="/images/projects/website.png"
                         alt="github"
