@@ -182,7 +182,7 @@ const projects: Array<IProject> = [
     link: "https://github.com/TheLinc/Mask_Detection_ML",
     imageWidth: 1000,
     imageHeight: 500,
-    images: ["/images/projects/maskDetection/maskCode.png"],
+    images: ["/images/projects/maskDetection/maskDetection1.png"],
   },
   {
     name: "NuViu - Smart Cane",
@@ -347,7 +347,7 @@ export default function Home() {
         </div>
         <div className="pt-6 md:pt-8 gap-5 flex flex-col items-center w-full">
           <section
-            className="pl-2 pr-2 pt-6 md:pl-10 md:pr-10 w-full max-w-[1200px] min-h-screen"
+            className="pl-2 pr-2 my-6 md:pl-10 md:pr-10 w-full max-w-[1200px]"
             id="about"
           >
             <div className="py-4 section-header text-center sm:text-left">
@@ -386,7 +386,7 @@ export default function Home() {
               />
             </div>
           </section>
-          <section className="w-full p-2 pt-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section max-w-[1200px] min-h-screen">
+          <section className="w-full p-2 my-6 text-center sm:text-left lg:pt-0 md:pl-10 skill-section max-w-[1200px]">
             <div className="section-header">Skills</div>
             <div className="px-2 pt-4 pb-6 text-zinc-600 dark:text-zinc-400 text-lg">
               Here&#39;s a quick look at the skills and technologies I work with
@@ -500,7 +500,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="p-2 pt-6 md:pl-10 w-full max-w-[1200px] min-h-screen flex flex-col justify-center">
+          <section className="p-2 my-6 md:pl-10 w-full max-w-[1200px]">
             <div className="section-header text-center sm:text-left">
               Experience
             </div>
@@ -520,7 +520,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="items-center py-2 px-4 pt-10 project-section relative overflow-visible max-w-[1200px] w-full min-h-screen">
+          <section className="items-center my-6 px-4 pt-10 project-section relative overflow-visible max-w-[1200px] w-full">
             <div className="section-header text-center sm:text-left">
               Personal Projects
             </div>
