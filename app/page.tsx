@@ -603,9 +603,9 @@ export default function Home() {
         </div>
       </div>
       <footer>
-        <div className="flex flex-col items-center justify-center w-full h-20 bg-zinc-50 dark:bg-gray-900">
+        <div className="flex flex-col text-center w-full h-20 bg-zinc-50 dark:bg-gray-900 p-2">
           <div className="text-sm text-zinc-600 dark:text-zinc-400">
-            © 2023 Lincoln Laylor. All rights reserved.
+            © 2025 Lincoln Laylor. All rights reserved.
           </div>
           <div className="text-sm text-zinc-600 dark:text-zinc-400">
             Built with Next.js, Tailwind CSS, and a sprinkle of magic ✨
