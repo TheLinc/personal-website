@@ -5,7 +5,17 @@ import { EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { IProject } from "@/app/page";
+export interface IProject {
+  name: string;
+  image: string;
+  tags: string[];
+  desc: string;
+  link?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  images?: string[];
+  inDev?: boolean;
+}
 import Image from "next/image";
 
 const ProjectCard: React.FC<IProject> = ({
