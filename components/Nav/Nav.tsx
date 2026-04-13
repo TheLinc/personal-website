@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   motion,
   useScroll,
   useMotionValueEvent,
   AnimatePresence,
+  LayoutGroup,
 } from "framer-motion";
 
 const LINKS = [
@@ -16,16 +17,35 @@ const LINKS = [
   { label: "Contact",    href: "#contact" },
 ];
 
+const SECTION_IDS = LINKS.map((l) => l.href.slice(1));
+
 function scrollTo(href: string) {
   document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
 }
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled]           = useState(false);
+  const [open, setOpen]                   = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 80));
+
+  // Track which section is in view — last one whose top is above 40 % vh wins
+  useEffect(() => {
+    const onScroll = () => {
+      const threshold = window.innerHeight * 0.4;
+      let active = "";
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= threshold) active = id;
+      }
+      setActiveSection(active);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -36,16 +56,9 @@ export default function Nav() {
   return (
     <>
       {/*
-        The header shell is always full-width (left-0 right-0) and transparent —
-        it only provides the fixed stacking context and the flex centering.
-        All visual styling lives on the inner bar, which morphs between
-        full-width transparent ↔ floating glass pill on scroll.
-      */}
-      {/*
-        The header shell provides fixed positioning + centering.
-        Its own paddingInline/paddingTop animate via CSS transition so
-        the pill floats 16px away from screen edges on all screen sizes —
-        including mobile where the pill would otherwise span full width.
+        Header shell — always full-width, transparent.
+        paddingInline / paddingTop animate via CSS transition so the pill
+        floats 16 px from screen edges on all screen sizes once scrolled.
       */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-[900] flex justify-center pointer-events-none"
@@ -59,26 +72,21 @@ export default function Nav() {
           transition: "padding 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        {/*
-          motion.div owns the shape geometry — Framer Motion interpolates
-          maxWidth, borderRadius, and padding on its own RAF loop so the
-          pill morph is frame-perfect. Visual props (bg, blur, shadow) use
-          fast CSS transitions so they fade in without lagging behind.
-        */}
+        {/* Inner bar — Framer Motion owns geometry, CSS owns visuals */}
         <motion.div
           className="w-full flex items-center justify-between pointer-events-auto"
           animate={
             scrolled
-              ? { maxWidth: 760, borderRadius: 9999, paddingTop: 8,  paddingBottom: 8,  paddingLeft: 24, paddingRight: 24 }
+              ? { maxWidth: 760,  borderRadius: 9999, paddingTop: 8,  paddingBottom: 8,  paddingLeft: 24, paddingRight: 24 }
               : { maxWidth: 1280, borderRadius: 0,    paddingTop: 20, paddingBottom: 20, paddingLeft: 24, paddingRight: 24 }
           }
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            background:           scrolled ? "rgba(8,8,8,0.82)"                   : "transparent",
-            backdropFilter:       scrolled ? "blur(24px) saturate(160%)"           : "none",
-            WebkitBackdropFilter: scrolled ? "blur(24px) saturate(160%)"           : "none",
-            border:               scrolled ? "1px solid rgba(255,255,255,0.08)"    : "1px solid transparent",
-            boxShadow:            scrolled ? "0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)" : "none",
+            background:           scrolled ? "rgba(8,8,8,0.82)"                                                              : "transparent",
+            backdropFilter:       scrolled ? "blur(24px) saturate(160%)"                                                     : "none",
+            WebkitBackdropFilter: scrolled ? "blur(24px) saturate(160%)"                                                     : "none",
+            border:               scrolled ? "1px solid rgba(255,255,255,0.08)"                                              : "1px solid transparent",
+            boxShadow:            scrolled ? "0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)"             : "none",
             transition: "background 0.35s, backdrop-filter 0.35s, -webkit-backdrop-filter 0.35s, border 0.3s, box-shadow 0.4s",
           }}
         >
@@ -95,40 +103,74 @@ export default function Nav() {
             LL
           </a>
 
-          {/* Desktop links */}
-          <nav className="hidden md:flex items-center gap-7">
-            {LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={(e) => handleLink(e, l.href)}
-                className="text-sm transition-colors duration-200 hover:text-white"
-                style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
+          {/* Desktop links + glass bubble */}
+          <LayoutGroup id="nav">
+            <nav className="hidden md:flex items-center gap-0.5">
+              {LINKS.map((l) => {
+                const isActive = activeSection === l.href.slice(1);
+                return (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    onClick={(e) => handleLink(e, l.href)}
+                    className="relative px-3.5 py-1.5 rounded-full text-sm transition-colors duration-200"
+                    style={{
+                      color: isActive ? "#fff" : "var(--muted)",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    {/* Glass bubble — springs between active links via layoutId */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="glass-bubble"
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          background:
+                            "linear-gradient(160deg, rgba(255,255,255,0.19) 0%, rgba(255,255,255,0.07) 100%)",
+                          backdropFilter:       "blur(18px) saturate(200%)",
+                          WebkitBackdropFilter: "blur(18px) saturate(200%)",
+                          border: "1px solid rgba(255,255,255,0.2)",
+                          boxShadow: [
+                            "0 2px 12px rgba(0,0,0,0.22)",           // outer drop shadow
+                            "inset 0 1px 0 rgba(255,255,255,0.42)",  // top specular highlight
+                            "inset 0 -1px 0 rgba(0,0,0,0.12)",      // bottom inner shadow
+                            "inset 0 0 14px rgba(255,255,255,0.04)", // ambient inner glow
+                          ].join(", "),
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 32,
+                          mass: 0.8,
+                        }}
+                      />
+                    )}
+                    <span className="relative z-10">{l.label}</span>
+                  </a>
+                );
+              })}
+            </nav>
+          </LayoutGroup>
 
           {/* Hire Me CTA */}
           <a
             href="mailto:lincolnlaylor@gmail.com"
             className="hidden md:inline-flex items-center text-sm font-medium px-4 py-2 rounded-full transition-all duration-200 shrink-0"
             style={{
-              fontFamily: "var(--font-mono)",
-              border: "1px solid rgba(139,92,246,0.35)",
-              color: "var(--accent)",
-              background: "rgba(139,92,246,0.06)",
+              fontFamily:  "var(--font-mono)",
+              border:      "1px solid rgba(139,92,246,0.35)",
+              color:       "var(--accent)",
+              background:  "rgba(139,92,246,0.06)",
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLElement;
-              el.style.background    = "rgba(139,92,246,0.14)";
-              el.style.borderColor   = "rgba(139,92,246,0.65)";
+              el.style.background  = "rgba(139,92,246,0.14)";
+              el.style.borderColor = "rgba(139,92,246,0.65)";
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLElement;
-              el.style.background    = "rgba(139,92,246,0.06)";
-              el.style.borderColor   = "rgba(139,92,246,0.35)";
+              el.style.background  = "rgba(139,92,246,0.06)";
+              el.style.borderColor = "rgba(139,92,246,0.35)";
             }}
           >
             Hire Me
@@ -174,16 +216,20 @@ export default function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={(e) => handleLink(e, l.href)}
-                className="text-4xl font-bold transition-colors hover:text-gradient"
-                style={{ fontFamily: "var(--font-display)" }}
+                className="text-4xl font-bold"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  color: activeSection === l.href.slice(1) ? "transparent" : "var(--text)",
+                  background: activeSection === l.href.slice(1)
+                    ? "linear-gradient(120deg, #a78bfa 0%, #22d3ee 100%)"
+                    : "none",
+                  WebkitBackgroundClip: activeSection === l.href.slice(1) ? "text" : "unset",
+                  backgroundClip: activeSection === l.href.slice(1) ? "text" : "unset",
+                }}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
-                transition={{
-                  delay: i * 0.07,
-                  ease: [0.22, 1, 0.36, 1],
-                  duration: 0.4,
-                }}
+                transition={{ delay: i * 0.07, ease: [0.22, 1, 0.36, 1], duration: 0.4 }}
               >
                 {l.label}
               </motion.a>

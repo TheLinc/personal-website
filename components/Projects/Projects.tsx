@@ -37,10 +37,10 @@ const PROJECTS: Project[] = [
     images: [
       "/images/projects/followiq/today.png",
       "/images/projects/followiq/generation.png",
+      "/images/projects/followiq/generation-pipeline-save.png",
       "/images/projects/followiq/candidate-profile.png",
       "/images/projects/followiq/pipeline.png",
       "/images/projects/followiq/linkedIn-generation.png",
-      "/images/projects/followiq/analytics.png",
       "/images/projects/followiq/candidates.png",
       "/images/projects/followiq/candidates-import.png",
     ],
@@ -67,21 +67,6 @@ const PROJECTS: Project[] = [
     accent: "#8b5cf6",
   },
   {
-    name: "Pipestream",
-    desc: "Search engine that finds which streaming services carry your favourite movies and shows. Firestore caching dramatically reduces API calls.",
-    tags: ["React", "Node.js", "Firebase", "REST API"],
-    image: "/images/projects/pipestream/play.png",
-    images: [
-      "/images/projects/pipestream/pipestream1.png",
-      "/images/projects/pipestream/pipestream2.png",
-      "/images/projects/pipestream/pipestream3.png",
-    ],
-    link: "https://www.pipestream.app",
-    imageWidth: 1000,
-    imageHeight: 500,
-    accent: "#22d3ee",
-  },
-  {
     name: "Mask Detection Model",
     desc: "ML model detecting mask-wearing in real time using TensorFlow, Keras, and Sklearn with deep learning layers for high classification accuracy.",
     tags: ["Python", "TensorFlow", "Keras", "Sklearn"],
@@ -98,20 +83,6 @@ const PROJECTS: Project[] = [
     tags: ["Arduino", "Python", "ML", "3D Printing", "XBee"],
     image: "/images/projects/white-cane.png",
     accent: "#10b981",
-  },
-  {
-    name: "Sweetacular Cookies",
-    desc: "Clean, responsive website for a small business client. Focused on ease of use and a polished brand presence across desktop and mobile.",
-    tags: ["Wix", "Freelance", "UX Research"],
-    image: "/images/projects/sweetacularcookies/sweetacularcookies-logo.png",
-    images: [
-      "/images/projects/sweetacularcookies/sweetacularcookies1.png",
-      "/images/projects/sweetacularcookies/sweetacularcookies2.png",
-    ],
-    link: "https://www.sweetacularcookies.com/",
-    imageWidth: 1834,
-    imageHeight: 917,
-    accent: "#f43f5e",
   },
 ];
 
