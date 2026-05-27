@@ -24,15 +24,15 @@ const EXPERIENCE = [
   {
     image:     "/images/experience/os.png",
     company:   "Opinion System",
-    role:      "Software Developer",
-    period:    "2023 — Present",
+    role:      "Full Stack Developer",
+    period:    "Feb. 2023 — Present",
     side:      "left" as const,
     highlights: [
-      "Led responsive design overhaul with Next.js + Material UI",
-      "Built a custom Chrome extension using the GitLab API",
-      "Overhauled backend infrastructure with MySQL + Symfony",
-      "Oversaw React Native mobile animation feature end-to-end",
-      "Fostered cross-team communication and agile best practices",
+      "Led client portal build with Next.js, React, Zustand, and React Query",
+      "Engineered accessible, localised UI with MUI custom theming and i18n support",
+      "Built PHP/Symfony backend integrating Google, Facebook, and AWS Bedrock APIs",
+      "Implemented auth and role-based access control enforced via route middleware",
+      "Mentored engineers, owned code reviews, and shipped on a weekly release cadence",
     ],
   },
   {

@@ -6,17 +6,17 @@ import { motion, useInView } from "framer-motion";
 const PLACEHOLDERS = [
   {
     quote:
-      "Lincoln has a rare ability to own a feature end-to-end — from the first Figma frame to production deploy — without losing sight of the details. He shipped our mobile animation overhaul ahead of schedule and the quality was genuinely impressive.",
-    name: "Sarah Mitchell",
-    role: "Engineering Manager, Opinion System",
-    initial: "S",
+      "I’ve had the pleasure of working closely with Lincoln Laylor at Opinion System, and he’s genuinely great to collaborate with. He brings strong technical expertise, a lot of patience, and a positive attitude to everything he does. Lincoln quickly understands challenges and always comes forward with thoughtful solutions that improve both the product and the team’s workflow. I’ve seen him grow from a front-end developer into a confident full stack leader, and working with him has been an awesome experience",
+    name: "Arif Lalani",
+    role: "Lead UI/UX Designer, Opinion System",
+    initial: "A",
   },
   {
     quote:
-      "Working with Lincoln on the hardware simulation tooling was a highlight of the project. He picked up an unfamiliar stack quickly, asked the right questions, and delivered a Python app that cut our test error rate noticeably. Reliable and sharp.",
-    name: "Daniel Park",
-    role: "Senior Engineer, GBatteries",
-    initial: "D",
+      "Working with Lincoln over the past 3 years at Opinion System has been a great experience. Starting as a frontend developer, he quickly grew into a strong full stack developer capable of handling complex projects across the stack. Lincoln consistently demonstrates strong technical skills, ownership, and a collaborative mindset. He’s reliable, adaptable, and someone I trust to deliver high-quality work on challenging problems.",
+    name: "Mathieu Martel",
+    role: "Senior Software Developer, Opinion System",
+    initial: "M",
   },
   {
     quote:
@@ -32,9 +32,12 @@ export default function Testimonials() {
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section ref={ref} id="testimonials" className="py-20 md:py-32 px-6 md:px-12">
+    <section
+      ref={ref}
+      id="testimonials"
+      className="py-20 md:py-32 px-6 md:px-12"
+    >
       <div className="max-w-7xl mx-auto">
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -47,7 +50,10 @@ export default function Testimonials() {
           >
             05 / Testimonials
           </span>
-          <div className="h-px w-14" style={{ background: "var(--border-accent)" }} />
+          <div
+            className="h-px w-14"
+            style={{ background: "var(--border-accent)" }}
+          />
         </motion.div>
 
         <motion.h2
@@ -57,8 +63,7 @@ export default function Testimonials() {
           className="text-4xl sm:text-5xl md:text-7xl font-bold mb-10 md:mb-16 leading-[1.05]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          What people{" "}
-          <span className="text-gradient">say.</span>
+          What people <span className="text-gradient">say.</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -73,7 +78,10 @@ export default function Testimonials() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               className="rounded-2xl p-6 flex flex-col gap-5"
-              style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
+              style={{
+                border: "1px solid var(--border)",
+                background: "var(--surface)",
+              }}
             >
               {/* Opening quote */}
               <span
@@ -118,7 +126,10 @@ export default function Testimonials() {
                   </p>
                   <p
                     className="text-xs mt-0.5"
-                    style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
+                    style={{
+                      color: "var(--muted)",
+                      fontFamily: "var(--font-mono)",
+                    }}
                   >
                     {item.role}
                   </p>

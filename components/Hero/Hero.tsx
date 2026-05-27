@@ -112,23 +112,47 @@ export default function Hero() {
         className="relative z-10 px-6 md:px-12 max-w-7xl mx-auto w-full pt-24 md:pt-28 pb-16 md:pb-24"
         style={{ y: contentY, opacity }}
       >
-        {/* Status pill */}
+        {/* Status — editorial annotation */}
         <motion.div
-          className="inline-flex items-center gap-2.5 mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-10"
+          initial={{ opacity: 0, x: -8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.05, duration: 0.75, ease: [0.25, 0, 0, 1] }}
         >
-          <span
-            className="pulse-dot w-2 h-2 rounded-full bg-green-400"
-            style={{ boxShadow: "0 0 8px rgba(74,222,128,0.75)" }}
-          />
-          <span
-            className="text-xs tracking-[0.22em] uppercase"
-            style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "0.9rem",
+              color: "var(--muted)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              marginBottom: "0.2rem",
+              lineHeight: 1,
+            }}
           >
-            Available for opportunities
-          </span>
+            <span
+              style={{
+                color: "#8b5cf6",
+                fontStyle: "normal",
+                fontWeight: 400,
+                marginRight: "0.45rem",
+              }}
+            >
+              —
+            </span>
+            Available for new work
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.625rem",
+              color: "var(--subtle)",
+              letterSpacing: "0.08em",
+              paddingLeft: "1.1rem",
+            }}
+          >
+            Full-stack &middot; React Native &middot; Remote-friendly
+          </p>
         </motion.div>
 
         {/* Name — animated letter reveal */}

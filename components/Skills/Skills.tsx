@@ -20,8 +20,8 @@ const ALL_SKILLS = [
   { name: "Docker",      image: "/images/containerizationSkills/docker.png" },
   { name: "Git",         image: "/images/containerizationSkills/git.png" },
   { name: "Figma",       image: "/images/designSkills/figma.png" },
-  { name: "Expo",        image: "/images/webDevSkills/expo.png" },
-  { name: "Symfony",     image: "/images/backendDevSkills/symfony.png" },
+  { name: "Expo",        image: "/images/webDevSkills/expo.png",        invert: true },
+  { name: "Symfony",     image: "/images/backendDevSkills/symfony.png", invert: true },
   { name: "Bootstrap",   image: "/images/webDevSkills/bootstrap.png" },
 ];
 
@@ -41,7 +41,7 @@ const MASK = {
     "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
 } as const;
 
-function Pill({ name, image }: { name: string; image: string }) {
+function Pill({ name, image, invert }: { name: string; image: string; invert?: boolean }) {
   return (
     <div
       className="flex items-center gap-3 px-5 py-3 rounded-full shrink-0 mx-2 transition-colors duration-200"
@@ -65,7 +65,7 @@ function Pill({ name, image }: { name: string; image: string }) {
         alt={name}
         width={20}
         height={20}
-        style={{ width: 20, height: 20, opacity: 0.85, objectFit: "contain" }}
+        style={{ width: 20, height: 20, opacity: 0.85, objectFit: "contain", filter: invert ? "invert(1)" : undefined }}
       />
       <span
         className="text-sm font-medium whitespace-nowrap"
@@ -90,7 +90,7 @@ function MarqueeRow({
     <div className="overflow-hidden" style={MASK}>
       <div
         className={direction === "fwd" ? "flex marquee-fwd" : "flex marquee-rev"}
-        style={{ animationDuration: `${duration}s` }}
+        style={{ "--marquee-duration": `${duration}s` } as React.CSSProperties}
       >
         {pills.map((s, i) => (
           <Pill key={i} {...s} />

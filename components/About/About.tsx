@@ -81,8 +81,8 @@ export default function About() {
             <div
               className="rounded-2xl p-5"
               style={{
-                border: "1px solid rgba(139,92,246,0.2)",
-                background: "rgba(139,92,246,0.04)",
+                border: "1px solid rgba(14,165,233,0.2)",
+                background: "rgba(14,165,233,0.04)",
               }}
             >
               <div className="flex items-center gap-2 mb-3">
@@ -101,25 +101,27 @@ export default function About() {
                 className="font-bold text-lg mb-1.5"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Follow<span style={{ fontFamily: "var(--font-mono)", fontWeight: 700 }}>IQ</span>
+                Nilon
               </p>
               <p
                 className="text-sm leading-relaxed"
                 style={{ color: "var(--muted)" }}
               >
-                An AI-powered recruiter tool that generates personalised 3-email
-                follow-up sequences via Claude. Recruiters manage a full
-                candidate pipeline and get tailored outreach copy in seconds.
+                An AI memory layer with three parts: a browser extension that
+                clips and auto-tags responses from ChatGPT, Claude, Gemini, and
+                Perplexity; a web platform with semantic search and collections;
+                and an MCP server so Claude Code agents can retrieve past
+                context across sessions.
               </p>
               <div className="flex flex-wrap gap-2 mt-4">
-                {["Next.js", "TypeScript", "Claude API", "Stripe", "Drizzle", "Neon"].map((t) => (
+                {["Next.js", "TypeScript", "Claude Haiku", "Stripe", "Supabase", "WXT", "pgvector"].map((t) => (
                   <span
                     key={t}
                     className="text-xs px-2.5 py-1 rounded-full"
                     style={{
-                      background: "rgba(139,92,246,0.1)",
-                      border: "1px solid rgba(139,92,246,0.22)",
-                      color: "var(--accent)",
+                      background: "rgba(14,165,233,0.1)",
+                      border: "1px solid rgba(14,165,233,0.22)",
+                      color: "#0ea5e9",
                       fontFamily: "var(--font-mono)",
                     }}
                   >

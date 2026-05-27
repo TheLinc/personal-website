@@ -84,8 +84,16 @@ body {
   to   { transform: translateX(0); }
 }
 
-.marquee-fwd { animation: marquee-fwd 38s linear infinite; }
-.marquee-rev { animation: marquee-rev 38s linear infinite; }
+.marquee-fwd {
+  animation: marquee-fwd var(--marquee-duration, 38s) linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.marquee-rev {
+  animation: marquee-rev var(--marquee-duration, 38s) linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
 
 /* ─── Touch optimisations ────────────────────────────────────── */
 /* Remove 300ms tap delay on all interactive elements */

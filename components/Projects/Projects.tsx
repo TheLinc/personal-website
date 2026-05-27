@@ -23,6 +23,32 @@ interface Project {
 
 const PROJECTS: Project[] = [
   {
+    name: "Nilon",
+    desc: "An AI memory layer built in three parts: a browser extension that clips responses from ChatGPT, Claude, Gemini, and Perplexity into a searchable vault — auto-tagged by Claude Haiku in seconds; a web platform that organises saves into collections with semantic search and contextual actions; and an MCP server that lets Claude Code agents retrieve past context and persist decisions across sessions without manual file management.",
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Claude Haiku",
+      "Stripe",
+      "Supabase",
+      "Resend",
+      "WXT",
+      "pgvector",
+    ],
+    image: "/images/projects/nilon/nilon-logo.png",
+    images: [
+      "/images/projects/nilon/chat-capture.png",
+      "/images/projects/nilon/extension.png",
+      "/images/projects/nilon/nilon-vault.png",
+      "/images/projects/nilon/nilon-save.png",
+    ],
+    link: "https://nilon.io",
+    inDev: true,
+    imageWidth: 1280,
+    imageHeight: 800,
+    accent: "#0ea5e9",
+  },
+  {
     name: "FollowIQ",
     desc: "AI-powered recruiter email sequence generator. Recruiters manage a candidate pipeline and generate personalized 3-email follow-up sequences via Claude in seconds.",
     tags: [
@@ -45,7 +71,6 @@ const PROJECTS: Project[] = [
       "/images/projects/followiq/candidates-import.png",
     ],
     link: "https://followiq.app",
-    inDev: true,
     imageWidth: 1000,
     imageHeight: 500,
     accent: "#6366f1",

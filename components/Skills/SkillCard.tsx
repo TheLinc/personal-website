@@ -16,7 +16,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ image, name }) => {
           alt={name}
           width={64}
           height={64}
-          className="object-contain h-full w-full "
+          className="object-contain h-full w-full invert"
         />
       </div>
       <h3 className="pt-2 justify-self-center relative">{name}</h3>
