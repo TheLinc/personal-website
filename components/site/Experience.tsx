@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { ROLES } from "@/content/site";
+import RolePoints from "./RolePoints";
 
 const MAIN = "#cfc8bb";
 const BRANCH = "#5b5bf0";
@@ -43,42 +44,6 @@ function Gutter({ index, last, branch, head }: { index: number; last: boolean; b
   );
 }
 
-const SHOWN = 4;
-
-function Bullets({ items }: { items: string[] }) {
-  return (
-    <ul className="mt-2 space-y-1.5 text-[15px] leading-snug text-[#3a3733]">
-      {items.map((pt) => (
-        <li key={pt} className="grid grid-cols-[14px_1fr]">
-          <span className="text-[#5b5bf0]" aria-hidden="true">
-            ›
-          </span>
-          <span>{pt}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** The first few points, the rest behind a native disclosure so long roles stay scannable. */
-function Points({ points }: { points: string[] }) {
-  const rest = points.slice(SHOWN);
-  return (
-    <>
-      <Bullets items={points.slice(0, SHOWN)} />
-      {rest.length > 0 && (
-        <details className="group mt-1.5">
-          <summary className="cursor-pointer list-none text-sm font-medium text-[#5b5bf0] marker:hidden">
-            <span className="group-open:hidden">Show {rest.length} more ↓</span>
-            <span className="hidden group-open:inline">Show less ↑</span>
-          </summary>
-          <Bullets items={rest} />
-        </details>
-      )}
-    </>
-  );
-}
-
 export default function Experience() {
   return (
     <ol className="mt-10">
@@ -107,7 +72,7 @@ export default function Experience() {
             {/* Full card width on phones; lined up under the title from sm up. */}
             <div className="sm:pl-[60px]">
               <p className="mt-3 text-[15px] font-medium">{r.summary}</p>
-              <Points points={r.points} />
+              <RolePoints points={r.points} />
               <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Stack">
                 {r.stack.map((t) => (
                   <li key={t} className="rounded-full border border-[#e8e3da] bg-[#fbfaf7] px-2.5 py-0.5 text-xs text-[#6d6962]">

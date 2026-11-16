@@ -88,18 +88,36 @@ export default function IconPile() {
     }
 
     draw();
+    // Launch only once the agents have finished building this section, so the icons fly into a
+    // calm, finished layout instead of competing with the build for attention.
+    const section = layer.parentElement!;
+    let launched = false;
+    function sectionBuilt() {
+      return [...section.querySelectorAll<HTMLElement>("[data-build]")].every((el) => el.dataset.done === "1");
+    }
+    function launchAll() {
+      if (launched) return;
+      launched = true;
+      mo.disconnect();
+      bodies.forEach((b, i) =>
+        timers.push(
+          window.setTimeout(() => {
+            launch(b, i);
+            kick();
+          }, 400 + 160 * i),
+        ),
+      );
+    }
+    const mo = new MutationObserver(() => {
+      if (inView && sectionBuilt()) launchAll();
+    });
+    mo.observe(section, { subtree: true, attributes: true, attributeFilter: ["data-done"] });
+    let inView = false;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (!e.isIntersecting) return;
-        io.disconnect();
-        bodies.forEach((b, i) =>
-          timers.push(
-            window.setTimeout(() => {
-              launch(b, i);
-              kick();
-            }, 140 * i),
-          ),
-        );
+        inView = e.isIntersecting;
+        if (inView && sectionBuilt()) launchAll();
+        if (launched) io.disconnect();
       },
       { threshold: 0.35 },
     );
@@ -168,6 +186,7 @@ export default function IconPile() {
     });
 
     return () => {
+      mo.disconnect();
       cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
       io.disconnect();

@@ -70,6 +70,51 @@ function Row({
   );
 }
 
+/** How long the dictation pill lingers after the line lands in the thread. */
+const OVERLAY_LINGER_MS = 600;
+
+// The app's dictation overlay: a pill over the bottom of the window while
+// you speak. The addressed agent's face, level bars that rise in its colour
+// while words are coming and murmur in teal otherwise (ported from the
+// site's VoicePill), and the words as they are said, the newest one dimmed.
+function VoiceOverlay({ state }: { state: HeroState }) {
+  const ex = state.exchanges.at(-1);
+  const visible = Boolean(ex && state.time < landsAt(ex) + OVERLAY_LINGER_MS);
+  const shown = ex ? ex.text.slice(0, ex.said) : "";
+  const cut = ex && ex.said < ex.text.length ? shown.lastIndexOf(" ") + 1 : shown.length;
+  const color = state.speakingTo ? crewById[state.speakingTo].color : null;
+
+  return (
+    <div
+      className={`pointer-events-none absolute inset-x-0 bottom-[66px] flex justify-center px-6 transition-[opacity,transform] duration-300 ease-out ${visible ? "opacity-100" : "translate-y-2 opacity-0"}`}
+    >
+      <div
+        className={`or-voice flex h-9 max-w-full items-center gap-2.5 rounded-full bg-or-ink pl-2 pr-4 text-[13px] text-white shadow-[0_8px_24px_-8px_rgb(0_0_0/0.35)] ${state.speaking ? "is-speaking" : ""}`}
+        style={color ? ({ "--or-voice": color } as CSSProperties) : undefined}
+      >
+        {ex ? (
+          <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white">
+            <CrewFace id={ex.agent} size={16} className="pixel" />
+          </span>
+        ) : null}
+        <span className="or-voice-bars flex shrink-0 items-center gap-[2px]">
+          {[0, 1, 2, 3, 4].map((n) => (
+            <i
+              key={n}
+              className="block h-[8px] w-[3px] rounded-[1px] bg-[var(--or-voice)] transition-colors duration-300"
+              style={{ "--n": n } as CSSProperties}
+            />
+          ))}
+        </span>
+        <span className="flex min-w-0 justify-end overflow-hidden whitespace-pre">
+          <span>{shown.slice(0, cut)}</span>
+          <span className="text-white/50">{shown.slice(cut)}</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // The Open Room window as the app draws it in its light theme: agents down
 // the side, one conversation per agent, tool rows and a permission card in
 // the thread, the composer along the bottom. The hero script plays inside.
@@ -104,7 +149,7 @@ export function AppWindow({ state }: { state: HeroState }) {
   }, [id, latestAt, thinking, toolRow]);
 
   return (
-    <div className="@container overflow-hidden rounded-or-panel border border-or-line bg-or-card shadow-[0_1px_2px_rgb(0_0_0/0.04),0_24px_56px_-28px_rgb(0_0_0/0.14)]">
+    <div className="@container relative overflow-hidden rounded-or-panel border border-or-line bg-or-card shadow-[0_1px_2px_rgb(0_0_0/0.04),0_24px_56px_-28px_rgb(0_0_0/0.14)]">
       <div className="flex h-9 items-center gap-2 border-b border-or-line px-3 text-[12px] text-or-ink">
         <Image
           src={logo}
@@ -337,6 +382,7 @@ export function AppWindow({ state }: { state: HeroState }) {
           </div>
         </section>
       </div>
+      <VoiceOverlay state={state} />
     </div>
   );
 }

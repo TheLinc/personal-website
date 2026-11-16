@@ -1,22 +1,36 @@
 /* Cover Me product visual tokens, ported from the Cover Me site (app/globals.css
- * + tailwind.config). Prefixed cm- so they never collide with site tokens.
- * `static` so the vars referenced from inline SVG (var(--color-cm-*)) always exist. */
+ * + tailwind.config) and the extension popup (extension/src/popup/index.css).
+ * Prefixed cm- so they never collide with site tokens. `static` so the vars
+ * referenced from inline SVG (var(--color-cm-*)) always exist. */
 @theme static {
   --color-cm-ink: #1e1b4b;
   --color-cm-ink-2: #5a534d;
   --color-cm-body: #2a2a2a;
   --color-cm-subtle: #6b635d;
+  --color-cm-line: #e2dfdb;
   --color-cm-brand: #6366f1;
   --color-cm-brand-tint: #eeeeff;
   --color-cm-brand-ink: #4338ca;
+  --color-cm-gap: #f97316;
+  --color-cm-gap-ink: #9a3412;
 
   /* The extension popup's own dark UI. */
   --color-cm-ext-bg: #15132b;
+  --color-cm-ext-surface: #1c1a38;
   --color-cm-ext-elevated: #272449;
   --color-cm-ext-border: #35315e;
   --color-cm-ext-text: #eeedf8;
+  --color-cm-ext-text-2: #cfcce6;
   --color-cm-ext-muted: #a6a3c6;
   --color-cm-ext-soft: #aab4ff;
+  --color-cm-ext-gap-bg: rgba(249, 115, 22, 0.16);
+  --color-cm-ext-gap-fg: #fdba74;
+
+  --animate-cm-fade-up: cm-fade-up 0.3s ease;
+  @keyframes cm-fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
 }
 
 /* inline: next/font sets --font-jetbrains on <body>, not :root. */

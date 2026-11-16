@@ -1,14 +1,13 @@
 "use client";
 
-// Open Room's desktop app, recreated: the crew perched on the window's top
-// edge, the window playing the hero script beneath them. Ported from the
-// open-room-site hero. Plays once when scrolled into view and rests on the
-// finished conversation; reduced motion gets that final frame straight away.
+// Open Room's desktop app, recreated, playing the hero script with the
+// dictation pill showing what you say. Ported from the open-room-site hero.
+// Plays once when scrolled into view and rests on the finished
+// conversation; reduced motion gets that final frame straight away.
 
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { Geist, Geist_Mono } from "next/font/google";
-import { CrewDesks, DESKS_H, DESKS_W } from "@/components/Crew/CrewDesks";
 import "@/components/Crew/crew.css";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AppWindow } from "./AppWindow";
@@ -84,15 +83,6 @@ export default function OpenRoomProduct({ className = "" }: { className?: string
               : undefined
           }
         >
-          <div
-            className="relative z-[2] mx-auto -mb-[10px] w-[min(560px,80%)]"
-            style={{
-              aspectRatio: `${DESKS_W} / ${DESKS_H}`,
-              filter: "drop-shadow(0 6px 0 rgb(0 0 0 / 0.06))",
-            }}
-          >
-            <CrewDesks desks={state.desks} glancing={state.glancing} className="block h-full w-full" />
-          </div>
           <div role="img" aria-label={NARRATION}>
             <div aria-hidden="true">
               <AppWindow state={state} />

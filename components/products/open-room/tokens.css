@@ -39,6 +39,40 @@
   }
 }
 
+/* Dictation pill bars, from the site's voice pill. --or-amp eases so speech
+   never snaps on; --or-voice takes the addressed agent's colour. */
+@property --or-amp {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.7;
+}
+
+.or-voice {
+  --or-amp: 0.7;
+  --or-voice: #288888;
+  transition: --or-amp 500ms ease;
+}
+
+.or-voice.is-speaking {
+  --or-amp: 1.9;
+}
+
+.or-voice-bars i {
+  animation: or-voice-bar 720ms ease-in-out infinite alternate;
+  animation-delay: calc(var(--n, 0) * -110ms);
+  animation-duration: calc(620ms + var(--n, 0) * 47ms);
+  transform-origin: center;
+}
+
+@keyframes or-voice-bar {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(var(--or-amp));
+  }
+}
+
 @keyframes or-thread-in {
   from {
     opacity: 0;
@@ -53,7 +87,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .or-voice-meter i {
+  .or-voice-meter i,
+  .or-voice-bars i {
     animation: none;
+  }
+
+  .or-voice {
+    transition: none;
   }
 }

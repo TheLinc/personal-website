@@ -1,7 +1,7 @@
 "use client";
 
 // Open Room: the app window recreated in code (ported from openroom.dev) playing a scripted session,
-// with the crew at their desks on top. A button opens the real product demo video.
+// your speech shown in the dictation pill. A button opens the real product demo video.
 
 import { useRef } from "react";
 import OpenRoomProduct from "@/components/products/open-room/OpenRoomProduct";
