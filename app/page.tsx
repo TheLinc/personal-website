@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
+import Work from "@/components/Work/Work";
 import { getCalendar } from "@/lib/github";
 
 export const revalidate = 86400;
@@ -11,7 +12,7 @@ export default async function Home() {
       <Nav />
       <main>
         <Hero calendar={calendar} />
-        <section id="work" />
+        <Work />
         <section id="experience" />
         <section id="agents" />
         <section id="testimonials" />
