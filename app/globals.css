@@ -35,7 +35,7 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-sans);
+  font-family: var(--font-plex), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -50,9 +50,10 @@ body {
 
 /* Display headings: condensed Archivo */
 .display {
-  font-family: var(--font-display);
-  font-stretch: 75%;
-  font-weight: 700;
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 62%;
+  font-variation-settings: "wdth" 62;
+  font-weight: 800;
   letter-spacing: -0.01em;
   line-height: 0.92;
   text-transform: uppercase;
@@ -60,7 +61,7 @@ body {
 
 /* Spec-sheet label: FIG. n — TITLE */
 .fig {
-  font-family: var(--font-mono);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
