@@ -241,3 +241,6 @@ body:has(.site) {
 /* PR check spinners */
 .site .spin { animation: site-spin 0.8s linear infinite; }
 @keyframes site-spin { to { transform: rotate(360deg); } }
+
+/* Experience "Show more" uses a native <details>; hide the default marker. */
+.site summary::-webkit-details-marker { display: none; }
