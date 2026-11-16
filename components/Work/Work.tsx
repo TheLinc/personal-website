@@ -1,10 +1,11 @@
 import { earlierWork, projects } from "@/content/site";
 import CaseStudy from "./CaseStudy";
+import Tailoring from "./Tailoring";
 import { coverMeDiagram, openRoomDiagram } from "./diagrams";
 
 const diagrams = { "cover-me": coverMeDiagram, "open-room": openRoomDiagram };
 const headers = {
-  "cover-me": <div className="aspect-[16/7]" />,
+  "cover-me": <Tailoring />,
   "open-room": <div className="aspect-[16/7]" />,
 };
 

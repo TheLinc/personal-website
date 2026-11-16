@@ -54,7 +54,7 @@ export default function CaseStudy({
             </li>
           ))}
         </ul>
-        <div>
+        <div className="min-w-0">
           <ArchDiagram diagram={diagram} />
           <p className="mt-6 font-mono text-[12px] leading-relaxed text-muted">{project.tech.join(" · ")}</p>
           <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[12px] uppercase tracking-[0.08em]">
