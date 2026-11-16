@@ -24,94 +24,63 @@ const jetbrains = JetBrains_Mono({
 
 const BASE_URL = "https://lincolnlaylor.com";
 
+const TITLE = "Lincoln Laylor — Full-Stack Engineer, Agentic AI Tooling";
+const DESCRIPTION =
+  "Full-stack engineer building agentic AI tooling and the products around it: Cover Me, Open Room, and parallel Claude Code agents with small, scoped contexts.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
-
-  title: "Lincoln Laylor — Full Stack Developer",
-  description:
-    "Full-stack developer with 4+ years shipping production software at startups and government agencies. Specialising in React, Next.js, TypeScript, Node.js, and React Native.",
-
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     "Lincoln Laylor",
-    "Full Stack Developer",
-    "React Developer",
-    "Next.js Developer",
+    "Full Stack Engineer",
+    "AI Engineer",
+    "Claude Agent SDK",
+    "MCP",
+    "Next.js",
     "TypeScript",
-    "React Native",
     "Software Engineer Canada",
-    "Frontend Developer",
   ],
   authors: [{ name: "Lincoln Laylor", url: BASE_URL }],
   creator: "Lincoln Laylor",
-
-  /* ── OpenGraph ── */
   openGraph: {
     type: "website",
     locale: "en_CA",
     url: BASE_URL,
     siteName: "Lincoln Laylor",
-    title: "Lincoln Laylor — Full Stack Developer",
-    description:
-      "Full-stack developer with 4+ years building fast, accessible web and mobile applications.",
-    images: [
-      {
-        url: "/opengraph-image",   // served by app/opengraph-image.tsx
-        width: 1200,
-        height: 630,
-        alt: "Lincoln Laylor — Full Stack Developer",
-      },
-    ],
+    title: TITLE,
+    description: DESCRIPTION,
   },
-
-  /* ── Twitter / X ── */
-  twitter: {
-    card: "summary_large_image",
-    title: "Lincoln Laylor — Full Stack Developer",
-    description:
-      "Full-stack developer with 4+ years building fast, accessible web and mobile applications.",
-    images: ["/opengraph-image"],
-  },
-
-  /* ── Crawl directives ── */
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
   },
-
-  /* ── Alternate / canonical ── */
-  alternates: {
-    canonical: BASE_URL,
-  },
+  alternates: { canonical: BASE_URL },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Lincoln Laylor",
-  url: "https://lincolnlaylor.com",
-  jobTitle: "Full Stack Developer",
-  description:
-    "Full-stack developer with 4+ years building fast, accessible web and mobile applications.",
-  sameAs: [
-    "https://github.com/TheLinc",
-    "https://www.linkedin.com/in/lincolnlaylor/",
-  ],
+  url: BASE_URL,
+  jobTitle: "Full-Stack Engineer",
+  description: DESCRIPTION,
+  alumniOf: { "@type": "CollegeOrUniversity", name: "University of Ottawa" },
+  sameAs: ["https://github.com/TheLinc", "https://www.linkedin.com/in/lincolnlaylor/"],
   knowsAbout: [
+    "TypeScript",
     "React",
     "Next.js",
-    "TypeScript",
     "Node.js",
-    "React Native",
-    "Python",
-    "AWS",
-    "Docker",
+    "Claude Agent SDK",
+    "Model Context Protocol",
+    "LLM evaluation",
+    "Supabase",
+    "PostgreSQL",
+    "Electron",
   ],
 };
 
