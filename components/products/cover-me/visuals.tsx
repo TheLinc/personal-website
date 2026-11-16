@@ -63,12 +63,12 @@ export function BrowserFrame({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col rounded-[16px] bg-white shadow-[0_20px_50px_-24px_rgba(30,27,75,0.25)] ${className}`}>
-      <div className="relative z-20 flex h-9 items-center gap-1.5 rounded-t-[16px] bg-[#F2F0ED] px-3.5">
-        <span className="size-2.5 rounded-full bg-[#E0DCD7]" />
-        <span className="size-2.5 rounded-full bg-[#E0DCD7]" />
-        <span className="size-2.5 rounded-full bg-[#E0DCD7]" />
-        <div className="mr-2 ml-3 flex h-5 flex-1 items-center truncate rounded-full bg-white px-2.5 text-[11px] text-cm-subtle">
+    <div className={`flex flex-col rounded-[16px] bg-white shadow-[0_20px_50px_-24px_rgba(30,27,75,0.25)] ring-1 ring-[#1d1c1a]/10 ${className}`}>
+      <div className="relative z-20 flex h-9 items-center gap-1.5 rounded-t-[16px] border-b border-[#d9d3ca] bg-[#e6e1d9] px-3.5">
+        <span className="size-2.5 rounded-full bg-[#ef6a5a]" />
+        <span className="size-2.5 rounded-full bg-[#f2c14e]" />
+        <span className="size-2.5 rounded-full bg-[#5cc78a]" />
+        <div className="mr-2 ml-3 flex h-5 flex-1 items-center truncate rounded-full bg-white px-2.5 text-[11px] text-[#55514b]">
           {url}
         </div>
         {toolbar}

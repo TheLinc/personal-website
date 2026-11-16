@@ -36,7 +36,7 @@ export default function OpenRoomDemo() {
         onClick={(e) => e.target === dialogRef.current && close()}
         onCancel={close}
         aria-label="Open Room product demo"
-        className="m-auto w-[min(1100px,94vw)] rounded-2xl bg-black p-0 backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+        className="m-auto w-[min(1400px,94vw,calc(88vh*1.607))] rounded-2xl bg-black p-0 backdrop:bg-black/70 backdrop:backdrop-blur-sm"
       >
         <video
           ref={videoRef}
@@ -45,7 +45,7 @@ export default function OpenRoomDemo() {
           controls
           playsInline
           preload="none"
-          className="block aspect-video w-full"
+          className="block aspect-[1736/1080] w-full"
         />
         <button
           type="button"

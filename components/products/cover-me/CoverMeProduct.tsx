@@ -331,7 +331,9 @@ function Bullet({ x, at, before, after }: { x: number; at: number; before: strin
 const CARD = "absolute top-4 left-5 flex w-[318px] flex-col rounded-[16px] bg-white shadow-[0_30px_70px_-30px_rgba(30,27,75,0.45)]";
 
 function ResumeCard({ x, style }: { x: number; style: CSSProperties }) {
-  const skills = ramp(x, SKILLS_AT, SKILLS_AT + 0.5);
+  // Old line fades out fully before the chips fade in, so the two never overlap.
+  const skillsOut = ramp(x, SKILLS_AT, SKILLS_AT + 0.25);
+  const skills = ramp(x, SKILLS_AT + 0.25, SKILLS_AT + 0.5);
   return (
     <div className={`${CARD} gap-2.5 p-5`} style={style}>
       <div className="flex items-center justify-between">
@@ -353,7 +355,7 @@ function ResumeCard({ x, style }: { x: number; style: CSSProperties }) {
       ))}
       <div className="mt-1 text-[10.5px] font-semibold tracking-[0.06em] text-cm-ink-2 uppercase">Skills</div>
       <div className="relative min-h-[44px]">
-        <p className="absolute text-[12.5px] text-cm-subtle" style={{ opacity: 1 - skills }}>
+        <p className="absolute text-[12.5px] text-cm-subtle" style={{ opacity: 1 - skillsOut }}>
           {EXAMPLE.skillsBefore}
         </p>
         <div className="flex flex-wrap gap-1.5" style={{ opacity: skills }}>
