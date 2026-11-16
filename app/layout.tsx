@@ -1,25 +1,24 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, JetBrains_Mono, Onest } from "next/font/google";
+import { Archivo, IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-archivo",
+  axes: ["wdth"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const plex = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-plex",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
   weight: ["400", "500"],
-  display: "swap",
-});
-
-const onest = Onest({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
@@ -130,9 +129,8 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${bricolage.variable} ${jetbrainsMono.variable} ${onest.variable}`}
+        className={`${archivo.variable} ${plex.variable} ${jetbrains.variable}`}
       >
-        <div className="grain" aria-hidden="true" />
         {children}
       </body>
     </html>
