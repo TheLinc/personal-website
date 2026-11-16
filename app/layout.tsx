@@ -29,7 +29,7 @@ export const viewport: Viewport = { themeColor: "#fbfaf7" };
 
 const TITLE = "Lincoln Laylor — Full-Stack Engineer, Agentic AI Tooling";
 const DESCRIPTION =
-  "Full-stack engineer at Opinion System, building Cover Me. I build AI products and the agent workflows that ship them.";
+  "Full-stack engineer leading AI integrations at Opinion System, building Cover Me. I build AI products and the agent workflows that ship them.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

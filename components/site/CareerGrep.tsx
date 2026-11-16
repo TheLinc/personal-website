@@ -27,6 +27,7 @@ const AREAS: Record<string, string> = {
   ui: "Interface",
   aws: "AWS",
   mcp: "MCP",
+  ai: "AI integrations",
   "ai-chat": "AI chat",
   sim: "Simulation",
   viz: "Data visualisation",

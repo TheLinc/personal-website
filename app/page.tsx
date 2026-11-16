@@ -69,7 +69,7 @@ export default async function Home() {
               Full-stack engineer. I build AI products, and the agent workflows that ship them.
             </p>
             <p className="mt-4 max-w-[56ch] text-[#6d6962]" data-build="text" data-label="intro">
-              Full Stack Developer at Opinion System, building Cover Me on the side. Ottawa, Canada.
+              Full Stack Developer at Opinion System, where I lead AI integrations. Building Cover Me on the side. Ottawa, Canada.
             </p>
             <div className="mt-7 flex flex-wrap gap-2.5">
               <Logo src="/assets/os.png" name="Opinion System" />
