@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav/Nav";
 import Hero from "@/components/Hero/Hero";
+import ModelFigure from "@/components/Hero/ModelFigure";
 import Work from "@/components/Work/Work";
 import Experience from "@/components/Experience/Experience";
 import AgentsTeaser from "@/components/AgentsTeaser/AgentsTeaser";
@@ -17,6 +18,7 @@ export default async function Home() {
       <Nav />
       <main>
         <Hero calendar={calendar} />
+        <ModelFigure total={calendar.total} />
         <Work />
         <Experience />
         <AgentsTeaser />
