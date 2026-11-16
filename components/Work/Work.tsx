@@ -1,12 +1,13 @@
 import { earlierWork, projects } from "@/content/site";
 import CaseStudy from "./CaseStudy";
 import Tailoring from "./Tailoring";
+import CrewScene from "@/components/Crew/CrewScene";
 import { coverMeDiagram, openRoomDiagram } from "./diagrams";
 
 const diagrams = { "cover-me": coverMeDiagram, "open-room": openRoomDiagram };
 const headers = {
   "cover-me": <Tailoring />,
-  "open-room": <div className="aspect-[16/7]" />,
+  "open-room": <CrewScene />,
 };
 
 export default function Work() {

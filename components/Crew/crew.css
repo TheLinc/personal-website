@@ -1,0 +1,89 @@
+/* Copied from open-room-site src/app/globals.css: crew sprite animation. */
+
+/* Pixel art stays crisp at any scale. */
+.pixel {
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+}
+.crew-hand {
+  animation: crew-type 460ms steps(1) infinite;
+  animation-delay: var(--delay, 0ms);
+}
+
+.crew-hand-r {
+  animation-delay: calc(var(--delay, 0ms) + 230ms);
+}
+
+.crew-agent.is-done .crew-hand,
+.crew-agent.is-glancing .crew-hand {
+  animation-play-state: paused;
+}
+
+@keyframes crew-type {
+  0%,
+  49% {
+    transform: translateY(0);
+  }
+  50%,
+  100% {
+    transform: translateY(-1px);
+  }
+}
+
+/* The agent turns in its chair; the desk and screen do not move. */
+.crew-agent.is-glancing .crew-body {
+  transform: translateX(1px);
+}
+
+.crew-output rect {
+  opacity: 0;
+  animation: crew-output 4200ms steps(1) infinite;
+  animation-delay: calc(var(--i, 0) * 420ms);
+}
+
+.crew-agent.is-done .crew-output rect {
+  animation: none;
+  opacity: 1;
+}
+
+@keyframes crew-output {
+  0% {
+    opacity: 0;
+  }
+  10%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.crew-cursor {
+  animation: blink 900ms steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crew-hand,
+  .crew-cursor,
+  .crew-output rect {
+    animation: none;
+  }
+
+  .crew-output rect {
+    opacity: 1;
+  }
+}
+
+@keyframes crew-pill {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
