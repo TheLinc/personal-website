@@ -42,7 +42,10 @@ Reviewers skim fast. **All content must be visible immediately.** The impressive
 - Projects: Open Room and Cover Me as flagship case studies. Mask Detection and NuViu Smart Cane kept in a small "earlier work" row. **Remove** Nilon, FollowIQ, Spotlight (and their images).
 - Testimonials: keep all three (Arif Lalani, Mathieu Martel, Amélie Fontaine), restyled as short pull quotes. Quotes may be trimmed for length but not reworded.
 - GitHub data includes private contribution counts; Lincoln will enable "Include private contributions" on his GitHub profile.
-- Higgsfield (generative image/video, available via MCP) used sparingly: `/agents` illustrations and possibly short project header loops. The terrain is always real code, never generated.
+- Higgsfield (generative image/video, via MCP; account has ~270 credits, ~35 per 5 s video, ~0.25 per image) is used for one concept, **"The Model"** (spec below). Not used for project headers or `/agents` diagrams. The terrain is always real code, never generated.
+- Project order: **Cover Me first, then Open Room.**
+- Open Room's header visual reuses the pixel-art agent crew from Lincoln's Open Room marketing site (drawn in code, see below). Cover Me's header visual is a code-driven tailoring animation (builder's call, approved by Lincoln: "do what you want for Cover Me").
+- Obsolete components, images and dependencies are deleted, not left behind.
 
 ## Content source of truth
 
@@ -73,7 +76,10 @@ Reviewers skim fast. **All content must be visible immediately.** The impressive
 ### `/` (home), in order
 
 1. **Hero / Commit Terrain.** Full-viewport WebGL canvas. Name, one-line positioning (full-stack engineer who builds agentic AI tooling), primary links (Projects, `/agents`, Contact). No resume PDF link (decided: dropped). Text is real HTML over the canvas, rendered on the server, readable before WebGL loads.
-2. **Selected work.** Open Room and Cover Me as case studies. Each: what it is in one sentence, 3–5 hard numbers pulled out as spec callouts (e.g. `550 ms → 0`, `73 → n tools`, `1,100+ tests`, `200+ users`, `32-resume eval set`), and an **animated architecture diagram** in SVG.
+2. **Selected work.** Cover Me, then Open Room, as case studies. Each opens with a moving header visual drawn in code:
+   - **Cover Me — "Tailoring":** a job posting on one side with ATS keywords lighting up; on the other, resume lines rewriting to match (wording changes, no new experience appears), and a match score ticking up to a final value with gap items checking off. Loops slowly; static final frame under reduced motion. Content is illustrative sample text, not a real person's resume.
+   - **Open Room — "The Crew":** the five pixel-art agents (Clawd, Bit, Terminal, Block, Loop) at their desks, screens lighting in turn as each agent works, a voice pill showing which one is speaking. Source: `F:\personal-projects\open-room-site` — copy `src/lib/crew.ts`, `crew-sprites.ts` (generated sprite grids), `crew-layers.ts`, `crew-faces.ts` and adapt `src/components/crew-desks.tsx` / `crew-face.tsx`. Keep the sprite data verbatim; restyle only what clashes with this site.
+   Then each case study continues: Each: what it is in one sentence, 3–5 hard numbers pulled out as spec callouts (e.g. `550 ms → 0`, `73 → n tools`, `1,100+ tests`, `200+ users`, `32-resume eval set`), and an **animated architecture diagram** in SVG.
    - Open Room diagram: main process ⇄ React UI, ⇄ overlay HUD, ⇄ voice sidecar (JSON-RPC), sidecar → Whisper/VAD/TTS; small packets travel the edges.
    - Cover Me diagram: extension → Supabase Edge Function → Claude; Postgres RLS + AES-GCM store; Stripe; eval harness in CI.
    - Diagrams animate when scrolled into view; static under `prefers-reduced-motion`.
@@ -108,6 +114,18 @@ An engineer's explanation of how Lincoln runs coding agents at scale, built arou
 - **Fallbacks:** `prefers-reduced-motion` → static camera, no drift. No WebGL or small/touch screens → a static 2D heatmap (SVG) of the same data, still styled. Text never depends on WebGL.
 - **Performance:** `three` loaded via `next/dynamic({ ssr: false })` only on `/`; render loop paused when hero is off screen (`IntersectionObserver`) or tab hidden; device pixel ratio capped at 2.
 
+## "The Model" (Higgsfield)
+
+Made after the terrain is built, because it needs a render of it.
+
+1. Render the real terrain (from the actual data) as a clean still from a 3/4 angle with the October spike in frame.
+2. Higgsfield image model, with that render as reference: a photoreal physical object — Lincoln's commit year as a machined-aluminium architectural model on a dark studio plinth, spike rising like a skyline. Must keep the data's shape (column layout and relative heights) recognisable. Iterate on stills (cheap) until it does.
+3. Higgsfield image-to-video from the approved still: slow, seamless orbit loop, ~5 s, no morphing of the columns.
+4. Placement: closes the hero. As the user scrolls past the live terrain, it hands off to the physical model video, labelled `FIG. 0 — <total> CONTRIBUTIONS · SCALE 1 COLUMN : 1 DAY`. Video is muted, `playsinline`, lazy-loaded, poster = the still; reduced motion shows the still only. Compressed to web size (target under ~2 MB, webm + mp4).
+5. A still also becomes the Open Graph / share image.
+
+Quality bar: if it reads as "AI art" rather than product photography, ship the still only, or drop it. Budget: at most ~4 video generations total; Lincoln approves the still before any video is generated.
+
 ## Visual language
 
 Engineering spec sheet. Monospace annotations, measurement/dimension lines, part-number-style labels (e.g. `FIG. 2 — OPEN ROOM PROCESS MAP`), thin rules, generous whitespace, very few colours (near-black and off-white plus one accent). Typography: keep JetBrains Mono for annotations; the builder picks the display/body pairing, avoiding the current Bricolage look if it reads template-y. Dark theme only; existing ThemeToggle is removed unless it costs nothing to keep.
@@ -127,5 +145,4 @@ Motion is purposeful: diagrams that explain, terrain that responds. No decorativ
 - Exact copywriting (from the facts above), display/body fonts, accent colour, spacing system.
 - Component structure and file layout; deleting obsolete components and images.
 - Diagram styling and animation details.
-- Whether Higgsfield is used at all for project headers; which `/agents` illustration (if any) to generate. Generated assets must match the spec-sheet look.
 - Height scale function and camera path tuning for the terrain.
