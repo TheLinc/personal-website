@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { crew, crewById, type CrewId } from "./crew";
 import { CrewDesks, deskCentre, type DeskStatus } from "./CrewDesks";
 import { CrewFace } from "./CrewFace";

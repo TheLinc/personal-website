@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 // Illustrative sample text. Each step lights one group of posting keywords and
 // rewrites the matching resume line: same experience, the posting's wording.

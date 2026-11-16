@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const TICKETS = 9;
 const SLOTS = 3;
@@ -62,7 +63,7 @@ function BoardLane({ p }: { p: number }) {
   const per = TICKETS / SLOTS;
   const started = Math.min(TICKETS, Math.floor(p * per) * SLOTS + SLOTS);
   return (
-    <svg viewBox="0 0 480 420" className="block h-auto w-full" role="img"
+    <svg viewBox="0 0 480 446" className="block h-auto w-full" role="img"
       aria-label="tackle-board: nine tickets flow into three slots. Each agent's context stays under a quarter full and resets per ticket; each finished ticket becomes a pull request.">
       <Mono x={0} y={22} fill={INK}>TACKLE-BOARD · N = 3</Mono>
 
@@ -102,7 +103,7 @@ function BoardLane({ p }: { p: number }) {
           </g>
         );
       })}
-      <Mono x={0} y={412}>own worktree per ticket · out of scope → new ticket</Mono>
+      <Mono x={0} y={438}>own worktree per ticket · out of scope → new ticket</Mono>
     </svg>
   );
 }
@@ -120,7 +121,7 @@ export function ContextDiagramStatic() {
 export default function ContextDiagram() {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.6"] });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.8", "end 0.3"] });
   const [p, setP] = useState(0);
   useMotionValueEvent(scrollYProgress, "change", (v) => setP(v));
   const shown = reduced ? 1 : p;
