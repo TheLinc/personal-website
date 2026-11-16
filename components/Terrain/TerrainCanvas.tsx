@@ -43,7 +43,13 @@ export default function TerrainCanvas({
     const cx = (W - 1) / 2;
 
     // ── Renderer, scene, camera ──────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    } catch {
+      onFallback();
+      return;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.setClearColor(BG);

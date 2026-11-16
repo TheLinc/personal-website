@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { Component, useCallback, useState, useSyncExternalStore, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import type { Calendar } from "@/lib/contributions";
 import Heatmap2D from "./Heatmap2D";
@@ -21,18 +21,35 @@ function detect(): Mode {
 }
 const noop = () => () => {};
 
+/** Any 3D failure (chunk load, renderer construction) falls back to the 2D heatmap instead of taking down the page. */
+class FallbackBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
 export default function Terrain({ calendar }: { calendar: Calendar }) {
   const detected = useSyncExternalStore<Mode>(noop, detect, () => "pending");
   const [lost, setLost] = useState(false);
   const onFallback = useCallback(() => setLost(true), []);
   const mode = lost ? "2d" : detected;
 
-  if (mode === "3d") return <TerrainCanvas calendar={calendar} onFallback={onFallback} />;
-  if (mode === "2d")
+  // On desktop the flat heatmap sits where the terrain would: right of the copy.
+  const flat = (
+    <div className="absolute inset-x-5 bottom-8 md:inset-x-auto md:bottom-24 md:right-10 md:w-[46%]">
+      <Heatmap2D calendar={calendar} />
+    </div>
+  );
+  if (mode === "3d")
     return (
-      <div className="absolute inset-x-5 bottom-8 md:inset-x-10">
-        <Heatmap2D calendar={calendar} />
-      </div>
+      <FallbackBoundary fallback={flat}>
+        <TerrainCanvas calendar={calendar} onFallback={onFallback} />
+      </FallbackBoundary>
     );
+  if (mode === "2d") return flat;
   return null;
 }
