@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import snapshot from "@/data/contributions.json";
 import { maxCount, type Calendar } from "@/lib/contributions";
 
-export const alt = "Lincoln Laylor — full-stack engineer building agentic AI tooling";
+export const alt = "Lincoln Laylor: full-stack engineer building AI products";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,21 +20,19 @@ export default function OGImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0b0b0a",
-          color: "#ecebe6",
+          background: "#fbfaf7",
+          color: "#1d1c1a",
           padding: "64px 72px",
-          fontFamily: "monospace",
         }}
       >
-        <div style={{ display: "flex", fontSize: 18, letterSpacing: 2, color: "rgba(236,235,230,0.55)" }}>
-          FIG. 1 — {cal.total.toLocaleString("en-US")} GITHUB CONTRIBUTIONS, LAST 12 MONTHS
+        <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 22, color: "#6d6962" }}>
+          <div style={{ width: 12, height: 12, borderRadius: 99, background: "#11a37f" }} />
+          Shipping · {cal.total.toLocaleString("en-US")} contributions this year
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", fontSize: 112, fontWeight: 800, letterSpacing: -4, lineHeight: 1 }}>
-            LINCOLN LAYLOR
-          </div>
-          <div style={{ display: "flex", fontSize: 30, marginTop: 20, color: "#ecebe6" }}>
-            Full-stack engineer. I build agentic AI tooling and the products around it.
+          <div style={{ display: "flex", fontSize: 104, fontWeight: 700, letterSpacing: -3, lineHeight: 1 }}>Lincoln Laylor</div>
+          <div style={{ display: "flex", fontSize: 34, marginTop: 20 }}>
+            Full-stack engineer. I build AI products, and the agent workflows that ship them.
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -48,8 +46,8 @@ export default function OGImage() {
                     style={{
                       width: 15.5,
                       height: 15.5,
-                      background: !d || d.count === 0 ? "rgba(236,235,230,0.07)" : "#ff5b1f",
-                      opacity: !d || d.count === 0 ? 1 : 0.25 + 0.75 * t,
+                      borderRadius: 3,
+                      background: !d || d.count === 0 ? "#efebe3" : `rgba(91, 91, 240, ${0.25 + 0.75 * t})`,
                     }}
                   />
                 );

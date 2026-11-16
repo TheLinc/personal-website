@@ -1,39 +1,23 @@
 @import 'tailwindcss';
 
-/* ─── Tokens: one accent, spec-sheet greys ───────────────────── */
 :root {
-  --bg: #0b0b0a;
-  --bg-2: #121211;
-  --ink: #ecebe6;
-  --muted: rgba(236, 235, 230, 0.62);
-  --faint: rgba(236, 235, 230, 0.55);
-  --rule: rgba(236, 235, 230, 0.12);
-  --accent: #ff5b1f;
-}
-
-@theme inline {
-  --color-bg: var(--bg);
-  --color-bg-2: var(--bg-2);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
-  --color-faint: var(--faint);
-  --color-rule: var(--rule);
-  --color-accent: var(--accent);
-  --font-display: var(--font-archivo), system-ui, sans-serif;
-  --font-sans: var(--font-plex), system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --paper: #fbfaf7;
+  --ink: #1d1c1a;
+  --soft: #6d6962;
+  --line: #e8e3da;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
+  background: var(--paper);
   scroll-behavior: smooth;
-  scroll-padding-top: 72px;
-  background: var(--bg);
+  scroll-padding-top: 24px;
 }
 
 body {
-  background: var(--bg);
+  margin: 0;
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-plex), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -41,46 +25,14 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--accent); color: var(--bg); }
+::selection { background: #5b5bf0; color: #fff; }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid #5b5bf0;
   outline-offset: 3px;
+  border-radius: 4px;
 }
-
-/* Display headings: condensed Archivo */
-.display {
-  font-family: var(--font-archivo), system-ui, sans-serif;
-  font-stretch: 62%;
-  font-variation-settings: "wdth" 62;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 0.92;
-  text-transform: uppercase;
-}
-
-/* Spec-sheet label: FIG. n — TITLE */
-.fig {
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.link-u {
-  text-decoration: underline;
-  text-decoration-color: var(--rule);
-  text-underline-offset: 4px;
-  transition: text-decoration-color 150ms;
-}
-.link-u:hover { text-decoration-color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

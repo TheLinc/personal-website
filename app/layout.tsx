@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "@/components/site/site.css";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -24,9 +25,11 @@ const jetbrains = JetBrains_Mono({
 
 const BASE_URL = "https://lincolnlaylor.com";
 
+export const viewport: Viewport = { themeColor: "#fbfaf7" };
+
 const TITLE = "Lincoln Laylor — Full-Stack Engineer, Agentic AI Tooling";
 const DESCRIPTION =
-  "Full-stack engineer building agentic AI tooling and the products around it: Cover Me, Open Room, and parallel Claude Code agents with small, scoped contexts.";
+  "Full-stack engineer at Opinion System, building Cover Me. I build AI products and the agent workflows that ship them.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
