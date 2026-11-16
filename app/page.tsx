@@ -4,7 +4,7 @@ import BuildEngine from "@/components/site/BuildEngine";
 import HeroCharacter from "@/components/site/HeroCharacter";
 import CareerGrep from "@/components/site/CareerGrep";
 import IconPile from "@/components/site/IconPile";
-import CoverMeDemo from "@/components/site/CoverMeDemo";
+import CoverMeProduct from "@/components/products/cover-me/CoverMeProduct";
 import OpenRoomDemo from "@/components/site/OpenRoomDemo";
 import Experience from "@/components/site/Experience";
 import ContributionGraph, { contributionStats, fmtDay } from "@/components/site/ContributionGraph";
@@ -140,8 +140,8 @@ export default async function Home() {
                 ))}
               </div>
             </div>
-            <div className="mt-8 overflow-hidden rounded-2xl border border-[#e8e3da] bg-white" data-build="box" data-label="tailoring demo">
-              <CoverMeDemo />
+            <div className="mt-8 rounded-2xl border border-[#e8e3da] bg-[#f6f3ee] px-3 py-6 sm:px-6 sm:py-8" data-build="box" data-label="extension demo">
+              <CoverMeProduct />
             </div>
           </article>
 
@@ -167,7 +167,7 @@ export default async function Home() {
                 </p>
               </div>
             </div>
-            <div className="mt-8" data-build="box" data-label="crew demo">
+            <div className="mt-8" data-build="box" data-label="app demo">
               <OpenRoomDemo />
             </div>
           </article>

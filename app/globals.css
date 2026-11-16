@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import "../components/products/cover-me/tokens.css";
+@import "../components/products/open-room/tokens.css";
 
 :root {
   --paper: #fbfaf7;

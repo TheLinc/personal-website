@@ -1,0 +1,25 @@
+/* Cover Me product visual tokens, ported from the Cover Me site (app/globals.css
+ * + tailwind.config). Prefixed cm- so they never collide with site tokens.
+ * `static` so the vars referenced from inline SVG (var(--color-cm-*)) always exist. */
+@theme static {
+  --color-cm-ink: #1e1b4b;
+  --color-cm-ink-2: #5a534d;
+  --color-cm-body: #2a2a2a;
+  --color-cm-subtle: #6b635d;
+  --color-cm-brand: #6366f1;
+  --color-cm-brand-tint: #eeeeff;
+  --color-cm-brand-ink: #4338ca;
+
+  /* The extension popup's own dark UI. */
+  --color-cm-ext-bg: #15132b;
+  --color-cm-ext-elevated: #272449;
+  --color-cm-ext-border: #35315e;
+  --color-cm-ext-text: #eeedf8;
+  --color-cm-ext-muted: #a6a3c6;
+  --color-cm-ext-soft: #aab4ff;
+}
+
+/* inline: next/font sets --font-jetbrains on <body>, not :root. */
+@theme inline {
+  --font-cm-mono: var(--font-jetbrains), ui-monospace, monospace;
+}

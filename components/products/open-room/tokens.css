@@ -1,0 +1,59 @@
+/* Open Room window tokens, ported from open-room-site src/app/globals.css.
+   Every name carries an or- prefix so nothing collides with the host site.
+   Fonts point at the Geist variables OpenRoomProduct sets on its root. */
+
+@theme inline {
+  --color-or-card: #ffffff;
+  --color-or-line: #e4e4e7;
+  --color-or-line-soft: #f1f1f4;
+  --color-or-ink: #09090b;
+  --color-or-ink-2: #3f3f46;
+  --color-or-muted: #71717a;
+  --color-or-bit: #288888;
+  --font-or-sans: var(--font-or-geist-sans), system-ui, sans-serif;
+  --font-or-mono: var(--font-or-geist-mono), ui-monospace, monospace;
+  --radius-or-panel: 14px;
+}
+
+/* Reply voice meter: 6px bars lifted an eighth of an em so their centre
+   sits on the capitals' centre at 13px. */
+.or-voice-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 0.5rem;
+  vertical-align: 0.125em;
+}
+
+.or-voice-meter.is-playing i {
+  animation: or-meter 520ms ease-in-out infinite alternate;
+  animation-delay: calc(var(--n, 0) * 80ms);
+}
+
+@keyframes or-meter {
+  from {
+    transform: scaleY(0.5);
+  }
+  to {
+    transform: scaleY(1.6);
+  }
+}
+
+@keyframes or-thread-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .or-thread-in {
+    animation: or-thread-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .or-voice-meter i {
+    animation: none;
+  }
+}
