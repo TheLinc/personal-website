@@ -34,16 +34,15 @@ export default function CaseStudy({
       <div className="mt-10 border border-rule bg-bg-2">{header}</div>
 
       {/* Callouts: each value sits on a dimension line with end ticks */}
-      <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
+      <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
         {project.callouts.map((c) => (
-          <div key={c.label}>
+          <li key={c.label}>
             <div className="relative mb-3 h-2 border-b border-faint before:absolute before:bottom-0 before:left-0 before:h-2 before:w-px before:bg-faint after:absolute after:bottom-0 after:right-0 after:h-2 after:w-px after:bg-faint" />
-            <dt className="sr-only">{c.label}</dt>
-            <dd className="display text-[clamp(28px,3.4vw,44px)] text-accent">{c.value}</dd>
+            <p className="display text-[clamp(28px,3.4vw,44px)] text-accent">{c.value}</p>
             <p className="fig mt-2 normal-case tracking-normal">{c.label}</p>
-          </div>
+          </li>
         ))}
-      </dl>
+      </ul>
 
       <div className="mt-14 grid gap-12 lg:grid-cols-[5fr_7fr]">
         <ul className="space-y-4 text-[15px] leading-relaxed text-muted">

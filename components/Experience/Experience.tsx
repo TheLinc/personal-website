@@ -30,6 +30,14 @@ export default function Experience() {
 
         <table className="w-full border-t border-rule text-left text-sm">
           <caption className="fig py-6 text-left">Earlier roles and education</caption>
+          <thead className="sr-only">
+            <tr>
+              <th scope="col">Years</th>
+              <th scope="col">Organization</th>
+              <th scope="col">Role</th>
+              <th scope="col">Summary</th>
+            </tr>
+          </thead>
           <tbody>
             {shortRoles.map((r) => (
               <tr key={r.company} className="border-t border-rule align-top">
