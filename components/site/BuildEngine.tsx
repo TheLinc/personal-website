@@ -33,6 +33,10 @@ type Item = {
 };
 
 const clamp = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+/** At most this many agents on screen at once; the rest wait in the dock. Calmer to watch. */
+const MAX_ACTIVE = 2;
+const CALM_KEY = "site-skip-build";
+const QUIET_AFTER = 700; // ms a job may wait for an agent before it fades in by itself
 
 export default function BuildEngine() {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -43,6 +47,7 @@ export default function BuildEngine() {
   const [log, setLog] = useState("Agents standing by");
   const [away, setAway] = useState<boolean[]>(AGENTS.map(() => false));
   const rebuildRef = useRef<() => void>(() => {});
+  const skipRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const root = document.querySelector<HTMLElement>(".site")!;
@@ -59,8 +64,6 @@ export default function BuildEngine() {
       overlay.className = "site-box";
       const agent = pool[n % pool.length];
       overlay.style.setProperty("--c", AGENTS[agent].color);
-      const tag = document.createElement("span");
-      overlay.appendChild(tag);
       layer.appendChild(overlay);
       return {
         el,
@@ -77,10 +80,18 @@ export default function BuildEngine() {
     });
     setTotal(items.length);
 
-    if (reduced) {
-      items.forEach((it) => it.el.style.setProperty("--t", "1"));
+    const skipped = localStorage.getItem(CALM_KEY) === "1";
+    if (reduced || skipped) {
+      items.forEach((it) => {
+        it.el.style.setProperty("--t", "1");
+        it.el.dataset.done = "1";
+      });
       setBuilt(items.length);
-      setLog("Built (reduced motion)");
+      setLog(reduced ? "Built (reduced motion)" : "Built");
+      rebuildRef.current = () => {
+        localStorage.removeItem(CALM_KEY);
+        location.reload();
+      };
       return () => items.forEach((it) => it.overlay.remove());
     }
 
@@ -94,8 +105,6 @@ export default function BuildEngine() {
         it.left = r.left + window.scrollX;
         it.w = r.width;
         it.h = r.height;
-        const tag = it.overlay.firstChild as HTMLSpanElement;
-        tag.textContent = `${AGENTS[it.agent].name} · ${it.label}`;
       });
     }
 
@@ -103,7 +112,7 @@ export default function BuildEngine() {
     const pos = AGENTS.map(() => ({ x: -100, y: -100, init: false }));
     const pending: number[] = [];
     const current: ({ i: number; start: number; dur: number } | null)[] = AGENTS.map(() => null);
-    const queued = new Set<number>();
+    const queued = new Map<number, number>(); // item → when it became work
     let builtCount = 0;
     let raf = 0;
     let awayState = AGENTS.map(() => false);
@@ -128,7 +137,7 @@ export default function BuildEngine() {
       items.forEach((it, i) => {
         if (it.t >= 1 || queued.has(i)) return;
         if (it.top - sy < vh * 0.9) {
-          queued.add(i);
+          queued.set(i, now);
           pending.push(i);
         }
       });
@@ -138,21 +147,30 @@ export default function BuildEngine() {
         const vt = it.top - sy;
         if (vt + it.h < 0 || vt > vh) finishNow(pending.splice(k, 1)[0]);
       }
+      // The crew is small on purpose. Work nobody picked up soon fades in on its own, so the page is never blank.
+      for (let k = pending.length - 1; k >= 0; k--) {
+        const i = pending[k];
+        if (now - queued.get(i)! > QUIET_AFTER) {
+          pending.splice(k, 1);
+          items[i].el.style.transition = "--t 450ms ease-out";
+          finishNow(i);
+        }
+      }
       pending.sort((x, y) => items[x].top - items[y].top);
 
+      while (pending.length && current.filter(Boolean).length < MAX_ACTIVE) {
+        const i = pending.shift()!;
+        const it = items[i];
+        const idle = AGENTS.map((_, a) => a).filter((a) => !current[a]);
+        const a = idle.find((x) => AGENTS[x].kinds.includes(it.kind)) ?? idle[0];
+        it.agent = a;
+        it.overlay.style.setProperty("--c", AGENTS[a].color);
+        // A backlog means the reader is ahead of the crew: hurry a little, but never frantic.
+        const dur = Math.max(260, BASE[it.kind] / (1 + Math.min(pending.length, 6) * 0.15));
+        current[a] = { i, start: now, dur };
+      }
+
       AGENTS.forEach((agent, a) => {
-        if (!current[a] && pending.length) {
-          let k = pending.findIndex((i) => agent.kinds.includes(items[i].kind));
-          if (k < 0) k = 0;
-          const i = pending.splice(k, 1)[0];
-          const it = items[i];
-          it.agent = a;
-          it.overlay.style.setProperty("--c", agent.color);
-          (it.overlay.firstChild as HTMLSpanElement).textContent = `${agent.name} · ${it.label}`;
-          // A backlog means the reader is ahead of the crew: rush.
-          const dur = Math.max(140, BASE[it.kind] / (1 + pending.length * 0.25));
-          current[a] = { i, start: now, dur };
-        }
         let job = current[a];
         if (job) {
           const jt = items[job.i].top - sy;
@@ -212,8 +230,8 @@ export default function BuildEngine() {
           p.y = tgt.y;
           p.init = true;
         }
-        p.x += (tgt.x - p.x) * 0.3;
-        p.y += (tgt.y - p.y) * 0.3;
+        p.x += (tgt.x - p.x) * 0.16;
+        p.y += (tgt.y - p.y) * 0.16;
         if (Math.abs(tgt.x - p.x) > 0.5 || Math.abs(tgt.y - p.y) > 0.5) busy = true;
         c.style.transform = `translate(${p.x}px, ${p.y}px)`;
         c.dataset.away = targets[a] ? "1" : "0";
@@ -225,9 +243,22 @@ export default function BuildEngine() {
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(frame);
     };
+    skipRef.current = () => {
+      localStorage.setItem(CALM_KEY, "1");
+      pending.length = 0;
+      current.fill(null);
+      items.forEach((it, i) => {
+        it.overlay.style.display = "none";
+        if (it.t < 1) finishNow(i);
+      });
+      setLog("Built");
+      kick();
+    };
     rebuildRef.current = () => {
+      localStorage.removeItem(CALM_KEY);
       items.forEach((it) => {
         it.t = 0;
+        it.el.style.transition = "";
         it.el.style.setProperty("--t", "0");
         delete it.el.dataset.done;
       });
@@ -308,9 +339,15 @@ export default function BuildEngine() {
           </span>
           <span className="site-log">{log}</span>
         </div>
-        <button type="button" className="site-rebuild" onClick={() => rebuildRef.current()}>
-          ↺ Rebuild
-        </button>
+        {built < total ? (
+          <button type="button" className="site-rebuild" onClick={() => skipRef.current()} title="Finish building instantly and remember it">
+            Skip ⏭
+          </button>
+        ) : (
+          <button type="button" className="site-rebuild" onClick={() => rebuildRef.current()}>
+            ↺ Rebuild
+          </button>
+        )}
       </div>
     </>
   );

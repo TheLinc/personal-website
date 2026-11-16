@@ -55,6 +55,13 @@ body:has(.site) {
   opacity: clamp(0, calc(var(--r) * 58 - var(--col)), 1);
 }
 
+/* Registered so a quiet (agent-less) finish can transition --t smoothly. */
+@property --t {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
 /* Wireframe boxes the agents drag out */
 .site-layer {
   position: absolute;
@@ -69,33 +76,9 @@ body:has(.site) {
   top: 0;
   left: 0;
   display: none;
-  border: 1.5px dashed var(--c);
-  background: color-mix(in srgb, var(--c) 7%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--c) 55%, transparent);
   border-radius: 6px;
 }
-.site-box span {
-  position: absolute;
-  left: -1px;
-  top: -20px;
-  white-space: nowrap;
-  font: 500 10px/1 var(--font-jetbrains), monospace;
-  color: #fff;
-  background: var(--c);
-  padding: 4px 6px;
-  border-radius: 4px 4px 4px 0;
-}
-.site-box::before,
-.site-box::after {
-  content: "";
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  background: #fff;
-  border: 1.5px solid var(--c);
-  border-radius: 2px;
-}
-.site-box::before { left: -4px; top: -4px; }
-.site-box::after { right: -4px; bottom: -4px; }
 
 /* Agent cursors */
 .site-cursor {
