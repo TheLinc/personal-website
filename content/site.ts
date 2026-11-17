@@ -86,6 +86,7 @@ export const ROLES: Role[] = [
     ],
     stack: ["React", "Angular", "SVG", "REST"],
     hash: "19dd3f0",
+    tile: true,
   },
   {
     logo: "/assets/cra.png",
