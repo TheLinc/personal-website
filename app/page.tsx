@@ -7,6 +7,8 @@ import IconPile from "@/components/site/IconPile";
 import CoverMeProduct from "@/components/products/cover-me/CoverMeProduct";
 import OpenRoomDemo from "@/components/site/OpenRoomDemo";
 import Experience from "@/components/site/Experience";
+import ProjectCard from "@/components/site/ProjectCard";
+import { COVER_ME, OPEN_ROOM } from "@/content/projects";
 import ContributionGraph, { contributionStats, fmtDay } from "@/components/site/ContributionGraph";
 import { CHECKS, EMAIL, GITHUB, LINKEDIN, REVIEWS } from "@/content/site";
 
@@ -18,21 +20,6 @@ function Logo({ src, name }: { src: string; name: string }) {
       <img src={src} alt="" />
       {name}
     </span>
-  );
-}
-
-function BuiltWith({ items }: { items: string[] }) {
-  return (
-    <div className="mt-5" data-build="box" data-label="stack">
-      <p className="mono text-[11px] uppercase tracking-[0.08em] text-[#6d6962]">Built with</p>
-      <ul className="mt-2 flex flex-wrap gap-1.5">
-        {items.map((t) => (
-          <li key={t} className="rounded-full border border-[#e8e3da] bg-[#fbfaf7] px-2.5 py-0.5 text-xs text-[#6d6962]">
-            {t}
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
 
@@ -133,61 +120,17 @@ export default async function Home() {
         <section id="work" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
           <Heading label="Selected work" title="Things I’ve shipped" />
 
-          <article className="card mt-10 p-5 sm:p-8" aria-labelledby="cover-me">
-            <div className="grid gap-6 md:grid-cols-[1fr_1fr] md:items-end">
-              <div>
-                <img src="/assets/coverme.png" alt="Cover Me logo" className="size-14 rounded-2xl" data-build="image" data-label="cover-me.png" />
-                <h3 id="cover-me" className="mt-5 text-3xl" data-build="text" data-label="h3">Cover Me</h3>
-                <p className="mt-3 text-[#6d6962]" data-build="text" data-label="summary">
-                  A Chrome extension that writes your cover letter and tailors your resume to a job posting in about 20 seconds, without inventing experience.
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2 text-sm" data-build="box" data-label="links">
-                  <a className="chip !pl-3" href="https://cover-me.dev">cover-me.dev ↗</a>
-                  <a className="chip !pl-3" href="https://github.com/TheLinc/cover-me">Source ↗</a>
-                </div>
-                <BuiltWith items={["React", "TypeScript", "Chrome extension", "Next.js", "Supabase", "Postgres", "Stripe", "Claude API", "Vercel"]} />
-              </div>
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                {[["~20 s", "per application"], ["200+", "users, paid plans"], ["32", "resumes in its eval suite"]].map(([v, l]) => (
-                  <div key={l} className="rounded-2xl bg-[#f4f2ff] p-3 sm:p-4" data-build="box" data-label={l}>
-                    <div className="text-[clamp(20px,3vw,32px)] font-bold text-[#5b5bf0]">{v}</div>
-                    <div className="mt-1 text-xs text-[#6d6962]">{l}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="mt-8 rounded-2xl border border-[#e8e3da] bg-[#f6f3ee] px-3 py-6 sm:px-6 sm:py-8" data-build="box" data-label="extension demo">
+          <ProjectCard p={COVER_ME}>
+            <div className="rounded-2xl border border-[#e8e3da] bg-[#f6f3ee] px-3 py-6 sm:px-6 sm:py-8" data-build="box" data-label="extension demo">
               <CoverMeProduct />
             </div>
-          </article>
+          </ProjectCard>
 
-          <article className="card mt-6 p-5 sm:p-8" aria-labelledby="open-room">
-            <div className="grid gap-6 md:grid-cols-[1fr_1fr] md:items-end">
-              <div>
-                <img src="/assets/openroom.png" alt="Open Room logo" className="size-14 rounded-2xl" data-build="image" data-label="open-room.png" />
-                <h3 id="open-room" className="mt-5 text-3xl" data-build="text" data-label="h3">Open Room</h3>
-                <p className="mt-3 text-[#6d6962]" data-build="text" data-label="summary">
-                  A desktop app for talking to a team of AI coding agents by name. Say “Hey Atlas”, give it a task, and keep working while it does.
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2 text-sm" data-build="box" data-label="links">
-                  <a className="chip !pl-3" href="https://openroom.dev">openroom.dev ↗</a>
-                  <a className="chip !pl-3" href="https://github.com/TheLinc/open-room">Source ↗</a>
-                </div>
-                <BuiltWith items={["Electron", "React", "TypeScript", "Claude Agent SDK", "Moonshine speech-to-text", "Kokoro voice", "ONNX Runtime", "Tailwind"]} />
-              </div>
-              <div className="space-y-2 text-sm" data-build="check" data-label="moonshine note">
-                <p className="rounded-xl bg-[#fbf0ec] px-3 py-2">
-                  <b>Before:</b> your words appeared only after you stopped talking.
-                </p>
-                <p className="rounded-xl bg-[#ecf8f3] px-3 py-2">
-                  <b>After:</b> they appear as you speak. I streamed the audio and swapped Whisper (280–860 ms per pass) for Moonshine (~55 ms per second of speech).
-                </p>
-              </div>
-            </div>
-            <div className="mt-8" data-build="box" data-label="app demo">
+          <ProjectCard p={OPEN_ROOM}>
+            <div data-build="box" data-label="app demo">
               <OpenRoomDemo />
             </div>
-          </article>
+          </ProjectCard>
         </section>
 
         {/* Experience */}
