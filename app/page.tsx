@@ -21,6 +21,21 @@ function Logo({ src, name }: { src: string; name: string }) {
   );
 }
 
+function BuiltWith({ items }: { items: string[] }) {
+  return (
+    <div className="mt-5" data-build="box" data-label="stack">
+      <p className="mono text-[11px] uppercase tracking-[0.08em] text-[#6d6962]">Built with</p>
+      <ul className="mt-2 flex flex-wrap gap-1.5">
+        {items.map((t) => (
+          <li key={t} className="rounded-full border border-[#e8e3da] bg-[#fbfaf7] px-2.5 py-0.5 text-xs text-[#6d6962]">
+            {t}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Heading({ label, title, id }: { label: string; title: string; id?: string }) {
   return (
     <>
@@ -130,6 +145,7 @@ export default async function Home() {
                   <a className="chip !pl-3" href="https://cover-me.dev">cover-me.dev ↗</a>
                   <a className="chip !pl-3" href="https://github.com/TheLinc/cover-me">Source ↗</a>
                 </div>
+                <BuiltWith items={["React", "TypeScript", "Chrome extension", "Next.js", "Supabase", "Postgres", "Stripe", "Claude API", "Vercel"]} />
               </div>
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[["~20 s", "per application"], ["200+", "users, paid plans"], ["32", "resumes in its eval suite"]].map(([v, l]) => (
@@ -157,6 +173,7 @@ export default async function Home() {
                   <a className="chip !pl-3" href="https://openroom.dev">openroom.dev ↗</a>
                   <a className="chip !pl-3" href="https://github.com/TheLinc/open-room">Source ↗</a>
                 </div>
+                <BuiltWith items={["Electron", "React", "TypeScript", "Claude Agent SDK", "Moonshine speech-to-text", "Kokoro voice", "ONNX Runtime", "Tailwind"]} />
               </div>
               <div className="space-y-2 text-sm" data-build="check" data-label="moonshine note">
                 <p className="rounded-xl bg-[#fbf0ec] px-3 py-2">
