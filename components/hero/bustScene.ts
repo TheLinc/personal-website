@@ -1,5 +1,5 @@
 // The hero bust: a stone bust in neon shutter shades. Scroll turns it to face you, the mouse swings it
-// side to side, and hovering the top of the head floats spheres with the tools I think about.
+// side to side, and hovering the head floats spheres with the tools I think about.
 
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -7,7 +7,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { TessellateModifier } from "three/examples/jsm/modifiers/TessellateModifier.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
-import { approach, followsPointer, isBrain, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "@/lib/bustMotion";
+import { approach, drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "@/lib/bustMotion";
 import { bendPoint, frontOutline, insidePoly, lensOpening, restOffset, rowExtent, slatBars } from "@/lib/shades";
 
 const NEON = "#c4ab12"; // darker than it reads: lit faces land near #f5e12a without clipping
@@ -216,16 +216,14 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     tex.colorSpace = THREE.SRGBColorSpace;
     const logo = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true }));
     logo.scale.setScalar(0.085 * 1.25);
-    ball.renderOrder = 10;
-    logo.renderOrder = 11;
     b.add(ball, logo);
     b.visible = false;
     rig.add(b);
-    return { b, mats: [ball.material, logo.material] };
+    return { b, ball, logo, mats: [ball.material, logo.material] };
   });
 
   let bust: THREE.Object3D | null = null;
-  const brain = new THREE.Box3(); // the top of the head, rig-local; rays that miss it skip the triangle test
+  const brain = new THREE.Box3(); // the head (chin up), rig-local; rays that miss it skip the triangle test
   const draco = new DRACOLoader().setDecoderPath("/draco/");
   new GLTFLoader().setDRACOLoader(draco).load("/assets/bust/bust.glb", (gltf) => {
     const root = new THREE.Group();
@@ -278,7 +276,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     shades.updateMatrixWorld(true);
     aimArms(shades, root);
     brain.setFromObject(root);
-    brain.min.y = 0.58;
+    brain.min.y = 0.12;
     rig.rotation.y = turned;
     bust = root;
     draco.dispose();
@@ -318,6 +316,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
   resize();
 
   const ray = new THREE.Raycaster();
+  const tmp = new THREE.Vector3();
   const ndc = new THREE.Vector2();
   const box = new THREE.Box3();
   const last = { x: NaN, y: NaN, yaw: NaN };
@@ -338,7 +337,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
         rig.updateMatrixWorld();
         if (ray.ray.intersectsBox(box.copy(brain).applyMatrix4(rig.matrixWorld))) {
           const h = ray.intersectObject(bust, true)[0];
-          if (h && isBrain(rig.worldToLocal(h.point.clone()).y)) over = 1;
+          if (h && isHead(rig.worldToLocal(h.point.clone()).y)) over = 1;
         }
       }
     }
@@ -350,6 +349,15 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       b.scale.setScalar(Math.max(0.001, q.s));
       mats.forEach((m) => (m.opacity = q.s));
       b.visible = q.s > 0.01;
+    });
+    // Bubbles ignore depth (they float "in" the head), so draw them back to front, each with its own logo on
+    // top of it: a nearer bubble then covers both the bubble and the logo behind it.
+    const view = cam.matrixWorldInverse;
+    rig.updateMatrixWorld();
+    const ranks = drawOrder(thoughts.map(({ b }) => b.getWorldPosition(tmp).applyMatrix4(view).z));
+    thoughts.forEach(({ ball, logo }, i) => {
+      ball.renderOrder = 10 + 2 * ranks[i];
+      logo.renderOrder = 11 + 2 * ranks[i];
     });
     r.render(scene, cam);
     raf = requestAnimationFrame(tick);

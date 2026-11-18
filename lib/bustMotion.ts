@@ -1,5 +1,5 @@
 // How the hero bust moves: scroll turns it to face you, the mouse swings it side to side,
-// and hovering the top of the head floats "thought" spheres out of it.
+// and hovering the head floats "thought" spheres out of it.
 
 export const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 export const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -12,8 +12,15 @@ export const approach = (cur: number, target: number, k: number) => cur + (targe
 /** Y rotation: turned toward the name at the top of the page, facing forward after 40% of the scroll, plus the mouse swing. */
 export const yaw = (p: number, mx: number) => -0.55 * (1 - easeOut(clamp01(p / 0.4))) + mx * 0.32;
 
-/** The pointer is on the "brain" when it hits the bust above this height (rig-local units, bust is 2.2 tall). */
-export const isBrain = (localY: number, threshold = 0.58) => localY > threshold;
+/** The pointer is on the head (face included) when it hits the bust above the chin (rig-local units, bust is 2.2 tall). */
+export const isHead = (localY: number, chin = 0.12) => localY > chin;
+
+/** Draw rank for each bubble from its view-space depth (more negative = farther): farthest draws first. */
+export function drawOrder(depths: number[]): number[] {
+  const rank = new Array<number>(depths.length);
+  depths.map((d, i) => [d, i] as const).sort((a, b) => a[0] - b[0]).forEach(([, i], r) => (rank[i] = r));
+  return rank;
+}
 
 /** Where thought sphere `i` sits: tucked in the head at rest, eased out to its slot (staggered) and bobbing when hovered. */
 export function thoughtPos(slot: [number, number, number], hoverT: number, i: number, t: number) {

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { followsPointer, isBrain, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "./bustMotion.ts";
+import { drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "./bustMotion.ts";
 
 test("yaw: turned toward the name at the top, facing forward after 40% of the scroll", () => {
   assert.equal(yaw(0, 0), -0.55);
@@ -14,9 +14,15 @@ test("scrollProgress clamps to 0..1 over 520px", () => {
   assert.equal(scrollProgress(9999), 1);
 });
 
-test("isBrain: only the top of the head", () => {
-  assert.equal(isBrain(0.7), true);
-  assert.equal(isBrain(0.5), false);
+test("isHead: anywhere on the head (face included), not the neck or shoulders", () => {
+  assert.equal(isHead(0.7), true); // top of the head
+  assert.equal(isHead(0.3), true); // face
+  assert.equal(isHead(0.05), false); // neck and below
+});
+
+test("drawOrder: farther bubbles draw first so nearer ones (and their logos) cover them", () => {
+  assert.deepEqual(drawOrder([-5, -3, -4]), [0, 2, 1]);
+  assert.deepEqual(drawOrder([1]), [0]);
 });
 
 test("thoughtPos: hidden inside the head at rest, out at its slot when hovered", () => {
