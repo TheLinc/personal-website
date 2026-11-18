@@ -19,9 +19,14 @@ Lincoln attaches this site to job applications. It should show an engineer who k
 
 ### Hero
 
-- **The bust:** a classical white marble bust of Lincoln wearing black glasses. This is the only likeness on the site; no photo and no cartoon character.
-- **Scroll animation:** as the visitor scrolls, the head turns from looking toward the name to facing the visitor. Then the glasses slide off and drop out of frame.
-- **Placement:** the bust slightly overlaps the hero text to add depth, and the text stays readable.
+- **The bust:** a 3D stone bust of Lincoln, the only likeness on the site.
+  - Style: warm matte sandstone with a scanned-statue look, in the spirit of primesec.ai's statue.
+  - Face kept slim to match him (the first marble version made his face too wide).
+- **Sunglasses:** curved two-lens wraparound sunglasses with frames in an accent colour. They're a separate 3D object from the bust.
+- **Hover:** the bust turns gently to follow the mouse.
+- **Scroll:** the bust starts turned toward the name and turns to face the visitor. Then the sunglasses slide down the nose and drop out of frame.
+  - The motion is quick and snappy, with a smoothed scrub that catches up fast, like primesec.ai.
+- **Placement:** the bust slightly overlaps the "n" in "Lincoln", and the name stays readable. The tagline and buttons sit in front of the bust.
 - **Logos:** the hero logo chips become Opinion System, lstack and Cover Me.
 
 ### How I ship with agents
@@ -49,19 +54,18 @@ Lincoln attaches this site to job applications. It should show an engineer who k
 
 | Approach | Verdict |
 |---|---|
-| **Video frames scrubbed by scroll** | **Chosen.** One still is turned into a short image-to-video clip that starts on the still and ends facing forward without glasses. The frames are keyed off a green screen into transparent WebP frames and drawn on a canvas according to scroll position. It looks the most realistic, and transparency lets the bust overlap the text. |
-| A 3D model (GLB) rotated with three.js | Rejected. AI-made 3D faces look rough up close, and it adds a large dependency. |
-| A plain `<video>` scrubbed through `currentTime` | Rejected. Seeking is jerky in most browsers, and Safari has no common transparent video format. |
+| **Real-time 3D with three.js** | **Chosen.** A GLB bust made from an AI image, with procedurally built sunglasses. It's the only option that supports the hover effect Lincoln liked on primesec.ai, and it scales to any screen. |
+| Video frames scrubbed by scroll | Dropped. It can't react to the mouse, and the marble version looked too heavy. |
+| A plain `<video>` scrubbed through `currentTime` | Rejected. Seeking is jerky, and Safari has no common transparent video format. |
 
 ## Calls I made (Claude)
 
-- **Frames:** about 48 transparent WebP frames, roughly 640px wide, preloaded after the first frame paints. The first frame is also the static fallback.
-- **Reduced motion:** with `prefers-reduced-motion`, the first frame shows as a still image.
-- **Scroll mapping:** no pinning. The animation runs over the first ~60% of the hero scrolling out of view.
-  - The bust moves a little slower than the text (light parallax), which adds depth without taking extra scroll height.
-  - Revisit this if the turn feels rushed.
-- **Desktop placement:** the bust sits right of the text, in front of it, overlapping the end of the name by a small amount. A soft contact shadow sits under it.
-- **Phone placement:** the bust is smaller in the top right, behind the text. The text keeps full contrast.
+- **Model size:** the raw model is 5.9 MB. It will be compressed (Draco geometry and a resized WebP texture) to aim for 1.5 MB or less.
+- **Loading:** three.js loads only after the page appears. A still image of the bust shows first and also serves as the fallback.
+- **Reduced motion:** visitors who have animations turned off see the still image, with no hover or scroll animation.
+- **Accent colour:** the sunglasses use #5b5bf0, the site's indigo, which is easy to swap.
+- **Scroll mapping:** no pinning. The animation runs over the first ~520px of scrolling.
+- **Phone placement:** on small screens the bust sits smaller in the top right, behind the text. There's no hover on phones, so it follows scroll only.
 - **Build animation:** the hero still doesn't use the build animation; the agents start building from the next section.
 - **Carousel:** native CSS scroll-snap with no carousel library. The line drawings stay inline SVG.
 
