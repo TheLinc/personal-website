@@ -25,8 +25,11 @@ Lincoln attaches this site to job applications. It should show an engineer who k
   - Depth comes from shading baked into the deep carving (hair, eye sockets, folds), not from texture.
   - Face kept slim to match him (the first marble version made his face too wide).
 - **Sunglasses:** neon-yellow (#f4ff1f) shutter shades with five slats per lens, curved to the face. They're a separate 3D object from the bust and are left unaffected by the scene lighting so the neon stays bright.
+- **Glasses stay on.** They never come off.
 - **Hover:** the bust turns gently to follow the mouse.
-- **Scroll:** the bust starts turned toward the name and turns to face the visitor. Then the sunglasses slide down the nose and drop out of frame.
+  - Hovering the top of the head (the brain area) makes glossy spheres float up around it, each carrying a logo: Claude, Vercel, React, TypeScript, SQL and AWS. They show what he thinks about.
+  - The spheres drift gently and sink back into the head when the mouse leaves.
+- **Scroll:** the bust starts turned toward the name and turns to face the visitor.
   - The motion is quick and snappy, with a smoothed scrub that catches up fast, like primesec.ai.
 - **Placement:** the bust slightly overlaps the "n" in "Lincoln", and the name stays readable. The tagline and buttons sit in front of the bust.
 - **Logos:** the hero logo chips become Opinion System, lstack and Cover Me.
