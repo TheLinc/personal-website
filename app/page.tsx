@@ -16,7 +16,7 @@ export const revalidate = 86400;
 
 function Logo({ src, name }: { src: string; name: string }) {
   return (
-    <span className="chip" data-build="image" data-label={`${name} logo`}>
+    <span className="chip">
       <img src={src} alt="" />
       {name}
     </span>
@@ -46,10 +46,10 @@ export default async function Home() {
       <BuildEngine />
 
       <header className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 pt-6 text-sm sm:px-6">
-        <a href="#top" className="whitespace-nowrap font-semibold" data-build="text" data-label="name">
+        <a href="#top" className="whitespace-nowrap font-semibold">
           Lincoln Laylor
         </a>
-        <nav className="flex gap-4 whitespace-nowrap text-[#6d6962] sm:gap-6" data-build="box" data-label="nav" aria-label="Sections">
+        <nav className="flex gap-4 whitespace-nowrap text-[#6d6962] sm:gap-6" aria-label="Sections">
           <a href="#work" className="hover:text-[#1d1c1a]">Work</a>
           <a href="#experience" className="hover:text-[#1d1c1a]">Experience</a>
           <a href="#hire" className="hover:text-[#1d1c1a]">Contact</a>
@@ -60,24 +60,24 @@ export default async function Home() {
         {/* Hero */}
         <section className="mx-auto grid max-w-5xl items-center gap-6 px-5 pb-16 pt-14 sm:px-6 md:pt-24 lg:grid-cols-[1.25fr_1fr] lg:gap-10 lg:pb-20">
           <div>
-            <p className="chip w-fit !pl-3 text-[13px]" data-build="box" data-label="status">
+            <p className="chip w-fit !pl-3 text-[13px]">
               <span className="live-dot" />
               Shipping · last commit {s.daysAgo === 0 ? "today" : `${s.daysAgo}d ago`} · {total} this year
             </p>
-            <h1 className="mt-6 text-[clamp(44px,7vw,84px)]" data-build="text" data-label="h1">
+            <h1 className="mt-6 text-[clamp(44px,7vw,84px)]">
               Lincoln Laylor
             </h1>
-            <p className="mt-4 max-w-[30ch] text-[clamp(21px,3vw,32px)] leading-tight" data-build="text" data-label="tagline">
+            <p className="mt-4 max-w-[30ch] text-[clamp(21px,3vw,32px)] leading-tight">
               Full-stack engineer. I build AI products, and the agent workflows that ship them.
             </p>
-            <p className="mt-4 max-w-[56ch] text-[#6d6962]" data-build="text" data-label="intro">
+            <p className="mt-4 max-w-[56ch] text-[#6d6962]">
               Full Stack Developer at Opinion System, where I lead AI integrations. Building Cover Me on the side. Ottawa, Canada.
             </p>
             <div className="mt-7 flex flex-wrap gap-2.5">
               <Logo src="/assets/os.png" name="Opinion System" />
               <Logo src="/assets/coverme.png" name="Cover Me" />
             </div>
-            <div className="mt-8 flex flex-wrap gap-3" data-build="box" data-label="actions">
+            <div className="mt-8 flex flex-wrap gap-3">
               <a href="#work" className="rounded-full bg-[#1d1c1a] px-5 py-3 text-sm font-semibold text-white">
                 See the work ↓
               </a>

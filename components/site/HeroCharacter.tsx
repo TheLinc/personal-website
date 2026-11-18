@@ -1,6 +1,6 @@
 "use client";
 
-// Lincoln's character in the hero. Waves once on load, then loops typing.
+// Lincoln's character in the hero. Waves once on load (calling the agents in), then loops typing.
 // Each agent action sends a small spark up from the laptop.
 
 import { useEffect, useRef, useState } from "react";
@@ -42,7 +42,7 @@ export default function HeroCharacter({ wave, loop }: { wave?: string; loop?: st
 
   const media = "absolute inset-0 h-full w-full object-contain mix-blend-multiply";
   return (
-    <div className="relative mx-auto aspect-[4/3] w-full max-w-[520px] select-none" aria-hidden="true">
+    <div className="relative mx-auto aspect-[4/3] w-full max-w-[520px] select-none" aria-hidden="true" data-hero-character>
       {reduced || !wave ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={reduced ? "/assets/me-typing.jpg" : "/assets/me-wave.jpg"} alt="" className={media} />
@@ -56,6 +56,12 @@ export default function HeroCharacter({ wave, loop }: { wave?: string; loop?: st
             <img src="/assets/me-typing.jpg" alt="" className={media} style={{ opacity: phase === "loop" ? 1 : 0 }} />
           )}
         </>
+      )}
+      {/* Calls the agents in; BuildEngine times the orbiting dots to this. */}
+      {!reduced && (
+        <p className="hero-bubble absolute top-[2%] left-[4%] z-10 rounded-2xl rounded-bl-sm border border-[#e8e3da] bg-white px-3.5 py-2 text-sm font-semibold shadow-[0_10px_24px_-14px_rgba(40,30,10,0.45)]">
+          Ok agents, let’s get building!
+        </p>
       )}
       {/* Sparks rise from the laptop (about 33% across, 47% down in the frame). */}
       {sparks.map((s) => (

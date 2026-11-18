@@ -80,38 +80,40 @@ body:has(.site) {
   border-radius: 6px;
 }
 
-/* Model cursors: a coloured pointer with the model's logo tag beneath it */
+/* Agent cursors: a glowing dot while orbiting the character, a pointer while building */
 .site-cursor {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 60;
   pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   will-change: transform;
   opacity: 0;
   transition: opacity 300ms;
 }
 .site-cursor[data-away="1"] { opacity: 1; }
-.site-cursor-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin: -2px 0 0 11px;
-  padding: 3px 8px 3px 4px;
+.site-cursor svg,
+.site-cursor-dot { position: absolute; top: 0; left: 0; transition: opacity 350ms, transform 350ms; }
+.site-cursor-dot {
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
   border-radius: 999px;
-  background: #fff;
-  border: 1.5px solid var(--c);
-  box-shadow: 0 6px 16px -10px rgba(40, 30, 10, 0.5);
-  font: 600 11px/1 var(--font-plex), system-ui, sans-serif;
-  color: var(--ink);
-  white-space: nowrap;
+  background: var(--c);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 20%, transparent), 0 0 14px var(--c);
 }
-.site-cursor-tag img { width: 14px; height: 14px; object-fit: contain; }
-.site-cursor-tag em { display: none; font-style: normal; font-weight: 500; color: var(--soft); }
-.site-cursor[data-fix="1"] .site-cursor-tag em { display: inline; }
+.site-cursor[data-mode="dot"] svg { opacity: 0; transform: scale(0.4); }
+.site-cursor:not([data-mode="dot"]) .site-cursor-dot { opacity: 0; transform: scale(0.4); }
+
+/* The character's speech bubble at the start of the build */
+.site .hero-bubble {
+  animation: hero-bubble 2.6s ease-in-out 0.25s both;
+}
+@keyframes hero-bubble {
+  0% { opacity: 0; transform: translateY(6px) scale(0.92); }
+  12%, 82% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
 
 /* Components */
 .site .card {
