@@ -138,7 +138,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     bust = root;
     draco.dispose();
     opts.onReady();
-  });
+  }, undefined, () => draco.dispose());
 
   const pointer = { mx: 0, ndc: new THREE.Vector2(9, 9) };
   const onMove = (e: PointerEvent) => {

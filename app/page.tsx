@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { getCalendar } from "@/lib/github";
 import BuildEngine from "@/components/site/BuildEngine";
+import Bust from "@/components/hero/Bust";
 import CareerGrep from "@/components/site/CareerGrep";
 import IconPile from "@/components/site/IconPile";
 import CoverMeProduct from "@/components/products/cover-me/CoverMeProduct";
@@ -57,23 +58,29 @@ export default async function Home() {
 
       <main id="top">
         {/* Hero */}
-        <section className="mx-auto max-w-5xl px-5 pb-16 pt-14 sm:px-6 md:pt-24 lg:pb-20">
-          <div>
-            <p className="chip w-fit !pl-3 text-[13px]">
-              <span className="live-dot" />
-              Shipping · last commit {s.daysAgo === 0 ? "today" : `${s.daysAgo}d ago`} · {total} this year
-            </p>
-            <h1 className="mt-6 text-[clamp(44px,7vw,84px)]">
-              Lincoln Laylor
+        <section className="hero mx-auto max-w-5xl overflow-x-clip px-5 pb-16 pt-14 sm:px-6 md:pt-20 lg:pb-20">
+          <p className="relative z-[3] chip w-fit !pl-3 text-[13px]">
+            <span className="live-dot" />
+            Shipping · last commit {s.daysAgo === 0 ? "today" : `${s.daysAgo}d ago`} · {total} this year
+          </p>
+          <div className="relative mt-6">
+            <Bust />
+            <h1 className="hero-name relative z-[1]">
+              Lincoln
+              <br />
+              Laylor
             </h1>
-            <p className="mt-4 max-w-[36ch] text-[clamp(21px,3vw,32px)] leading-tight text-balance">
+          </div>
+          <div className="relative z-[3]">
+            <p className="mt-6 max-w-[19ch] text-[clamp(21px,2.6vw,28px)] leading-tight text-balance">
               Full-stack engineer. I build AI products, and the agent workflows that ship them.
             </p>
-            <p className="mt-4 max-w-[56ch] text-[#6d6962]">
+            <p className="mt-4 max-w-[36ch] text-[#6d6962]">
               Full Stack Developer at Opinion System, where I lead AI integrations. Building Cover Me on the side. Ottawa, Canada.
             </p>
             <div className="mt-7 flex flex-wrap gap-2.5">
               <Logo src="/assets/os.png" name="Opinion System" />
+              <a href="https://github.com/TheLinc/lstack" className="chip mono !pl-3">lstack</a>
               <Logo src="/assets/coverme.png" name="Cover Me" />
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
