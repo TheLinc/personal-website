@@ -12,7 +12,7 @@ export default function AgentRules() {
   useEffect(() => {
     const el = row.current!;
     const cards = Array.from(el.children) as HTMLElement[];
-    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("on")), { root: el, threshold: 0.6 });
+    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("on")), { threshold: 0.6 });
     cards.forEach((c) => io.observe(c));
     return () => io.disconnect();
   }, []);

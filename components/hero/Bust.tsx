@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 
 // A still of the bust shows at once; the live 3D scene loads after the page and fades in over it.
-// Reduced motion, no WebGL, or a failed load: the still simply stays.
+// Reduced motion, no WebGL, a failed load or a lost GPU context: the still shows.
 export default function Bust() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
@@ -19,7 +19,7 @@ export default function Bust() {
     import("./bustScene")
       .then(({ createBustScene }) => {
         if (dead) return;
-        scene = createBustScene(canvas, { onReady: () => setLive(true) });
+        scene = createBustScene(canvas, { onReady: () => setLive(true), onLost: () => setLive(false) });
         io = new IntersectionObserver(([e]) => scene?.setActive(e.isIntersecting));
         io.observe(canvas);
       })

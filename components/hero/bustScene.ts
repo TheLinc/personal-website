@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { approach, isBrain, scrollProgress, thoughtPos, yaw } from "@/lib/bustMotion";
+import { approach, followsPointer, isBrain, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "@/lib/bustMotion";
 import { bendPoint, LENS, rowExtent } from "@/lib/shades";
 
 const NEON = "#f4ff1f";
@@ -70,7 +70,7 @@ function buildShades(env: THREE.Texture) {
   return g;
 }
 
-export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): void }) {
+export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): void; onLost(): void }) {
   const r = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   r.setPixelRatio(Math.min(devicePixelRatio, 2));
   r.outputColorSpace = THREE.SRGBColorSpace;
@@ -113,6 +113,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
   });
 
   let bust: THREE.Object3D | null = null;
+  const brain = new THREE.Box3(); // the top of the head, rig-local; rays that miss it skip the triangle test
   const draco = new DRACOLoader().setDecoderPath("/draco/");
   new GLTFLoader().setDRACOLoader(draco).load("/assets/bust/bust.glb", (gltf) => {
     const root = new THREE.Group();
@@ -130,23 +131,41 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       if (m.map) m.map.anisotropy = 8;
     });
     rig.add(root);
-    root.updateMatrixWorld(true);
+    const turned = rig.rotation.y; // measure the face and the brain box with the bust facing forward
+    rig.rotation.y = 0;
+    rig.updateMatrixWorld(true);
     const hit = new THREE.Raycaster(new THREE.Vector3(0, EYE_Y, 5), new THREE.Vector3(0, 0, -1)).intersectObject(root, true)[0];
     const shades = buildShades(env);
     shades.position.set(0, EYE_Y, (hit ? hit.point.z : 0.45) + GAP);
     rig.add(shades);
+    brain.setFromObject(root);
+    brain.min.y = 0.58;
+    rig.rotation.y = turned;
     bust = root;
     draco.dispose();
     opts.onReady();
   }, undefined, () => draco.dispose());
 
-  const pointer = { mx: 0, ndc: new THREE.Vector2(9, 9) };
+  // Only a mouse steers the bust; touch is scrolling the page. Client coords are kept, not NDC, so a scroll
+  // under a resting mouse still updates what it is over.
+  const pointer = { mx: 0, x: NaN, y: NaN };
   const onMove = (e: PointerEvent) => {
+    if (!followsPointer(e.pointerType)) return;
     pointer.mx = (e.clientX / innerWidth) * 2 - 1;
-    const b = canvas.getBoundingClientRect();
-    pointer.ndc.set(((e.clientX - b.left) / b.width) * 2 - 1, -((e.clientY - b.top) / b.height) * 2 + 1);
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
+  };
+  const onLeave = () => {
+    pointer.x = pointer.y = NaN;
   };
   addEventListener("pointermove", onMove, { passive: true });
+  document.documentElement.addEventListener("pointerleave", onLeave);
+  addEventListener("blur", onLeave);
+  const onLost = (e: Event) => {
+    e.preventDefault();
+    opts.onLost();
+  };
+  canvas.addEventListener("webglcontextlost", onLost);
 
   const resize = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
@@ -160,16 +179,29 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
   resize();
 
   const ray = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  const box = new THREE.Box3();
+  const last = { x: NaN, y: NaN, yaw: NaN };
+  let over = 0;
   const cur = { p: scrollProgress(scrollY), mx: 0, hover: 0 };
   let raf = 0;
   const tick = () => {
     cur.p = approach(cur.p, scrollProgress(scrollY), 0.14);
     cur.mx = approach(cur.mx, pointer.mx, 0.06);
-    let over = 0;
-    if (bust) {
-      ray.setFromCamera(pointer.ndc, cam);
-      const h = ray.intersectObject(bust, true)[0];
-      if (h && isBrain(rig.worldToLocal(h.point.clone()).y)) over = 1;
+    rig.rotation.y = yaw(cur.p, cur.mx);
+    const look = { x: pointer.x, y: pointer.y + scrollY, yaw: rig.rotation.y };
+    if (bust && needsRaycast(last, look)) {
+      Object.assign(last, look);
+      over = 0;
+      if (!Number.isNaN(pointer.x)) {
+        const [nx, ny] = toNdc(pointer.x, pointer.y, canvas.getBoundingClientRect());
+        ray.setFromCamera(ndc.set(nx, ny), cam);
+        rig.updateMatrixWorld();
+        if (ray.ray.intersectsBox(box.copy(brain).applyMatrix4(rig.matrixWorld))) {
+          const h = ray.intersectObject(bust, true)[0];
+          if (h && isBrain(rig.worldToLocal(h.point.clone()).y)) over = 1;
+        }
+      }
     }
     cur.hover = approach(cur.hover, over, 0.09);
     const t = performance.now() / 1000;
@@ -180,7 +212,6 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       mats.forEach((m) => (m.opacity = q.s));
       b.visible = q.s > 0.01;
     });
-    rig.rotation.y = yaw(cur.p, cur.mx);
     r.render(scene, cam);
     raf = requestAnimationFrame(tick);
   };
@@ -197,6 +228,9 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       cancelAnimationFrame(raf);
       raf = 0;
       removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
+      removeEventListener("blur", onLeave);
+      canvas.removeEventListener("webglcontextlost", onLost);
       ro.disconnect();
       scene.traverse((o) => {
         if (o instanceof THREE.Mesh || o instanceof THREE.Sprite) {

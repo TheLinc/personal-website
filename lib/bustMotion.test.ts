@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isBrain, scrollProgress, thoughtPos, yaw } from "./bustMotion.ts";
+import { followsPointer, isBrain, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "./bustMotion.ts";
 
 test("yaw: turned toward the name at the top, facing forward after 40% of the scroll", () => {
   assert.equal(yaw(0, 0), -0.55);
@@ -26,4 +26,23 @@ test("thoughtPos: hidden inside the head at rest, out at its slot when hovered",
   const out = thoughtPos([0.3, 1, 0.2], 1, 0, 0);
   assert.equal(out.s, 1);
   assert.ok(Math.abs(out.x - 0.3) < 0.03);
+});
+
+test("followsPointer: only a real mouse steers the bust (touch scrolls the page)", () => {
+  assert.equal(followsPointer("mouse"), true);
+  assert.equal(followsPointer("touch"), false);
+  assert.equal(followsPointer("pen"), false);
+});
+
+test("toNdc: client point to -1..1 against the canvas box as it is now", () => {
+  assert.deepEqual(toNdc(150, 50, { left: 100, top: 0, width: 100, height: 100 }), [0, 0]);
+  assert.deepEqual(toNdc(200, 0, { left: 100, top: 0, width: 100, height: 100 }), [1, 1]);
+});
+
+test("needsRaycast: skip the expensive hit test when nothing moved", () => {
+  const a = { x: 10, y: 10, yaw: 0.1 };
+  assert.equal(needsRaycast(a, { ...a }), false);
+  assert.equal(needsRaycast(a, { ...a, x: 11 }), true);
+  assert.equal(needsRaycast(a, { ...a, yaw: 0.1005 }), false);
+  assert.equal(needsRaycast(a, { ...a, yaw: 0.105 }), true);
 });

@@ -26,3 +26,16 @@ export function thoughtPos(slot: [number, number, number], hoverT: number, i: nu
     s: e,
   };
 }
+
+/** Touch and pen pointers are scrolling the page, not steering the bust. */
+export const followsPointer = (pointerType: string) => pointerType === "mouse";
+
+/** A client point in normalized device coordinates (-1..1, y up) against the canvas box as it is now. */
+export function toNdc(clientX: number, clientY: number, box: { left: number; top: number; width: number; height: number }): [number, number] {
+  return [((clientX - box.left) / box.width) * 2 - 1, -((clientY - box.top) / box.height) * 2 + 1];
+}
+
+type Look = { x: number; y: number; yaw: number };
+/** The triangle hit test is costly; redo it only when the pointer moved or the bust turned noticeably. */
+export const needsRaycast = (last: Look, now: Look) =>
+  last.x !== now.x || last.y !== now.y || Math.abs(last.yaw - now.yaw) > 1e-3;
