@@ -37,16 +37,16 @@ export default function AgentRules() {
           <span className="mono mr-1 text-xs text-[#8a8478]" aria-live="polite">
             {at + 1} / {RULES.length}
           </span>
-          <button type="button" aria-label="Previous rule" onClick={() => go(-1)} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a]">
+          <button type="button" aria-label="Previous rule" onClick={() => go(-1)} disabled={at === 0} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30">
             ←
           </button>
-          <button type="button" aria-label="Next rule" onClick={() => go(1)} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a]">
+          <button type="button" aria-label="Next rule" onClick={() => go(1)} disabled={at === RULES.length - 1} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30">
             →
           </button>
         </div>
       </div>
 
-      <div ref={row} className="rules-row" onScroll={(e) => setAt(activeIndex(e.currentTarget.scrollLeft, step(), RULES.length))}>
+      <div ref={row} className="rules-row" onScroll={(e) => { const el = e.currentTarget; setAt(activeIndex(el.scrollLeft, step(), RULES.length, el.scrollWidth - el.clientWidth)); }}>
         {RULES.map((r, i) => (
           <article key={r.title} className="rules-card">
             <svg viewBox="0 0 200 130" aria-hidden="true">
