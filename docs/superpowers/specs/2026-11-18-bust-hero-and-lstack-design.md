@@ -20,9 +20,11 @@ Lincoln attaches this site to job applications. It should show an engineer who k
 ### Hero
 
 - **The bust:** a 3D stone bust of Lincoln, the only likeness on the site.
-  - Style: warm matte sandstone with a scanned-statue look, in the spirit of primesec.ai's statue.
+  - Style: smooth, warm ivory stone in the spirit of primesec.ai's statue.
+  - No fine detail: no pupils, no skin lines under the eyes, no painted texture. The face is smoothed in code.
+  - Depth comes from shading baked into the deep carving (hair, eye sockets, folds), not from texture.
   - Face kept slim to match him (the first marble version made his face too wide).
-- **Sunglasses:** curved two-lens wraparound sunglasses with frames in an accent colour. They're a separate 3D object from the bust.
+- **Sunglasses:** neon-yellow (#f4ff1f) shutter shades with five slats per lens, curved to the face. They're a separate 3D object from the bust and are left unaffected by the scene lighting so the neon stays bright.
 - **Hover:** the bust turns gently to follow the mouse.
 - **Scroll:** the bust starts turned toward the name and turns to face the visitor. Then the sunglasses slide down the nose and drop out of frame.
   - The motion is quick and snappy, with a smoothed scrub that catches up fast, like primesec.ai.
@@ -63,7 +65,6 @@ Lincoln attaches this site to job applications. It should show an engineer who k
 - **Model size:** the raw model is 5.9 MB. It will be compressed (Draco geometry and a resized WebP texture) to aim for 1.5 MB or less.
 - **Loading:** three.js loads only after the page appears. A still image of the bust shows first and also serves as the fallback.
 - **Reduced motion:** visitors who have animations turned off see the still image, with no hover or scroll animation.
-- **Accent colour:** the sunglasses use #5b5bf0, the site's indigo, which is easy to swap.
 - **Scroll mapping:** no pinning. The animation runs over the first ~520px of scrolling.
 - **Phone placement:** on small screens the bust sits smaller in the top right, behind the text. There's no hover on phones, so it follows scroll only.
 - **Build animation:** the hero still doesn't use the build animation; the agents start building from the next section.
