@@ -184,3 +184,42 @@ body:has(.site) {
     width: min(64vw, 300px);
   }
 }
+
+/* lstack rules carousel: line drawings that draw themselves in as each card comes into view. */
+.rules-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 18px;
+  padding-bottom: 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.rules-row::-webkit-scrollbar { display: none; }
+.rules-card {
+  flex: 0 0 232px;
+  scroll-snap-align: start;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 16px 16px;
+}
+.rules-card svg { display: block; width: 100%; height: auto; background: #f6f3ee; border-radius: 10px; }
+.rules-card .i { fill: none; stroke: #23211d; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.rules-card .r { stroke: #e2563b; }
+.rules-card .g { stroke: #11a37f; }
+.rules-card .b { stroke: #5b5bf0; }
+.rules-card .f { fill: #f6f3ee; }
+.rules-card .thick { stroke-width: 5; }
+.rules-card .dash { stroke-dasharray: 4 6; }
+.rules-card:not(.on) .i { visibility: hidden; }
+.rules-card.on .i:not(.dash) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: rule-draw 1s ease-out forwards; }
+.rules-card.on .d2 { animation-delay: 0.45s !important; }
+.rules-card.on .d3 { animation-delay: 0.85s !important; }
+.rules-card.on .dash { opacity: 0; animation: rule-fade 0.5s 0.45s forwards; }
+@keyframes rule-draw { to { stroke-dashoffset: 0; } }
+@keyframes rule-fade { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .rules-card .i { visibility: visible !important; animation: none !important; stroke-dashoffset: 0 !important; opacity: 1 !important; }
+  .rules-card .i:not(.dash) { stroke-dasharray: none !important; }
+}
