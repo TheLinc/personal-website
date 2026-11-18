@@ -8,6 +8,7 @@ import CoverMeProduct from "@/components/products/cover-me/CoverMeProduct";
 import OpenRoomDemo from "@/components/site/OpenRoomDemo";
 import Experience from "@/components/site/Experience";
 import ProjectCard from "@/components/site/ProjectCard";
+import AgentRules from "@/components/site/AgentRules";
 import { COVER_ME, OPEN_ROOM } from "@/content/projects";
 import ContributionGraph, { contributionStats, fmtDay } from "@/components/site/ContributionGraph";
 import { CHECKS, EMAIL, GITHUB, LINKEDIN, REVIEWS } from "@/content/site";
@@ -94,6 +95,33 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* How I ship with agents */}
+        <section id="agents" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Heading label="How I ship with agents" title="Eight rules my agents follow" />
+          <AgentRules />
+        </section>
+
+        {/* Experience */}
+        <section id="experience" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Heading label="git log --graph --career" title="Where I’ve worked" />
+          <Experience />
+        </section>
+
+        {/* Work */}
+        <section id="work" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Heading label="Built this way" title="Things I’ve built this way" />
+
+          <ProjectCard p={COVER_ME}>
+            <div className="rounded-2xl border border-[#e8e3da] bg-[#f6f3ee] px-3 py-6 sm:px-6 sm:py-8">
+              <CoverMeProduct />
+            </div>
+          </ProjectCard>
+
+          <ProjectCard p={OPEN_ROOM}>
+            <OpenRoomDemo />
+          </ProjectCard>
+        </section>
+
         {/* GitHub */}
         <section className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24" aria-labelledby="github">
           <div className="card p-5 sm:p-8">
@@ -119,29 +147,6 @@ export default async function Home() {
               ))}
             </div>
           </div>
-        </section>
-
-        {/* Work */}
-        <section id="work" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
-          <Heading label="Selected work" title="Things I’ve shipped" />
-
-          <ProjectCard p={COVER_ME}>
-            <div className="rounded-2xl border border-[#e8e3da] bg-[#f6f3ee] px-3 py-6 sm:px-6 sm:py-8" data-build="box" data-label="extension demo">
-              <CoverMeProduct />
-            </div>
-          </ProjectCard>
-
-          <ProjectCard p={OPEN_ROOM}>
-            <div data-build="box" data-label="app demo">
-              <OpenRoomDemo />
-            </div>
-          </ProjectCard>
-        </section>
-
-        {/* Experience */}
-        <section id="experience" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
-          <Heading label="git log --graph --career" title="Where I’ve worked" />
-          <Experience />
         </section>
 
         {/* Skills */}

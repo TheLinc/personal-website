@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import type { ReactNode } from "react";
 import type { Project } from "@/content/projects";
+import SeeItRun from "./SeeItRun";
 
-// One project: compact header, the live demo, then how it's built and the hardest problems.
+// One project: compact header, the demo behind "See it run", then how it's built and the hardest problems.
 export default function ProjectCard({ p, children }: { p: Project; children: ReactNode }) {
   return (
     <article className="card mt-6 p-5 first-of-type:mt-10 sm:p-8" aria-labelledby={p.id}>
@@ -33,7 +34,7 @@ export default function ProjectCard({ p, children }: { p: Project; children: Rea
         </dl>
       )}
 
-      <div className="mt-6">{children}</div>
+      <SeeItRun>{children}</SeeItRun>
 
       <div className="mt-8 grid gap-8 border-t border-[#ece7df] pt-7 md:grid-cols-[5fr_7fr] md:gap-10">
         <section aria-label={`How ${p.name} is built`} data-build="box" data-label="how it's built">
