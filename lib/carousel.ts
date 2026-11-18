@@ -1,6 +1,9 @@
-/** Which card a horizontally scrolled row is showing, given the distance between card starts. Once the row
- *  can't scroll any further (several cards fit on screen), it counts as the last card. */
-export function activeIndex(scrollLeft: number, step: number, count: number, maxScroll = Infinity): number {
-  if (scrollLeft >= maxScroll - 1) return count - 1;
-  return step ? Math.min(count - 1, Math.max(0, Math.round(scrollLeft / step))) : 0;
+/** First and last card (0-based) on screen in a horizontally scrolled row, given the distance between card
+ *  starts and how far the row can scroll. The number on screen is whatever is left once the row hits its end. */
+export function visibleCards(scrollLeft: number, step: number, count: number, maxScroll: number): [number, number] {
+  if (!step) return [0, 0];
+  const start = (x: number) => Math.min(count - 1, Math.max(0, Math.round(x / step)));
+  const shown = count - start(maxScroll);
+  const first = Math.min(start(scrollLeft), count - shown);
+  return [first, first + shown - 1];
 }
