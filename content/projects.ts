@@ -22,7 +22,7 @@ export const COVER_ME: Project = {
   summary:
     "A Chrome extension that writes your cover letter and tailors your resume to a job posting in about 20 seconds, without inventing experience.",
   links: [["cover-me.dev", "https://cover-me.dev"], ["Source", "https://github.com/TheLinc/cover-me"]],
-  stats: [["~20 s", "per application"], ["200+", "users, paid plans"], ["32", "resumes in its eval suite"]],
+  stats: [["~20 s", "per application"], ["200+", "users"], ["32", "resumes in its eval suite"]],
   flow: [
     { step: "Lives in your browser", detail: "Reads your resume right on your computer.", tech: [["React", "react.png"], ["TypeScript", "ts.png"], ["pdf.js"]] },
     { step: "Reads the job posting", detail: "Pulls the details from LinkedIn, Greenhouse, Lever and more.", tech: [["Supabase Edge Functions", "supabase.png"]] },
