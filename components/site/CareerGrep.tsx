@@ -10,7 +10,6 @@ import { grep, suggest, SKILL_COUNT } from "@/lib/careerIndex";
 
 const CHIPS = ["React", "AI", "Payments", "TypeScript", "Leadership", "Testing", "AWS", "Accessibility", "Postgres", "Mobile"];
 const DEMO = "AI";
-const CLAUDE = "#d97757";
 /** Logos that are already full square tiles. */
 const TILES = new Set(["/assets/core.png", "/assets/openroom.png"]);
 
@@ -72,10 +71,7 @@ export default function CareerGrep() {
     setQuery("");
     [...q].forEach((_, i) => timers.current.push(window.setTimeout(() => setQuery(q.slice(0, i + 1)), 70 * (i + 1))));
     timers.current.push(
-      window.setTimeout(() => {
-        setTyping(false);
-        window.dispatchEvent(new CustomEvent("site-log", { detail: { msg: `Claude searched "${q}"`, color: CLAUDE, ms: 70 * q.length } }));
-      }, 70 * q.length + 60),
+      window.setTimeout(() => setTyping(false), 70 * q.length + 60),
     );
   }
 

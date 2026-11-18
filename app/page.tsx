@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { getCalendar } from "@/lib/github";
 import BuildEngine from "@/components/site/BuildEngine";
-import HeroCharacter from "@/components/site/HeroCharacter";
 import CareerGrep from "@/components/site/CareerGrep";
 import IconPile from "@/components/site/IconPile";
 import CoverMeProduct from "@/components/products/cover-me/CoverMeProduct";
@@ -58,7 +57,7 @@ export default async function Home() {
 
       <main id="top">
         {/* Hero */}
-        <section className="mx-auto grid max-w-5xl items-center gap-6 px-5 pb-16 pt-14 sm:px-6 md:pt-24 lg:grid-cols-[1.25fr_1fr] lg:gap-10 lg:pb-20">
+        <section className="mx-auto max-w-5xl px-5 pb-16 pt-14 sm:px-6 md:pt-24 lg:pb-20">
           <div>
             <p className="chip w-fit !pl-3 text-[13px]">
               <span className="live-dot" />
@@ -67,7 +66,7 @@ export default async function Home() {
             <h1 className="mt-6 text-[clamp(44px,7vw,84px)]">
               Lincoln Laylor
             </h1>
-            <p className="mt-4 max-w-[30ch] text-[clamp(21px,3vw,32px)] leading-tight">
+            <p className="mt-4 max-w-[36ch] text-[clamp(21px,3vw,32px)] leading-tight text-balance">
               Full-stack engineer. I build AI products, and the agent workflows that ship them.
             </p>
             <p className="mt-4 max-w-[56ch] text-[#6d6962]">
@@ -86,7 +85,6 @@ export default async function Home() {
               </a>
             </div>
           </div>
-          <HeroCharacter wave="/assets/me-wave.mp4" loop="/assets/me-loop.mp4" />
         </section>
 
         {/* GitHub */}

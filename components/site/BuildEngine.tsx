@@ -3,7 +3,6 @@
 // "Agents build the page as you scroll".
 // Every element marked [data-build] gets a --t from 0 to 1. CSS turns --t into the
 // reveal; this engine draws the wireframe boxes and flies the agent cursors.
-// Intro: the hero character calls the agents, four dots orbit him, then fly off to build.
 
 import { useEffect, useRef } from "react";
 
@@ -27,10 +26,6 @@ const MAX_ACTIVE = 2;
 const QUIET_AFTER = 1400; // ms a job may wait for an agent before it fades in by itself
 const BASE: Record<Kind, number> = { box: 750, text: 1000, image: 700, data: 1800, check: 650 };
 const EASE = 0.09; // cursor glide per frame
-// Intro timing (ms from load), matched to the speech bubble in HeroCharacter.
-const ORBIT_IN = 500;
-const RELEASE = 1900;
-const LAP = 1000; // one orbit
 
 export default function BuildEngine() {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -66,19 +61,12 @@ export default function BuildEngine() {
       });
     }
 
-    const hero = document.querySelector<HTMLElement>("[data-hero-character]");
-    const t0 = performance.now();
-    // Skip the intro when the character isn't on screen (e.g. reloaded halfway down the page).
-    const heroRect = hero?.getBoundingClientRect();
-    let intro = !!heroRect && heroRect.bottom > 0 && heroRect.top < window.innerHeight;
-
     const pos = COLORS.map(() => ({ x: 0, y: 0, init: false }));
     const pending: number[] = [];
     const current: (Job | null)[] = COLORS.map(() => null);
     const queued = new Map<number, number>(); // item → when it became work
     const jobsDone = COLORS.map(() => 0);
     let raf = 0;
-    let releasedAt = -1e9;
 
     function finishNow(i: number) {
       const it = items[i];
@@ -91,37 +79,7 @@ export default function BuildEngine() {
       return vt + items[i].h > 0 && vt < vh;
     };
 
-    // Four dots circle the character's waist, nearer dots larger, like rings around a planet.
-    function orbit(now: number) {
-      const r = hero!.getBoundingClientRect();
-      const e = now - t0;
-      const grow = clamp((e - ORBIT_IN) / 350);
-      COLORS.forEach((_, a) => {
-        const c = cursorRefs.current[a];
-        if (!c) return;
-        const ang = (e / LAP) * Math.PI * 2 + (a * Math.PI) / 2;
-        const depth = Math.sin(ang);
-        const x = r.left + r.width * 0.5 + Math.cos(ang) * r.width * 0.36 * grow;
-        const y = r.top + r.height * 0.55 + depth * r.height * 0.1 * grow;
-        Object.assign(pos[a], { x, y, init: true });
-        c.dataset.away = grow > 0 ? "1" : "0";
-        c.dataset.mode = "dot";
-        c.style.transform = `translate(${x}px, ${y}px) scale(${0.8 + 0.3 * depth})`;
-        c.style.opacity = String(grow * (0.5 + 0.5 * Math.max(depth, 0)));
-      });
-    }
-
     function frame(now: number) {
-      if (intro) {
-        if (now - t0 < RELEASE) {
-          orbit(now);
-          raf = requestAnimationFrame(frame);
-          return;
-        }
-        intro = false;
-        releasedAt = now;
-      }
-
       const vh = window.innerHeight;
       const vw = document.documentElement.clientWidth;
       const sy = window.scrollY;
@@ -158,7 +116,7 @@ export default function BuildEngine() {
         current[a] = { i, start: now, dur: BASE[items[i].kind] };
       }
 
-      COLORS.forEach((color, a) => {
+      COLORS.forEach((_, a) => {
         let job = current[a];
         if (job && !onScreen(job.i, sy, vh)) {
           items[job.i].overlay.style.display = "none";
@@ -190,7 +148,6 @@ export default function BuildEngine() {
           it.el.dataset.done = "1";
           current[a] = null;
           jobsDone[a]++;
-          window.dispatchEvent(new CustomEvent("site-log", { detail: { color } }));
         }
       });
 
@@ -198,14 +155,9 @@ export default function BuildEngine() {
         const c = cursorRefs.current[a];
         if (!c) return;
         const p = pos[a];
-        // Right after the intro, agents without a job still fly off into the page before fading out.
-        const drift = now - releasedAt < 600;
-        if (drift) busy = true;
-        const tgt = targets[a] ?? (drift ? { x: vw * (0.2 + 0.2 * a), y: vh - 30 } : null);
-        c.dataset.away = tgt && (targets[a] || now - releasedAt < 350) ? "1" : "0";
-        c.dataset.mode = "pointer";
-        c.style.opacity = "";
-        // Idle agents fade out where they stopped. Without the intro, the first job glides in from below.
+        const tgt = targets[a];
+        c.dataset.away = tgt ? "1" : "0";
+        // Idle agents fade out where they stopped; the first job glides in from below.
         if (!tgt) return;
         if (!p.init) Object.assign(p, { x: vw / 2, y: vh + 30, init: true });
         p.x += (tgt.x - p.x) * EASE;
@@ -258,7 +210,6 @@ export default function BuildEngine() {
           style={{ ["--c" as string]: c }}
           aria-hidden="true"
         >
-          <span className="site-cursor-dot" />
           <svg width="16" height="18" viewBox="0 0 16 18">
             <path d="M1 1 L1 15 L5 11 L8 17 L10.5 16 L7.6 10 L13 10 Z" fill="var(--c)" stroke="#fff" strokeWidth="1.4" strokeLinejoin="round" />
           </svg>
