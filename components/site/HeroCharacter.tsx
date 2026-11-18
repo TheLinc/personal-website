@@ -59,8 +59,10 @@ export default function HeroCharacter({ wave, loop }: { wave?: string; loop?: st
       )}
       {/* Calls the agents in; BuildEngine times the orbiting dots to this. */}
       {!reduced && (
-        <p className="hero-bubble absolute top-[2%] left-[4%] z-10 rounded-2xl rounded-bl-sm border border-[#e8e3da] bg-white px-3.5 py-2 text-sm font-semibold shadow-[0_10px_24px_-14px_rgba(40,30,10,0.45)]">
-          Ok agents, let’s get building!
+        // Sits in the empty space left of his face (face starts ~33% across; mouth ~34% down), tail pointing at his mouth.
+        <p className="hero-bubble absolute top-[15%] right-[66%] z-10 w-max max-w-[min(168px,30vw)] rounded-2xl border border-[#e8e3da] bg-white px-2.5 py-1.5 text-[12px] leading-snug sm:px-3 sm:py-2 sm:text-[13px] font-semibold shadow-[0_10px_24px_-14px_rgba(40,30,10,0.45)]">
+          Ok agents,<br /> let’s get building!
+          <span aria-hidden className="absolute -right-[5px] bottom-3 size-2.5 rotate-[-45deg] border-r border-b border-[#e8e3da] bg-white" />
         </p>
       )}
       {/* Sparks rise from the laptop (about 33% across, 47% down in the frame). */}
