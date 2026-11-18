@@ -149,23 +149,76 @@ body:has(.site) {
 .site .spin { animation: site-spin 0.8s linear infinite; }
 @keyframes site-spin { to { transform: rotate(360deg); } }
 
-/* Hero: the bust stands in front of the name (hair just over the end of "Lincoln"), behind the rest. */
+/* Hero: name on the left, a line on the right, the bust standing between them over quiet background lines. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 72px;
+}
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-lines path {
+  fill: none;
+  stroke: #e2dccf;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: line-in 1.6s cubic-bezier(.3, .7, .2, 1) forwards;
+}
+.hero-lines .x { stroke: #c9c1b1; stroke-dasharray: none; stroke-dashoffset: 0; opacity: 0; animation: fade-in .5s ease forwards; }
+@keyframes line-in { to { stroke-dashoffset: 0; } }
+@keyframes fade-in { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-lines path { animation: none; stroke-dashoffset: 0; opacity: 1; }
+}
+.hero-grid {
+  position: relative;
+  max-width: 1320px;
+  margin: 0 auto;
+  min-height: min(880px, max(720px, 100svh - 72px));
+  padding: 48px 24px 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "left say" ". ." "sub .";
+}
+.hero-left { grid-area: left; position: relative; z-index: 3; }
+.hero-say {
+  grid-area: say;
+  position: relative;
+  z-index: 3;
+  justify-self: end;
+  text-align: right;
+  margin-top: clamp(80px, 9vw, 130px);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 4.4vw, 64px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.hero-sub { grid-area: sub; position: relative; z-index: 3; }
 .hero-name {
-  --h: clamp(64px, 13vw, 150px);
-  font-size: var(--h);
-  line-height: 0.86;
-  letter-spacing: -0.055em;
+  font-size: clamp(56px, 7vw, 108px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
   font-weight: 800;
 }
 .hero-bust {
-  --h: clamp(64px, 13vw, 150px);
   position: absolute;
   z-index: 2;
   pointer-events: none;
-  top: calc(var(--h) * -0.62);
-  left: calc(var(--h) * 1.98);
-  width: calc(var(--h) * 4.8);
+  left: 50%;
+  bottom: -9%;
+  height: 104%;
   aspect-ratio: 720 / 760;
+  transform: translateX(-50%);
 }
 .hero-bust > * {
   position: absolute;
@@ -174,15 +227,27 @@ body:has(.site) {
   height: 100%;
   transition: opacity 600ms ease;
 }
-@media (max-width: 767px) {
-  .hero-bust {
-    z-index: 0;
-    opacity: 0.9;
-    left: auto;
-    right: -16vw;
-    top: -34px;
-    width: min(64vw, 300px);
+@media (max-width: 899px) {
+  .hero-grid {
+    min-height: 0;
+    padding-top: 32px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas: "left" "bust" "say" "sub";
   }
+  .hero-bust {
+    grid-area: bust;
+    position: relative;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    justify-self: center;
+    height: auto;
+    width: min(100%, 460px);
+    margin: -8px 0 12px;
+  }
+  .hero-say { justify-self: start; text-align: left; margin-top: 0; }
+  .hero-sub { margin-top: 20px; }
 }
 
 /* lstack rules carousel: line drawings that draw themselves in as each card comes into view. */

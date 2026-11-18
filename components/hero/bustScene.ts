@@ -8,8 +8,8 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { approach, followsPointer, isBrain, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "@/lib/bustMotion";
 import { bendPoint, LENS, rowExtent } from "@/lib/shades";
 
-const NEON = "#f4ff1f";
-const EYE_Y = 0.5;
+const NEON = "#f2e21b";
+const EYE_Y = 0.45;
 const GAP = 0.05; // shades sit this far in front of the face
 const THOUGHTS: [string, [number, number, number]][] = [
   ["/assets/bust/icons/claude.svg", [-0.3, 0.9, 0.2]],
@@ -34,8 +34,7 @@ function bend(geo: THREE.BufferGeometry, R: number) {
 function buildShades(env: THREE.Texture) {
   const g = new THREE.Group();
   const R = 0.38, MID = 0.045, T = 0.026, SLATS = 5, S = 1.05;
-  const mat = new THREE.MeshStandardMaterial({ color: NEON, roughness: 0.38, metalness: 0, emissive: NEON, emissiveIntensity: 0.18, envMap: env, envMapIntensity: 0.5 });
-  mat.toneMapped = false;
+  const mat = new THREE.MeshStandardMaterial({ color: NEON, roughness: 0.55, metalness: 0, envMap: env, envMapIntensity: 0.3 });
   for (const sx of [-1, 1]) {
     const v = LENS.map(([x, y]) => new THREE.Vector2(sx * (MID / 2 + x * S), y * S));
     const outer = new THREE.Shape();

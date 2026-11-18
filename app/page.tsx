@@ -2,6 +2,7 @@
 import { getCalendar } from "@/lib/github";
 import BuildEngine from "@/components/site/BuildEngine";
 import Bust from "@/components/hero/Bust";
+import HeroLines from "@/components/hero/HeroLines";
 import CareerGrep from "@/components/site/CareerGrep";
 import IconPile from "@/components/site/IconPile";
 import CoverMeProduct from "@/components/products/cover-me/CoverMeProduct";
@@ -46,7 +47,7 @@ export default async function Home() {
     <div className="site">
       <BuildEngine />
 
-      <header className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 pt-6 text-sm sm:px-6">
+      <header className="mx-auto flex max-w-[1320px] items-center justify-between gap-4 px-6 pt-6 text-sm">
         <a href="#top" className="whitespace-nowrap font-semibold">
           Lincoln Laylor
         </a>
@@ -59,38 +60,43 @@ export default async function Home() {
 
       <main id="top">
         {/* Hero */}
-        <section className="hero mx-auto max-w-5xl overflow-x-clip px-5 pb-16 pt-14 sm:px-6 md:pt-20 lg:pb-20">
-          <p className="relative z-[3] chip w-fit !pl-3 text-[13px]">
-            <span className="live-dot" />
-            Shipping · last commit {s.daysAgo === 0 ? "today" : `${s.daysAgo}d ago`} · {total} this year
-          </p>
-          <div className="relative mt-6">
-            <Bust />
-            <h1 className="hero-name relative z-[1]">
-              Lincoln
-              <br />
-              Laylor
-            </h1>
-          </div>
-          <div className="relative z-[3]">
-            <p className="mt-6 max-w-[19ch] text-[clamp(21px,2.6vw,28px)] leading-tight text-balance">
-              Full-stack engineer. I build AI products, and the agent workflows that ship them.
-            </p>
-            <p className="mt-4 max-w-[36ch] text-[#6d6962]">
-              Full Stack Developer at Opinion System, where I lead AI integrations. Building Cover Me on the side. Ottawa, Canada.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              <Logo src="/assets/os.png" name="Opinion System" />
-              <a href="https://github.com/TheLinc/lstack" className="chip mono !pl-3">lstack</a>
-              <Logo src="/assets/coverme.png" name="Cover Me" />
+        <section className="hero">
+          <HeroLines />
+          <div className="hero-grid">
+            <div className="hero-left">
+              <p className="chip w-fit !pl-3 text-[13px]">
+                <span className="live-dot" />
+                Shipping · last commit {s.daysAgo === 0 ? "today" : `${s.daysAgo}d ago`} · {total} this year
+              </p>
+              <h1 className="hero-name mt-6">
+                Lincoln
+                <br />
+                Laylor.
+              </h1>
             </div>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#work" className="rounded-full bg-[#1d1c1a] px-5 py-3 text-sm font-semibold text-white">
-                See the work ↓
-              </a>
-              <a href={`mailto:${EMAIL}`} className="rounded-full border border-[#e8e3da] bg-white px-5 py-3 text-sm font-semibold">
-                Email me
-              </a>
+            <Bust />
+            <p className="hero-say">
+              Ships with
+              <br />
+              agents.
+            </p>
+            <div className="hero-sub">
+              <p className="max-w-[34ch] text-[clamp(17px,1.6vw,20px)] leading-snug text-[#4a4741]">
+                Full-stack engineer. I build AI products, and the agent workflows that ship them. Full Stack Developer at Opinion System, where I lead AI integrations. Ottawa, Canada.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href="#work" className="rounded-full bg-[#1d1c1a] px-5 py-3 text-sm font-semibold text-white">
+                  See the work ↓
+                </a>
+                <a href={`mailto:${EMAIL}`} className="rounded-full border border-[#e8e3da] bg-white px-5 py-3 text-sm font-semibold">
+                  Email me
+                </a>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <Logo src="/assets/os.png" name="Opinion System" />
+                <a href="https://github.com/TheLinc/lstack" className="chip mono !pl-3">lstack</a>
+                <Logo src="/assets/coverme.png" name="Cover Me" />
+              </div>
             </div>
           </div>
         </section>
