@@ -240,7 +240,7 @@ export default async function Home() {
       </main>
 
       <footer className="mono mx-auto max-w-5xl px-5 pb-28 text-center text-xs text-[#6d6962] sm:px-6" data-build="text" data-label="footer">
-        Built in front of you by four agents. © 2026 Lincoln Laylor
+        © 2026 Lincoln Laylor
       </footer>
     </div>
   );
