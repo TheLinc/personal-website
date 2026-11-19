@@ -51,23 +51,23 @@ export default function Experience() {
         <li key={r.company} id={r.company.toLowerCase().replace(/ /g, "-")} className="flex scroll-mt-6 gap-1.5 sm:gap-4" data-build="box" data-label={r.company}>
           <Gutter index={i} last={i === ROLES.length - 1} branch={r.branch} head={r.head} />
           <div className="card mb-4 min-w-0 flex-1 p-4 sm:p-5">
-            <div className="flex items-start gap-3 sm:gap-4">
+            {/* Phones: commit line on top, logo beside the company name, role and dates full width below, so no
+                empty column under the logo. From sm up the logo sits beside all three lines. */}
+            <div className="grid grid-cols-[auto_1fr] items-center gap-x-3 sm:gap-x-4">
               <img
                 src={r.logo}
                 alt=""
-                className={`size-11 shrink-0 rounded-xl ${r.tile ? "object-cover" : "border border-[#e8e3da] bg-white object-contain p-1"}`}
+                className={`row-start-2 mt-2 size-10 shrink-0 rounded-xl sm:row-span-3 sm:row-start-1 sm:mt-0 sm:size-11 sm:self-start ${r.tile ? "object-cover" : "border border-[#e8e3da] bg-white object-contain p-1"}`}
               />
-              <div className="min-w-0">
-                <p className="mono flex flex-wrap items-center gap-1.5 text-[11px] text-[#6d6962]">
-                  {r.hash}
-                  {r.head && <span className="rounded bg-[#e3f6ee] px-1.5 py-0.5 text-[#0d7a5f]">HEAD → main</span>}
-                  {r.branch && <span className="rounded bg-[#ecebfe] px-1.5 py-0.5 text-[#4646c8]">contract</span>}
-                </p>
-                <h3 className="mt-1 text-xl">{r.company}</h3>
-                <p className="text-sm text-[#6d6962]">
-                  {r.role} · {r.when}
-                </p>
-              </div>
+              <p className="mono col-span-2 row-start-1 flex flex-wrap items-center gap-1.5 text-[11px] text-[#6d6962] sm:col-span-1 sm:col-start-2">
+                {r.hash}
+                {r.head && <span className="rounded bg-[#e3f6ee] px-1.5 py-0.5 text-[#0d7a5f]">HEAD → main</span>}
+                {r.branch && <span className="rounded bg-[#ecebfe] px-1.5 py-0.5 text-[#4646c8]">contract</span>}
+              </p>
+              <h3 className="col-start-2 row-start-2 mt-2 text-xl sm:mt-1">{r.company}</h3>
+              <p className="col-span-2 row-start-3 mt-1 text-sm text-[#6d6962] sm:col-span-1 sm:col-start-2 sm:mt-0">
+                {r.role} · {r.when}
+              </p>
             </div>
             {/* Full card width on phones; lined up under the title from sm up. */}
             <div className="sm:pl-[60px]">
