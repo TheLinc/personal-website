@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef, useState } from "react";
+import { preload } from "react-dom";
 
 // A still of the bust shows at once; the live 3D scene loads after the page and fades in over it.
 // Reduced motion, no WebGL, a failed load or a lost GPU context: the still shows.
@@ -12,6 +13,10 @@ export default function Bust() {
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!document.createElement("canvas").getContext("webgl2")) return;
+    // The scene only asks for these once three.js has loaded and set up; fetch them alongside it instead.
+    for (const href of ["/assets/bust/bust.glb", "/draco/draco_wasm_wrapper.js", "/draco/draco_decoder.wasm"]) {
+      preload(href, { as: "fetch", crossOrigin: "anonymous" });
+    }
     const canvas = canvasRef.current!;
     let dead = false;
     let scene: { dispose(): void; setActive(on: boolean): void } | undefined;

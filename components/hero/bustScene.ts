@@ -7,6 +7,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { TessellateModifier } from "three/examples/jsm/modifiers/TessellateModifier.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { MeshBVH, acceleratedRaycast } from "three-mesh-bvh";
 import { approach, drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw, isSettled } from "@/lib/bustMotion";
 import { bendPoint, frontOutline, insidePoly, lensOpening, restOffset, rowExtent, slatBars } from "@/lib/shades";
 
@@ -129,6 +130,7 @@ const ARM_CLEAR = 0.012;
 const MAX_SPLAY = Math.tan((5 * Math.PI) / 180);
 function aimArms(shades: THREE.Object3D, head: THREE.Object3D) {
   const ray = new THREE.Raycaster();
+  ray.firstHitOnly = true;
   const parts = new Map<number, { arm?: THREE.Object3D; hinge?: THREE.Object3D }>();
   shades.traverse((o) => {
     const sx = (o.userData.arm ?? o.userData.hinge) as number | undefined;
@@ -240,6 +242,9 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       Object.assign(m, { roughness: 0.85, metalness: 0, envMap: env, envMapIntensity: 0.2 });
       o.receiveShadow = true;
       if (m.map) m.map.anisotropy = 8;
+      // Fitting the glasses and the hover test cast rays at a 113k-triangle mesh; without a BVH each ray checks every triangle.
+      o.geometry.boundsTree = new MeshBVH(o.geometry);
+      o.raycast = acceleratedRaycast;
     });
     rig.add(root);
     const turned = rig.rotation.y; // measure the face and the brain box with the bust facing forward
@@ -252,6 +257,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     shades.updateMatrixWorld(true);
     // Rest the frame as close to the face as it goes without touching: ray-test the face behind points on the frame.
     const down = new THREE.Raycaster();
+    down.firstHitOnly = true;
     // Sample a grid over the whole front, not just its edge: the brow ridge between the lenses sticks out furthest.
     const outline = frontOutline(), oy = outline.map((p) => p.y);
     const grid: { x: number; y: number }[] = [];
@@ -328,6 +334,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
   resize();
 
   const ray = new THREE.Raycaster();
+  ray.firstHitOnly = true;
   const tmp = new THREE.Vector3();
   const ndc = new THREE.Vector2();
   const box = new THREE.Box3();

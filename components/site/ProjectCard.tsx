@@ -62,7 +62,7 @@ export default function ProjectCard({ p, children }: { p: Project; children: Rea
                       <li key={name} className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e3da] bg-white py-0.5 pr-2.5 pl-1 text-xs font-medium">
                         {icon ? (
                           <span className="grid size-5 place-items-center">
-                            <img src={`/assets/icons/${icon}`} alt="" className={TILES.has(icon) ? "size-4 rounded-[4px]" : "size-5 object-contain"} />
+                            <img src={`/assets/icons/${icon}`} alt="" loading="lazy" className={TILES.has(icon) ? "size-4 rounded-[4px]" : "size-5 object-contain"} />
                           </span>
                         ) : (
                           <span aria-hidden className="grid size-5 place-items-center rounded-full bg-[#f4f2ff] text-[10px] text-[#5b5bf0]">{name[0]}</span>

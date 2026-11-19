@@ -218,7 +218,7 @@ export default function IconPile() {
           style={{ width: "var(--d)", height: "var(--d)", pointerEvents: reduced ? "none" : "auto" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`/assets/icons/${file}`} alt="" draggable={false} className="pointer-events-none size-[58%] object-contain" />
+          <img src={`/assets/icons/${file}`} alt="" loading="lazy" draggable={false} className="pointer-events-none size-[58%] object-contain" />
         </div>
       ))}
     </div>
