@@ -17,15 +17,12 @@ import { CHECKS, EMAIL, GITHUB, LINKEDIN, REVIEWS } from "@/content/site";
 
 export const revalidate = 86400;
 
-/** A logo chip pinned to the hero; clicking it scrolls to that part of the page. */
+/** A logo chip taped to the hero; clicking it scrolls to that part of the page. */
 function Pinned({ src, name, to }: { src: string; name: string; to: string }) {
   return (
-    <a href={to} className="chip pinned">
+    <a href={to} className="chip taped">
       <img src={src} alt="" />
       {name}
-      <svg className="pin" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 17v5M9 3h6M10 3v6l-3.5 5v3h11v-3L14 9V3" />
-      </svg>
     </a>
   );
 }
@@ -97,7 +94,7 @@ export default async function Home() {
                   Email me
                 </a>
               </div>
-              <div className="mt-6 flex flex-wrap gap-2.5">
+              <div className="mt-7 flex flex-wrap gap-4">
                 <Pinned src="/assets/os.png" name="Opinion System" to="#opinion-system" />
                 <Pinned src="/assets/coverme.png" name="Cover Me" to="#cover-me" />
               </div>
