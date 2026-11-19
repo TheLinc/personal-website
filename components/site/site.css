@@ -202,7 +202,7 @@ body:has(.site) {
   font-weight: 700;
   font-size: clamp(36px, 4.4vw, 64px);
   line-height: 0.95;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.005em; /* tighter tracking makes hollow letters cross each other */
   /* Outline only: the letters stay the hero's weight but read as drawn, not filled. */
   color: transparent;
   -webkit-text-stroke: clamp(1px, 0.09vw, 1.5px) #1d1c1a;
