@@ -28,6 +28,20 @@ export default function AgentRules() {
   }, []);
 
   const go = (d: number) => row.current!.scrollBy({ left: d * step(row.current!), behavior: "smooth" });
+  // The arrows appear once per layout: beside the count on wider screens, around the dots on phones.
+  const arrow = (d: -1 | 1, show: string) => (
+    <button
+      type="button"
+      aria-label={d < 0 ? "Previous rule" : "Next rule"}
+      onClick={() => go(d)}
+      disabled={d < 0 ? first === 0 : last === RULES.length - 1}
+      className={`${show} size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30`}
+    >
+      <ArrowIcon dir={d < 0 ? "left" : "right"} />
+    </button>
+  );
+  const prev = (show: string) => arrow(-1, show);
+  const next = (show: string) => arrow(1, show);
 
   return (
     <div className="mt-8" data-build="box" data-label="lstack rules">
@@ -37,15 +51,12 @@ export default function AgentRules() {
           <span className="text-[#8a8478]">(coming soon)</span>
         </p>
         <div className="flex shrink-0 items-center gap-2">
-          <span className="mono mr-1 text-xs text-[#8a8478]" aria-live="polite">
+          {/* Phones: the dots below show where you are, so the count is for screen readers only. */}
+          <span className="mono sr-only mr-1 text-xs text-[#8a8478] sm:not-sr-only" aria-live="polite">
             {first === last ? first + 1 : `${first + 1}–${last + 1}`} / {RULES.length}
           </span>
-          <button type="button" aria-label="Previous rule" onClick={() => go(-1)} disabled={first === 0} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30">
-            <ArrowIcon dir="left" />
-          </button>
-          <button type="button" aria-label="Next rule" onClick={() => go(1)} disabled={last === RULES.length - 1} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30">
-            <ArrowIcon dir="right" />
-          </button>
+          {prev("hidden sm:grid")}
+          {next("hidden sm:grid")}
         </div>
       </div>
 
@@ -62,10 +73,15 @@ export default function AgentRules() {
         ))}
       </div>
 
-      <div className="mt-3 flex justify-center gap-1.5" aria-hidden="true">
-        {RULES.map((r, i) => (
-          <i key={r.title} className={`size-1.5 rounded-full ${i >= first && i <= last ? "bg-[#1d1c1a]" : "bg-[#ddd6ca]"}`} />
-        ))}
+      {/* Phones: the arrows sit either side of the dots, under the cards. */}
+      <div className="mt-3 flex items-center justify-center gap-5">
+        {prev("grid sm:hidden")}
+        <div className="flex gap-1.5" aria-hidden="true">
+          {RULES.map((r, i) => (
+            <i key={r.title} className={`size-1.5 rounded-full ${i >= first && i <= last ? "bg-[#1d1c1a]" : "bg-[#ddd6ca]"}`} />
+          ))}
+        </div>
+        {next("grid sm:hidden")}
       </div>
 
       <svg width="0" height="0" className="absolute" aria-hidden="true">
