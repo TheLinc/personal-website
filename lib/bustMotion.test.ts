@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "./bustMotion.ts";
+import { drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw, isSettled } from "./bustMotion.ts";
 
 test("yaw: turned toward the name at the top, facing forward after 40% of the scroll", () => {
   assert.equal(yaw(0, 0), -0.55);
@@ -51,4 +51,14 @@ test("needsRaycast: skip the expensive hit test when nothing moved", () => {
   assert.equal(needsRaycast(a, { ...a, x: 11 }), true);
   assert.equal(needsRaycast(a, { ...a, yaw: 0.1005 }), false);
   assert.equal(needsRaycast(a, { ...a, yaw: 0.105 }), true);
+});
+
+test("isSettled: nothing left to animate once the turn and swing have caught up and the bubbles are tucked away", () => {
+  const still = { p: 1, pTo: 1, mx: 0.5, mxTo: 0.5, hover: 0, over: 0 };
+  assert.equal(isSettled(still), true);
+  assert.equal(isSettled({ ...still, p: 0.9 }), false); // still turning from a scroll
+  assert.equal(isSettled({ ...still, mx: 0.49 }), false); // still swinging toward the mouse
+  assert.equal(isSettled({ ...still, mx: 0.49999 }), true); // close enough that no pixel moves
+  assert.equal(isSettled({ ...still, hover: 0.3 }), false); // bubbles still sinking back in
+  assert.equal(isSettled({ ...still, hover: 1, over: 1 }), false); // bubbles out and bobbing
 });

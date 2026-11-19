@@ -7,7 +7,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { TessellateModifier } from "three/examples/jsm/modifiers/TessellateModifier.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
-import { approach, drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw } from "@/lib/bustMotion";
+import { approach, drawOrder, followsPointer, isHead, needsRaycast, scrollProgress, thoughtPos, toNdc, yaw, isSettled } from "@/lib/bustMotion";
 import { bendPoint, frontOutline, insidePoly, lensOpening, restOffset, rowExtent, slatBars } from "@/lib/shades";
 
 const NEON = "#c4ab12"; // darker than it reads: lit faces land near #f5e12a without clipping
@@ -281,7 +281,15 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     bust = root;
     draco.dispose();
     opts.onReady();
+    wake();
   }, undefined, () => draco.dispose());
+
+  let raf = 0;
+  let active = false;
+  // tick is a const declared below; wake only runs from events, after it exists.
+  const wake = () => {
+    if (active && !raf) raf = requestAnimationFrame(tick);
+  };
 
   // Only a mouse steers the bust; touch is scrolling the page. Client coords are kept, not NDC, so a scroll
   // under a resting mouse still updates what it is over.
@@ -291,11 +299,14 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     pointer.mx = (e.clientX / innerWidth) * 2 - 1;
     pointer.x = e.clientX;
     pointer.y = e.clientY;
+    wake();
   };
   const onLeave = () => {
     pointer.x = pointer.y = NaN;
+    wake();
   };
   addEventListener("pointermove", onMove, { passive: true });
+  addEventListener("scroll", wake, { passive: true });
   document.documentElement.addEventListener("pointerleave", onLeave);
   addEventListener("blur", onLeave);
   const onLost = (e: Event) => {
@@ -310,6 +321,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
     r.setSize(w, h, false);
     cam.aspect = w / h;
     cam.updateProjectionMatrix();
+    wake();
   };
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
@@ -322,9 +334,9 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
   const last = { x: NaN, y: NaN, yaw: NaN };
   let over = 0;
   const cur = { p: scrollProgress(scrollY), mx: 0, hover: 0 };
-  let raf = 0;
   const tick = () => {
-    cur.p = approach(cur.p, scrollProgress(scrollY), 0.14);
+    const pTo = scrollProgress(scrollY);
+    cur.p = approach(cur.p, pTo, 0.14);
     cur.mx = approach(cur.mx, pointer.mx, 0.06);
     rig.rotation.y = yaw(cur.p, cur.mx);
     const look = { x: pointer.x, y: pointer.y + scrollY, yaw: rig.rotation.y };
@@ -360,12 +372,14 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       logo.renderOrder = 11 + 2 * ranks[i];
     });
     r.render(scene, cam);
-    raf = requestAnimationFrame(tick);
+    // Stop drawing once nothing is moving; the listeners above wake it again.
+    raf = bust && isSettled({ p: cur.p, pTo, mx: cur.mx, mxTo: pointer.mx, hover: cur.hover, over }) ? 0 : requestAnimationFrame(tick);
   };
 
   return {
     setActive(on: boolean) {
-      if (on && !raf) raf = requestAnimationFrame(tick);
+      active = on;
+      wake();
       if (!on && raf) {
         cancelAnimationFrame(raf);
         raf = 0;
@@ -375,6 +389,7 @@ export function createBustScene(canvas: HTMLCanvasElement, opts: { onReady(): vo
       cancelAnimationFrame(raf);
       raf = 0;
       removeEventListener("pointermove", onMove);
+      removeEventListener("scroll", wake);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       removeEventListener("blur", onLeave);
       canvas.removeEventListener("webglcontextlost", onLost);

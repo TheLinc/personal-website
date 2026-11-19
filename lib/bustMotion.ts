@@ -46,3 +46,8 @@ type Look = { x: number; y: number; yaw: number };
 /** The triangle hit test is costly; redo it only when the pointer moved or the bust turned noticeably. */
 export const needsRaycast = (last: Look, now: Look) =>
   last.x !== now.x || last.y !== now.y || Math.abs(last.yaw - now.yaw) > 1e-3;
+
+/** Nothing on screen will change next frame: scroll turn and mouse swing have caught up, and the bubbles are
+ *  tucked away (while out they bob every frame). Lets the scene stop drawing until something moves. */
+export const isSettled = (s: { p: number; pTo: number; mx: number; mxTo: number; hover: number; over: number }) =>
+  !s.over && s.hover < 1e-3 && Math.abs(s.p - s.pTo) < 1e-4 && Math.abs(s.mx - s.mxTo) < 1e-4;
