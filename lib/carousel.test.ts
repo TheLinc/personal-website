@@ -19,3 +19,11 @@ test("visibleCards: one card on screen counts 1 to 8", () => {
 test("visibleCards: before layout (no step) shows the first card", () => {
   assert.deepEqual(visibleCards(10, 0, 8, 0), [0, 0]);
 });
+
+// Phone where the next card peeks about half way in: only fully shown cards count, and the end still reads 8.
+test("visibleCards: a half-peeking card doesn't count as on screen", () => {
+  assert.deepEqual(visibleCards(0, 280, 8, 1820), [0, 0]);
+  assert.deepEqual(visibleCards(1680, 280, 8, 1820), [6, 6]);
+  assert.deepEqual(visibleCards(1820, 280, 8, 1820), [7, 7]);
+  assert.deepEqual(visibleCards(1819.5, 280, 8, 1820), [7, 7]);
+});

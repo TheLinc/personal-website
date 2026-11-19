@@ -261,6 +261,10 @@ body:has(.site) {
   scrollbar-width: none;
 }
 .rules-row::-webkit-scrollbar { display: none; }
+/* Run the row out to the screen edge (through the section's side padding) so cards scroll off the edge
+   instead of being sliced at the padding; the same padding inside keeps the first card in line with the text. */
+.rules-row { margin-inline: -20px; padding-inline: 20px; scroll-padding-inline: 20px; }
+@media (min-width: 640px) { .rules-row { margin-inline: -24px; padding-inline: 24px; scroll-padding-inline: 24px; } }
 .rules-card {
   flex: 0 0 232px;
   scroll-snap-align: start;
