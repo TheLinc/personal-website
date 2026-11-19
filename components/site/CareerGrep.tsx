@@ -180,24 +180,23 @@ export default function CareerGrep() {
                 return (
                   <li
                     key={h.path}
-                    className="grep-hit grid grid-cols-[28px_1fr] gap-3 rounded-xl border border-[#efebe3] bg-[#fdfcfa] px-3 py-2.5"
+                    className="grep-hit grid grid-cols-[28px_1fr] items-center gap-x-3 gap-y-1 rounded-xl border border-[#efebe3] bg-[#fdfcfa] px-3 py-2.5 sm:items-start"
                     style={{ animationDelay: `${i * 70}ms` }}
                   >
+                    {/* Phones: logo beside the place line, the result itself full width below it. */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={h.logo}
                       alt=""
-                      className={`mt-0.5 size-7 rounded-lg ${TILES.has(h.logo ?? "") ? "object-cover" : "border border-[#e8e3da] bg-white object-contain p-0.5"}`}
+                      className={`size-7 rounded-lg sm:row-span-2 sm:mt-0.5 ${TILES.has(h.logo ?? "") ? "object-cover" : "border border-[#e8e3da] bg-white object-contain p-0.5"}`}
                     />
-                    <div className="min-w-0">
-                      <p className="text-[13px]">
-                        <b className="text-[#1d1c1a]">{l.place}</b>
-                        <span className="text-[#6d6962]"> · {l.area}</span>
-                      </p>
-                      <p className="mt-0.5 text-[14px] leading-snug text-[#3a3733]">
-                        <Highlight text={h.text} q={query} />
-                      </p>
-                    </div>
+                    <p className="min-w-0 text-[13px]">
+                      <b className="text-[#1d1c1a]">{l.place}</b>
+                      <span className="text-[#6d6962]"> · {l.area}</span>
+                    </p>
+                    <p className="col-span-2 text-[14px] leading-snug text-[#3a3733] sm:col-span-1 sm:col-start-2">
+                      <Highlight text={h.text} q={query} />
+                    </p>
                   </li>
                 );
               })}
