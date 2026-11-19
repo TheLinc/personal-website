@@ -12,15 +12,15 @@ const TILES = new Set(["ts.png"]);
 export default function ProjectCard({ p, children }: { p: Project; children: ReactNode }) {
   return (
     <article className="card mt-6 p-5 first-of-type:mt-10 sm:p-8" aria-labelledby={p.id}>
-      <header className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <div className="flex gap-4">
-          <img src={p.logo} alt={`${p.name} logo`} className="size-12 shrink-0 rounded-2xl sm:size-14" data-build="image" data-label={`${p.id}.png`} />
-          <div className="min-w-0">
-            <h3 id={p.id} className="scroll-mt-16 text-3xl" data-build="text" data-label="h3">{p.name}</h3>
-            <p className="mt-2 max-w-xl text-[#6d6962]" data-build="text" data-label="summary">{p.summary}</p>
-          </div>
+      {/* Logo and name share one title row (links on its right on wider screens), so everything under it starts
+          at the same left edge instead of leaving an empty column under the logo. */}
+      <header className="grid gap-x-6 gap-y-3 md:grid-cols-[1fr_auto]">
+        <div className="flex items-center gap-3">
+          <img src={p.logo} alt={`${p.name} logo`} className="size-10 shrink-0 rounded-xl sm:size-11" data-build="image" data-label={`${p.id}.png`} />
+          <h3 id={p.id} className="scroll-mt-16 text-3xl" data-build="text" data-label="h3">{p.name}</h3>
         </div>
-        <div className="flex shrink-0 flex-wrap gap-2 text-sm md:justify-end" data-build="box" data-label="links">
+        <p className="max-w-2xl text-[#6d6962] md:col-span-2" data-build="text" data-label="summary">{p.summary}</p>
+        <div className="flex flex-wrap gap-2 text-sm md:col-start-2 md:row-start-1 md:self-center" data-build="box" data-label="links">
           {p.links.map(([label, href]) => (
             <a key={href} className="chip !pl-3" href={href}>
               {href.includes("github.com") ? <GitHubIcon className="size-4" /> : <GlobeIcon className="size-4" />}
@@ -31,7 +31,7 @@ export default function ProjectCard({ p, children }: { p: Project; children: Rea
       </header>
 
       {p.stats && (
-        <dl className="mt-5 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap md:pl-[72px]" data-build="box" data-label="stats">
+        <dl className="mt-5 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" data-build="box" data-label="stats">
           {p.stats.map(([v, l]) => (
             <div key={l} className="flex flex-col rounded-xl bg-[#f4f2ff] px-3 py-2 sm:flex-row sm:items-baseline sm:gap-2 sm:py-1.5">
               <dt className="sr-only">{l}</dt>
