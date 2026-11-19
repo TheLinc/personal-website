@@ -176,12 +176,17 @@ export default function IconPile() {
       el.addEventListener("pointerdown", down);
       el.addEventListener("pointermove", move);
       el.addEventListener("pointerup", up);
-      el.addEventListener("pointercancel", up);
+      // The browser took the touch over to scroll the page: drop the icon where it is rather than throw it.
+      const cancel = () => {
+        b.vx = b.vy = 0;
+        up();
+      };
+      el.addEventListener("pointercancel", cancel);
       return () => {
         el.removeEventListener("pointerdown", down);
         el.removeEventListener("pointermove", move);
         el.removeEventListener("pointerup", up);
-        el.removeEventListener("pointercancel", up);
+        el.removeEventListener("pointercancel", cancel);
       };
     });
 

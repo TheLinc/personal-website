@@ -142,7 +142,8 @@ body:has(.site) {
 @keyframes grep-in { from { opacity: 0; transform: translateY(4px); } }
 
 /* Physics icons in the skills section */
-.site .icon-body { cursor: grab; touch-action: none; will-change: transform; user-select: none; }
+/* pan-y: an up/down swipe that starts on an icon still scrolls the page on phones; sideways drags grab it. */
+.site .icon-body { cursor: grab; touch-action: pan-y; will-change: transform; user-select: none; }
 .site .icon-body:active { cursor: grabbing; }
 
 /* PR check spinners */
