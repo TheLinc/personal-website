@@ -11,7 +11,7 @@ export default function ProjectCard({ p, children }: { p: Project; children: Rea
         <div className="flex gap-4">
           <img src={p.logo} alt={`${p.name} logo`} className="size-12 shrink-0 rounded-2xl sm:size-14" data-build="image" data-label={`${p.id}.png`} />
           <div className="min-w-0">
-            <h3 id={p.id} className="text-3xl" data-build="text" data-label="h3">{p.name}</h3>
+            <h3 id={p.id} className="scroll-mt-16 text-3xl" data-build="text" data-label="h3">{p.name}</h3>
             <p className="mt-2 max-w-xl text-[#6d6962]" data-build="text" data-label="summary">{p.summary}</p>
           </div>
         </div>

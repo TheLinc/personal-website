@@ -48,7 +48,7 @@ export default function Experience() {
   return (
     <ol className="mt-10">
       {ROLES.map((r, i) => (
-        <li key={r.company} className="flex gap-1.5 sm:gap-4" data-build="box" data-label={r.company}>
+        <li key={r.company} id={r.company.toLowerCase().replace(/ /g, "-")} className="flex scroll-mt-6 gap-1.5 sm:gap-4" data-build="box" data-label={r.company}>
           <Gutter index={i} last={i === ROLES.length - 1} branch={r.branch} head={r.head} />
           <div className="card mb-4 min-w-0 flex-1 p-4 sm:p-5">
             <div className="flex items-start gap-3 sm:gap-4">

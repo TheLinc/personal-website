@@ -17,12 +17,17 @@ import { CHECKS, EMAIL, GITHUB, LINKEDIN, REVIEWS } from "@/content/site";
 
 export const revalidate = 86400;
 
-function Logo({ src, name }: { src: string; name: string }) {
+/** A logo chip pinned to the hero; clicking it scrolls to that part of the page. */
+function Pinned({ src, name, to }: { src: string; name: string; to: string }) {
   return (
-    <span className="chip">
+    <a href={to} className="chip pinned">
+      <svg className="pin" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 15v7" stroke="#8a8478" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M8 2.5h8l-1.3 2.6v3.6L18 12.5H6l3.3-3.8V5.1z" fill="#e2563b" />
+      </svg>
       <img src={src} alt="" />
       {name}
-    </span>
+    </a>
   );
 }
 
@@ -93,10 +98,9 @@ export default async function Home() {
                   Email me
                 </a>
               </div>
-              <div className="mt-6 flex flex-wrap gap-2.5">
-                <Logo src="/assets/os.png" name="Opinion System" />
-                <span className="chip !pl-3"><span className="mono">lstack</span><span className="text-[#8a8478]">(coming soon)</span></span>
-                <Logo src="/assets/coverme.png" name="Cover Me" />
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Pinned src="/assets/os.png" name="Opinion System" to="#opinion-system" />
+                <Pinned src="/assets/coverme.png" name="Cover Me" to="#cover-me" />
               </div>
             </div>
           </div>
