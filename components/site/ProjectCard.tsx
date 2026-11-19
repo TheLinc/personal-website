@@ -2,6 +2,11 @@
 import type { ReactNode } from "react";
 import type { Project } from "@/content/projects";
 import SeeItRun from "./SeeItRun";
+import { GitHubIcon, GlobeIcon } from "./icons";
+
+// Logos that fill their whole square (no shape of their own) read too big next to round ones; draw them a bit
+// smaller with rounded corners.
+const TILES = new Set(["ts.png"]);
 
 // One project: compact header, the demo behind "See it run", then how it's built and the hardest problems.
 export default function ProjectCard({ p, children }: { p: Project; children: ReactNode }) {
@@ -17,7 +22,10 @@ export default function ProjectCard({ p, children }: { p: Project; children: Rea
         </div>
         <div className="flex shrink-0 flex-wrap gap-2 text-sm md:justify-end" data-build="box" data-label="links">
           {p.links.map(([label, href]) => (
-            <a key={href} className="chip !pl-3" href={href}>{label} ↗</a>
+            <a key={href} className="chip !pl-3" href={href}>
+              {href.includes("github.com") ? <GitHubIcon className="size-4" /> : <GlobeIcon className="size-4" />}
+              {label} ↗
+            </a>
           ))}
         </div>
       </header>
@@ -53,7 +61,9 @@ export default function ProjectCard({ p, children }: { p: Project; children: Rea
                     {s.tech.map(([name, icon]) => (
                       <li key={name} className="inline-flex items-center gap-1.5 rounded-full border border-[#e8e3da] bg-white py-0.5 pr-2.5 pl-1 text-xs font-medium">
                         {icon ? (
-                          <img src={`/assets/icons/${icon}`} alt="" className="size-5 object-contain" />
+                          <span className="grid size-5 place-items-center">
+                            <img src={`/assets/icons/${icon}`} alt="" className={TILES.has(icon) ? "size-4 rounded-[4px]" : "size-5 object-contain"} />
+                          </span>
                         ) : (
                           <span aria-hidden className="grid size-5 place-items-center rounded-full bg-[#f4f2ff] text-[10px] text-[#5b5bf0]">{name[0]}</span>
                         )}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RULES } from "@/content/agentRules";
 import { visibleCards } from "@/lib/carousel";
+import { ArrowIcon } from "./icons";
 
 const step = (row: HTMLElement) => {
   const c = row.children;
@@ -40,10 +41,10 @@ export default function AgentRules() {
             {first === last ? first + 1 : `${first + 1}–${last + 1}`} / {RULES.length}
           </span>
           <button type="button" aria-label="Previous rule" onClick={() => go(-1)} disabled={first === 0} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30">
-            ←
+            <ArrowIcon dir="left" />
           </button>
           <button type="button" aria-label="Next rule" onClick={() => go(1)} disabled={last === RULES.length - 1} className="grid size-9 place-items-center rounded-full border-[1.5px] border-[#1d1c1a] disabled:opacity-30">
-            →
+            <ArrowIcon dir="right" />
           </button>
         </div>
       </div>
