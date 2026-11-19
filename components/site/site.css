@@ -318,6 +318,6 @@ body:has(.site) {
 @keyframes frag-draw { from { stroke-dashoffset: 1; } }
 
 /* Hero logo chips, pinned to the page. */
-.site .pinned { position: relative; transition: border-color .15s, transform .15s; }
+.site .pinned { transition: border-color .15s, transform .15s; }
 .site .pinned:hover { border-color: #cfc7b8; transform: translateY(-1px); }
-.site .pin { position: absolute; top: -11px; left: 14px; width: 18px; height: 18px; rotate: -18deg; filter: drop-shadow(0 1.5px 1px rgba(40, 30, 10, .25)); }
+.site .pin { width: 14px; height: 14px; margin-left: -2px; fill: none; stroke: #a49d90; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; rotate: 30deg; }

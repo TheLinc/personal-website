@@ -21,12 +21,11 @@ export const revalidate = 86400;
 function Pinned({ src, name, to }: { src: string; name: string; to: string }) {
   return (
     <a href={to} className="chip pinned">
-      <svg className="pin" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 15v7" stroke="#8a8478" strokeWidth="1.6" strokeLinecap="round" />
-        <path d="M8 2.5h8l-1.3 2.6v3.6L18 12.5H6l3.3-3.8V5.1z" fill="#e2563b" />
-      </svg>
       <img src={src} alt="" />
       {name}
+      <svg className="pin" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 17v5M9 3h6M10 3v6l-3.5 5v3h11v-3L14 9V3" />
+      </svg>
     </a>
   );
 }
@@ -98,7 +97,7 @@ export default async function Home() {
                   Email me
                 </a>
               </div>
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-2.5">
                 <Pinned src="/assets/os.png" name="Opinion System" to="#opinion-system" />
                 <Pinned src="/assets/coverme.png" name="Cover Me" to="#cover-me" />
               </div>
