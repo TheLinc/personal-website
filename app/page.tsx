@@ -10,6 +10,7 @@ import OpenRoomDemo from "@/components/site/OpenRoomDemo";
 import Experience from "@/components/site/Experience";
 import ProjectCard from "@/components/site/ProjectCard";
 import AgentRules from "@/components/site/AgentRules";
+import Fragments from "@/components/site/Fragments";
 import { COVER_ME, OPEN_ROOM } from "@/content/projects";
 import ContributionGraph, { contributionStats, fmtDay } from "@/components/site/ContributionGraph";
 import { CHECKS, EMAIL, GITHUB, LINKEDIN, REVIEWS } from "@/content/site";
@@ -94,7 +95,7 @@ export default async function Home() {
               </div>
               <div className="mt-6 flex flex-wrap gap-2.5">
                 <Logo src="/assets/os.png" name="Opinion System" />
-                <a href="https://github.com/TheLinc/lstack" className="chip mono !pl-3">lstack</a>
+                <span className="chip !pl-3"><span className="mono">lstack</span><span className="text-[#8a8478]">(coming soon)</span></span>
                 <Logo src="/assets/coverme.png" name="Cover Me" />
               </div>
             </div>
@@ -102,19 +103,22 @@ export default async function Home() {
         </section>
 
         {/* How I ship with agents */}
-        <section id="agents" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+        <section id="agents" className="relative isolate mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Fragments of="agents" />
           <Heading label="How I ship with agents" title="Eight rules my agents follow" />
           <AgentRules />
         </section>
 
         {/* Experience */}
-        <section id="experience" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+        <section id="experience" className="relative isolate mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Fragments of="experience" />
           <Heading label="git log --graph --career" title="Where I’ve worked" />
           <Experience />
         </section>
 
         {/* Work */}
-        <section id="work" className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+        <section id="work" className="relative isolate mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Fragments of="work" />
           <Heading label="Built this way" title="Things I’ve built this way" />
 
           <ProjectCard p={COVER_ME}>
@@ -129,7 +133,8 @@ export default async function Home() {
         </section>
 
         {/* GitHub */}
-        <section className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24" aria-labelledby="github">
+        <section className="relative isolate mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24" aria-labelledby="github">
+          <Fragments of="github" />
           <div className="card p-5 sm:p-8">
             <p className="label" data-build="text" data-label="label">
               <a href={GITHUB} className="hover:text-[#1d1c1a]">github.com/TheLinc</a> · live
@@ -156,7 +161,8 @@ export default async function Home() {
         </section>
 
         {/* Skills */}
-        <section className="relative mx-auto mb-16 max-w-5xl px-5 pb-48 sm:px-6">
+        <section className="relative isolate mx-auto mb-16 max-w-5xl px-5 pb-48 sm:px-6">
+          <Fragments of="skills" />
           <IconPile />
           <div className="relative z-10">
             <Heading label="Skills" title="Search my experience" />
@@ -165,7 +171,8 @@ export default async function Home() {
         </section>
 
         {/* Reviews */}
-        <section className="mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+        <section className="relative isolate mx-auto max-w-5xl px-5 pb-20 sm:px-6 sm:pb-24">
+          <Fragments of="reviews" />
           <Heading label="Code review" title="Approved by people I’ve worked with" />
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {REVIEWS.map((r) => (
@@ -184,7 +191,8 @@ export default async function Home() {
         </section>
 
         {/* Hire PR */}
-        <section id="hire" className="mx-auto max-w-3xl px-5 pb-16 sm:px-6" aria-labelledby="hire-title">
+        <section id="hire" className="relative isolate mx-auto max-w-3xl px-5 pb-16 sm:px-6" aria-labelledby="hire-title">
+          <Fragments of="hire" />
           <div className="card overflow-hidden">
             <div className="border-b border-[#e8e3da] p-5 sm:p-6" data-build="box" data-label="pull request">
               <p className="flex items-center gap-2 text-sm">

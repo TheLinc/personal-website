@@ -32,11 +32,8 @@ export default function AgentRules() {
     <div className="mt-8" data-build="box" data-label="lstack rules">
       <div className="flex items-end justify-between gap-4">
         <p className="text-[#6d6962]">
-          Packaged as{" "}
-          <a href="https://github.com/TheLinc/lstack" className="mono font-semibold text-[#1d1c1a] underline-offset-4 hover:underline">
-            lstack
-          </a>
-          , open source on GitHub ↗
+          Packaged as <span className="mono font-semibold text-[#1d1c1a]">lstack</span>, open source on GitHub{" "}
+          <span className="text-[#8a8478]">(coming soon)</span>
         </p>
         <div className="flex shrink-0 items-center gap-2">
           <span className="mono mr-1 text-xs text-[#8a8478]" aria-live="polite">

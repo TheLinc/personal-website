@@ -288,3 +288,31 @@ body:has(.site) {
   .rules-card .i { visibility: visible !important; animation: none !important; stroke-dashoffset: 0 !important; opacity: 1 !important; }
   .rules-card .i:not(.dash) { stroke-dasharray: none !important; }
 }
+
+/* Line fragments behind the sections, in the hero's vocabulary. They draw in as they scroll into view
+   (browsers without scroll timelines just show them). Hidden on narrow screens, where they'd cross the text. */
+.site { overflow-x: clip; }
+.frags { position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw; z-index: -1; pointer-events: none; }
+.frags > * { position: absolute; display: block; }
+.frags .fh { height: 1px; background: #e2dccf; transform-origin: left; }
+.frags .fv { width: 1px; background: #e2dccf; transform-origin: top; }
+.frags .fx {
+  width: 15px; height: 15px; translate: -7px -7px;
+  background: linear-gradient(#c9c1b1, #c9c1b1) center / 1px 100% no-repeat, linear-gradient(#c9c1b1, #c9c1b1) center / 100% 1px no-repeat;
+}
+.frags .fa { overflow: visible; fill: none; stroke: #e2dccf; stroke-width: 1; }
+.frags .fa path { vector-effect: non-scaling-stroke; stroke-dasharray: 1; }
+@media (max-width: 899px) { .frags { display: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .frags > * { animation: frag-fade linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+    .frags .fh { animation-name: frag-x; }
+    .frags .fv { animation-name: frag-y; }
+    .frags .fa { animation: none; }
+    .frags .fa path { animation: frag-draw linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; }
+  }
+}
+@keyframes frag-x { from { transform: scaleX(0); } }
+@keyframes frag-y { from { transform: scaleY(0); } }
+@keyframes frag-fade { from { opacity: 0; } }
+@keyframes frag-draw { from { stroke-dashoffset: 1; } }
