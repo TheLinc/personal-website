@@ -1,7 +1,8 @@
 "use client";
 
 // "Agents build the page as you scroll". Agent cursors build the first few [data-build] elements
-// the reader stops on, driving each one's --t from 0 to 1; the rest fade in on their own.
+// the reader reaches, or lands on after a #link, driving each one's --t from 0 to 1. The rest fade
+// in on their own.
 
 import { useEffect, useRef } from "react";
 import { arrival } from "@/lib/buildQueue";
@@ -274,6 +275,11 @@ export default function BuildEngine() {
       jumpAt = performance.now();
       kick();
     };
+    // The reader took over the scroll, so whatever they pass is being read, not jumped past.
+    const endJump = () => {
+      jumping = false;
+    };
+    const readerInput = ["wheel", "touchstart", "keydown"] as const;
 
     measure();
     const ro = new ResizeObserver(() => {
@@ -287,6 +293,7 @@ export default function BuildEngine() {
     });
     window.addEventListener("scroll", kick, { passive: true });
     document.addEventListener("click", onClick);
+    readerInput.forEach((t) => window.addEventListener(t, endJump, { passive: true }));
     window.addEventListener("resize", kick);
     kick();
 
@@ -295,6 +302,7 @@ export default function BuildEngine() {
       ro.disconnect();
       window.removeEventListener("scroll", kick);
       document.removeEventListener("click", onClick);
+      readerInput.forEach((t) => window.removeEventListener(t, endJump));
       window.removeEventListener("resize", kick);
       root.classList.remove("armed");
       items.forEach((it) => it.overlay.remove());
