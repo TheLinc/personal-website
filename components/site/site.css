@@ -43,7 +43,8 @@ body:has(.site) {
   --r: clamp(0, calc((var(--t) - 0.35) * 2), 1);
 }
 .site.armed [data-build="text"] {
-  clip-path: inset(-4px calc((1 - var(--r)) * 100%) -4px -4px);
+  /* --tx0/--tw are where the text itself starts and how wide it is, so the reveal edge stays under the cursor. */
+  clip-path: inset(-4px calc(100% - var(--tx0, 0px) - var(--r) * (var(--tw, 100%) + 4px)) -4px -4px);
 }
 .site.armed [data-build="image"],
 .site.armed [data-build="box"],
@@ -87,9 +88,10 @@ body:has(.site) {
   left: 0;
   z-index: 60;
   pointer-events: none;
-  will-change: transform;
+  will-change: translate, scale;
+  transform-origin: 1px 1px;
   opacity: 0;
-  transition: opacity 300ms;
+  transition: opacity 300ms, scale 120ms ease-out;
 }
 .site-cursor[data-away="1"] { opacity: 1; }
 

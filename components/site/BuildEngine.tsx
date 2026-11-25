@@ -10,22 +10,33 @@ type Kind = "box" | "text" | "image" | "data" | "check";
 type Item = {
   el: HTMLElement;
   kind: Kind;
-  top: number; // document coordinates
+  top: number; // document coordinates; for text, the bounds of the text itself
   left: number;
   w: number;
   h: number;
   t: number; // monotonic build progress
   overlay: HTMLDivElement;
 };
-type Job = { i: number; start: number; dur: number };
+type Job = { i: number; start: number; fromX: number; fromY: number; travel: number };
+type Agent = { x: number; y: number; seen: boolean; job: Job | null; done: number };
+type Pose = { x: number; y: number; t: number; bw: number; bh: number; fade: number; pressed: boolean; done: boolean };
 
 const COLORS = ["#5b5bf0", "#e2563b", "#11a37f", "#d99a06"];
-const clamp = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
-/** At most this many agents building at once. Calmer to watch. */
+// Each agent has its own hand: how far its path bows sideways (share of the trip) and how fast it works.
+const ARC = [0.2, -0.16, 0.12, -0.24];
+const SPEED = [1, 0.82, 1.18, 0.92];
 const MAX_ACTIVE = 2;
-const QUIET_AFTER = 1400; // ms a job may wait for an agent before it fades in by itself
-const BASE: Record<Kind, number> = { box: 750, text: 1000, image: 700, data: 1800, check: 650 };
-const EASE = 0.09; // cursor glide per frame
+// The agents build the first few things you see, once. Everything after that fades in by itself,
+// so the page never makes a reader wait for a cursor.
+const AGENT_JOBS = 3;
+const QUIET_AFTER = 1800; // ms a job may wait for an agent before it fades in by itself
+const PRESS = 140;
+const WORK: Record<Kind, number> = { box: 650, text: 900, image: 550, data: 1500, check: 550 };
+const SETTLE = 420; // after letting go, the content settles in while the cursor steps aside
+
+const clamp = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const inOut = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - (-2 * q + 2) ** 3 / 2);
+const out = (q: number) => 1 - (1 - q) ** 3;
 
 export default function BuildEngine() {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -51,9 +62,21 @@ export default function BuildEngine() {
     root.classList.add("armed");
     items.forEach((it) => it.el.style.setProperty("--t", "0"));
 
+    // Phones have no pointer, so a fake one would look out of place: everything just fades in.
+    let budget = window.matchMedia("(pointer: fine)").matches ? AGENT_JOBS : 0;
+
     function measure() {
+      const range = document.createRange();
       items.forEach((it) => {
-        const r = it.el.getBoundingClientRect();
+        const box = it.el.getBoundingClientRect();
+        let r = box;
+        if (it.kind === "text") {
+          range.selectNodeContents(it.el);
+          const tr = range.getBoundingClientRect();
+          if (tr.width > 0) r = tr;
+          it.el.style.setProperty("--tx0", `${r.left - box.left}px`);
+          it.el.style.setProperty("--tw", `${r.width}px`);
+        }
         it.top = r.top + window.scrollY;
         it.left = r.left + window.scrollX;
         it.w = r.width;
@@ -61,11 +84,9 @@ export default function BuildEngine() {
       });
     }
 
-    const pos = COLORS.map(() => ({ x: 0, y: 0, init: false }));
+    const agents: Agent[] = COLORS.map(() => ({ x: 0, y: 0, seen: false, job: null, done: 0 }));
     const pending: number[] = [];
-    const current: (Job | null)[] = COLORS.map(() => null);
     const queued = new Map<number, number>(); // item → when it became work
-    const jobsDone = COLORS.map(() => 0);
     let raf = 0;
 
     function finishNow(i: number) {
@@ -74,99 +95,159 @@ export default function BuildEngine() {
       it.el.style.setProperty("--t", "1");
       it.el.dataset.done = "1";
     }
+    function fadeIn(i: number) {
+      items[i].el.style.transition = "--t 700ms ease-out";
+      finishNow(i);
+    }
     const onScreen = (i: number, sy: number, vh: number) => {
       const vt = items[i].top - sy;
       return vt + items[i].h > 0 && vt < vh;
     };
 
+    // Where agent a's cursor is, and how far its element is built, `e` ms into the job.
+    // Box-like elements: travel to the top-left corner, press, drag the outline to the bottom-right,
+    // let go and step aside while the content settles in. Text: press at the start of the line and
+    // sweep across it, the words appearing right behind the cursor.
+    function pose(a: number, job: Job, e: number): Pose {
+      const it = items[job.i];
+      const sweep = it.kind === "text" || it.kind === "data";
+      const work = WORK[it.kind] / SPEED[a];
+      const lineY = it.top + Math.min(it.h * 0.5, 22);
+      const x0 = it.left;
+      const y0 = sweep ? lineY : it.top;
+      const p: Pose = { x: x0, y: y0, t: 0, bw: 0, bh: 0, fade: 1, pressed: false, done: false };
+
+      if (e < job.travel) {
+        const q = inOut(e / job.travel);
+        const dx = x0 - job.fromX;
+        const dy = y0 - job.fromY;
+        const bow = Math.sin(Math.PI * q) * ARC[a];
+        p.x = job.fromX + dx * q - dy * bow;
+        p.y = job.fromY + dy * q + dx * bow;
+        p.fade = 0;
+        return p;
+      }
+      e -= job.travel;
+      p.pressed = true;
+      if (e < PRESS) {
+        p.bw = 2;
+        p.bh = sweep ? it.h : 2;
+        return p;
+      }
+      e -= PRESS;
+      if (e < work) {
+        const q = e / work;
+        if (sweep) {
+          const r = 0.15 * q + 0.85 * inOut(q);
+          p.x = x0 + it.w * r;
+          p.bw = it.w * r;
+          p.bh = it.h;
+          p.t = 0.35 + 0.5 * r;
+        } else {
+          const r = inOut(q);
+          p.x = x0 + it.w * r;
+          p.y = y0 + it.h * r;
+          p.bw = it.w * r;
+          p.bh = it.h * r;
+          p.t = 0.35 * r;
+        }
+        return p;
+      }
+      e -= work;
+      p.pressed = false;
+      const q = clamp(e / SETTLE);
+      const r = out(q);
+      p.x = x0 + it.w + 16 * r;
+      p.y = (sweep ? lineY : y0 + it.h) + 12 * r;
+      p.bw = it.w;
+      p.bh = it.h;
+      p.fade = 1 - q;
+      p.t = sweep ? 0.85 + 0.15 * q : 0.35 + 0.65 * q;
+      p.done = q >= 1;
+      return p;
+    }
+
     function frame(now: number) {
       const vh = window.innerHeight;
       const vw = document.documentElement.clientWidth;
+      const sx = window.scrollX;
       const sy = window.scrollY;
-      const targets: ({ x: number; y: number } | null)[] = COLORS.map(() => null);
       let busy = false;
 
       // Anything that has entered the viewport (or is above it) becomes work.
       items.forEach((it, i) => {
         if (it.t >= 1 || queued.has(i)) return;
-        if (it.top - sy < vh * 0.98) {
-          queued.set(i, now);
-          pending.push(i);
-        }
+        if (it.top - sy >= vh * 0.98) return;
+        queued.set(i, now);
+        if (pending.length < budget) pending.push(i);
+        else fadeIn(i);
       });
       // Nobody is watching work that has left the screen: finish it instantly.
       for (let k = pending.length - 1; k >= 0; k--) if (!onScreen(pending[k], sy, vh)) finishNow(pending.splice(k, 1)[0]);
-      // The crew is small on purpose. Work nobody picked up soon fades in on its own, so the page is never blank.
       for (let k = pending.length - 1; k >= 0; k--) {
         const i = pending[k];
         if (now - queued.get(i)! > QUIET_AFTER) {
           pending.splice(k, 1);
-          items[i].el.style.transition = "--t 700ms ease-out";
-          finishNow(i);
+          budget--;
+          fadeIn(i);
         }
       }
       pending.sort((x, y) => items[x].top - items[y].top);
 
-      // The least-busy idle agent takes the next job.
-      while (pending.length && current.filter(Boolean).length < MAX_ACTIVE) {
+      // The least-busy idle agent takes the next job, starting from wherever its cursor is.
+      while (pending.length && agents.filter((g) => g.job).length < MAX_ACTIVE) {
         const i = pending.shift()!;
-        const idle = COLORS.map((_, a) => a).filter((a) => !current[a]);
-        const a = idle.reduce((m, x) => (jobsDone[x] < jobsDone[m] ? x : m));
+        budget--;
+        const idle = agents.map((_, a) => a).filter((a) => !agents[a].job);
+        const a = idle.reduce((m, x) => (agents[x].done < agents[m].done ? x : m));
+        const g = agents[a];
+        if (!g.seen) Object.assign(g, { x: sx + vw * (0.3 + 0.12 * a), y: sy + vh + 40, seen: true });
+        const it = items[i];
+        const dist = Math.hypot(it.left - g.x, it.top - g.y);
         items[i].overlay.style.setProperty("--c", COLORS[a]);
-        current[a] = { i, start: now, dur: BASE[items[i].kind] };
+        g.job = { i, start: now, fromX: g.x, fromY: g.y, travel: Math.min(950, Math.max(280, dist * 0.55)) / SPEED[a] };
       }
 
-      COLORS.forEach((_, a) => {
-        let job = current[a];
+      agents.forEach((g, a) => {
+        const c = cursorRefs.current[a];
+        let job = g.job;
         if (job && !onScreen(job.i, sy, vh)) {
           items[job.i].overlay.style.display = "none";
           finishNow(job.i);
-          current[a] = job = null;
+          g.job = job = null;
+          g.done++;
         }
+        if (c) c.dataset.away = job ? "1" : "0";
         if (!job) return;
         busy = true;
+
         const it = items[job.i];
-        const p = clamp((now - job.start) / job.dur);
-        const viewTop = it.top - sy;
-        it.t = p;
-        it.el.style.setProperty("--t", p.toFixed(3));
+        const p = pose(a, job, now - job.start);
+        g.x = p.x;
+        g.y = p.y;
+        it.t = p.t;
+        it.el.style.setProperty("--t", p.t.toFixed(3));
 
         const o = it.overlay;
-        const drag = clamp(p / 0.35);
-        const reveal = clamp((p - 0.35) / 0.5);
-        o.style.display = p >= 1 ? "none" : "block";
+        o.style.display = p.bw > 0 && !p.done ? "block" : "none";
         o.style.transform = `translate(${it.left}px, ${it.top}px)`;
-        o.style.width = `${Math.max(2, it.w * drag)}px`;
-        o.style.height = `${Math.max(2, it.h * drag)}px`;
-        o.style.opacity = p > 0.85 ? String((1 - p) / 0.15) : "1";
+        o.style.width = `${Math.max(2, p.bw)}px`;
+        o.style.height = `${Math.max(2, p.bh)}px`;
+        o.style.opacity = String(p.fade);
 
-        if (p < 0.35) targets[a] = { x: it.left + it.w * drag, y: viewTop + it.h * drag };
-        else if (it.kind === "text" || it.kind === "data") targets[a] = { x: it.left + it.w * reveal, y: viewTop + Math.min(it.h * 0.5, 22) };
-        else targets[a] = { x: it.left + it.w * 0.55, y: viewTop + it.h * 0.6 };
+        if (c) {
+          c.style.translate = `${p.x - sx}px ${p.y - sy}px`;
+          c.style.scale = p.pressed ? "0.86" : "1";
+        }
 
-        if (p >= 1) {
-          it.el.dataset.done = "1";
-          current[a] = null;
-          jobsDone[a]++;
+        if (p.done) {
+          finishNow(job.i);
+          g.job = null;
+          g.done++;
         }
       });
 
-      COLORS.forEach((_, a) => {
-        const c = cursorRefs.current[a];
-        if (!c) return;
-        const p = pos[a];
-        const tgt = targets[a];
-        c.dataset.away = tgt ? "1" : "0";
-        // Idle agents fade out where they stopped; the first job glides in from below.
-        if (!tgt) return;
-        if (!p.init) Object.assign(p, { x: vw / 2, y: vh + 30, init: true });
-        p.x += (tgt.x - p.x) * EASE;
-        p.y += (tgt.y - p.y) * EASE;
-        if (Math.abs(tgt.x - p.x) > 0.5 || Math.abs(tgt.y - p.y) > 0.5) busy = true;
-        c.style.transform = `translate(${p.x}px, ${p.y}px)`;
-      });
-
-      raf = busy ? requestAnimationFrame(frame) : 0;
+      raf = busy || pending.length ? requestAnimationFrame(frame) : 0;
     }
 
     const kick = () => {
