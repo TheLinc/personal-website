@@ -17,7 +17,7 @@ test("arrival: on screen, agents take it while jobs are open, then it fades", ()
   assert.equal(arrival(-20, 60, 900, 1, false), "agent");
 });
 
-test("arrival: while the page scrolls, agent work waits for it to stop; with no jobs left nothing waits", () => {
+test("arrival: during a jump to a #link, agent work waits for the landing; with no jobs left nothing waits", () => {
   assert.equal(arrival(300, 60, 900, 3, true), "wait");
   assert.equal(arrival(300, 60, 900, 0, true), "fade");
 });

@@ -1,8 +1,7 @@
 "use client";
 
-// "Agents build the page as you scroll".
-// Every element marked [data-build] gets a --t from 0 to 1. CSS turns --t into the
-// reveal; this engine draws the wireframe boxes and flies the agent cursors.
+// "Agents build the page as you scroll". Agent cursors build the first few [data-build] elements
+// the reader stops on, driving each one's --t from 0 to 1; the rest fade in on their own.
 
 import { useEffect, useRef } from "react";
 import { arrival } from "@/lib/buildQueue";
@@ -32,7 +31,7 @@ const MAX_ACTIVE = 2;
 const AGENT_JOBS = 3;
 const QUIET_AFTER = 1800; // ms a job may wait for an agent before it fades in by itself
 const PRESS = 140;
-const STILL_MS = 120; // how long the page must stop scrolling before agents start work
+const STILL_MS = 120; // how long the page must be still before a jump to a #link counts as landed
 const WORK: Record<Kind, number> = { box: 650, text: 900, image: 550, data: 1500, check: 550 };
 const SETTLE = 420;
 
@@ -97,6 +96,9 @@ export default function BuildEngine() {
     let raf = 0;
     let lastY = window.scrollY;
     let movedAt = 0;
+    // A jump lasts from a load with a #hash, or a click on a #link, until the page stops scrolling.
+    let jumping = location.hash !== "";
+    let jumpAt = performance.now();
 
     function finishNow(i: number) {
       const it = items[i];
@@ -114,8 +116,7 @@ export default function BuildEngine() {
       return vt + items[i].h > 0 && vt < vh;
     };
 
-    // `e` is ms since the job started.
-    function pose(a: number, job: Job, e: number): Pose {
+    function pose(a: number, job: Job, elapsed: number): Pose {
       const it = items[job.i];
       const sweep = it.kind === "text" || it.kind === "data";
       const work = WORK[it.kind] / SPEED[a];
@@ -124,8 +125,8 @@ export default function BuildEngine() {
       const y0 = sweep ? lineY : it.top;
       const p: Pose = { x: x0, y: y0, t: 0, bw: 0, bh: 0, fade: 1, pressed: false, done: false };
 
-      if (e < job.travel) {
-        const q = inOut(e / job.travel);
+      if (elapsed < job.travel) {
+        const q = inOut(elapsed / job.travel);
         const dx = x0 - job.fromX;
         const dy = y0 - job.fromY;
         const bow = Math.sin(Math.PI * q) * ARC[a];
@@ -134,16 +135,16 @@ export default function BuildEngine() {
         p.fade = 0;
         return p;
       }
-      e -= job.travel;
+      elapsed -= job.travel;
       p.pressed = true;
-      if (e < PRESS) {
+      if (elapsed < PRESS) {
         p.bw = 2;
         p.bh = sweep ? it.h : 2;
         return p;
       }
-      e -= PRESS;
-      if (e < work) {
-        const q = e / work;
+      elapsed -= PRESS;
+      if (elapsed < work) {
+        const q = elapsed / work;
         if (sweep) {
           const r = 0.15 * q + 0.85 * inOut(q);
           p.x = x0 + it.w * r;
@@ -160,9 +161,9 @@ export default function BuildEngine() {
         }
         return p;
       }
-      e -= work;
+      elapsed -= work;
       p.pressed = false;
-      const q = clamp(e / SETTLE);
+      const q = clamp(elapsed / SETTLE);
       const r = out(q);
       p.x = x0 + it.w + 16 * r;
       p.y = (sweep ? lineY : y0 + it.h) + 12 * r;
@@ -181,12 +182,12 @@ export default function BuildEngine() {
       const sy = window.scrollY;
       if (sy !== lastY) movedAt = now;
       lastY = sy;
-      const scrolling = now - movedAt < STILL_MS;
+      if (jumping && now - Math.max(movedAt, jumpAt) >= STILL_MS) jumping = false;
       let busy = false;
 
       items.forEach((it, i) => {
         if (it.t >= 1 || queued.has(i)) return;
-        const what = arrival(it.top - sy, it.h, vh, budget - pending.length, scrolling);
+        const what = arrival(it.top - sy, it.h, vh, budget - pending.length, jumping);
         if (what === "wait") return;
         queued.set(i, now);
         if (what === "finish") finishNow(i);
@@ -205,7 +206,7 @@ export default function BuildEngine() {
       }
       pending.sort((x, y) => items[x].top - items[y].top);
 
-      while (!scrolling && pending.length && agents.filter((g) => g.job).length < MAX_ACTIVE) {
+      while (!jumping && pending.length && agents.filter((g) => g.job).length < MAX_ACTIVE) {
         const i = pending.shift()!;
         budget--;
         const idle = agents.map((_, a) => a).filter((a) => !agents[a].job);
@@ -261,11 +262,17 @@ export default function BuildEngine() {
         }
       });
 
-      raf = busy || scrolling || pending.length ? requestAnimationFrame(frame) : 0;
+      raf = busy || jumping || pending.length ? requestAnimationFrame(frame) : 0;
     }
 
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(frame);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (!(e.target as Element).closest?.('a[href^="#"]')) return;
+      jumping = true;
+      jumpAt = performance.now();
+      kick();
     };
 
     measure();
@@ -279,6 +286,7 @@ export default function BuildEngine() {
       kick();
     });
     window.addEventListener("scroll", kick, { passive: true });
+    document.addEventListener("click", onClick);
     window.addEventListener("resize", kick);
     kick();
 
@@ -286,6 +294,7 @@ export default function BuildEngine() {
       cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener("scroll", kick);
+      document.removeEventListener("click", onClick);
       window.removeEventListener("resize", kick);
       root.classList.remove("armed");
       items.forEach((it) => it.overlay.remove());
