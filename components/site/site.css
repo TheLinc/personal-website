@@ -43,7 +43,8 @@ body:has(.site) {
   --r: clamp(0, calc((var(--t) - 0.35) * 2), 1);
 }
 .site.armed [data-build="text"] {
-  clip-path: inset(-4px calc((1 - var(--r)) * 100%) -4px -4px);
+  /* --tx0/--tw are where the text itself starts and how wide it is, so the reveal edge stays under the cursor. */
+  clip-path: inset(-4px calc(100% - var(--tx0, 0px) - var(--r) * (var(--tw, 100%) + 4px)) -4px -4px);
 }
 .site.armed [data-build="image"],
 .site.armed [data-build="box"],
@@ -55,11 +56,18 @@ body:has(.site) {
   opacity: clamp(0, calc(var(--r) * 58 - var(--col)), 1);
 }
 
-/* Registered so a quiet (agent-less) finish can transition --t smoothly. */
-@property --t {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
+/* Don't animate --t for work no agent builds: it's inherited, so each frame restyles the whole subtree. */
+.site.armed [data-build][data-quiet] {
+  animation: build-quiet 600ms ease-out;
+}
+@keyframes build-quiet {
+  from { opacity: 0; transform: translateY(6px); }
+}
+.site.armed [data-build="text"][data-quiet] {
+  animation: build-wipe 450ms ease-out;
+}
+@keyframes build-wipe {
+  from { clip-path: inset(-4px calc(100% - var(--tx0, 0px)) -4px -4px); }
 }
 
 /* Wireframe boxes the agents drag out */
@@ -87,9 +95,10 @@ body:has(.site) {
   left: 0;
   z-index: 60;
   pointer-events: none;
-  will-change: transform;
+  will-change: translate, scale;
+  transform-origin: 1px 1px;
   opacity: 0;
-  transition: opacity 300ms;
+  transition: opacity 300ms, scale 120ms ease-out;
 }
 .site-cursor[data-away="1"] { opacity: 1; }
 
@@ -119,11 +128,16 @@ body:has(.site) {
   color: var(--soft);
 }
 .site .live-dot {
+  position: relative;
   width: 8px; height: 8px; border-radius: 99px; background: #11a37f;
-  box-shadow: 0 0 0 0 rgba(17, 163, 127, 0.5);
+}
+/* The ring scales and fades instead of growing a box-shadow, so it runs off the main thread. */
+.site .live-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: rgba(17, 163, 127, 0.5);
   animation: site-pulse 2s infinite;
 }
-@keyframes site-pulse { 70% { box-shadow: 0 0 0 8px rgba(17, 163, 127, 0); } 100% { box-shadow: 0 0 0 0 rgba(17, 163, 127, 0); } }
+@keyframes site-pulse { 70%, 100% { transform: scale(3); opacity: 0; } }
 
 .site .tick {
   opacity: clamp(0, calc((var(--r) - 0.9) * 10), 1);
@@ -132,22 +146,24 @@ body:has(.site) {
   opacity: clamp(0, calc((0.9 - var(--r)) * 10), 1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .site .live-dot { animation: none; }
-}
+.site .grep-hit { animation: grep-in 450ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes grep-in { from { opacity: 0; transform: translateY(12px); } }
+.site .grep-grow { overflow: hidden; transition: height 350ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 
-/* Sparks that fly up off Lincoln's laptop as agents work */
-/* Career grep results land one after another */
-.site .grep-hit { animation: grep-in 260ms ease-out both; }
-@keyframes grep-in { from { opacity: 0; transform: translateY(4px); } }
+/* After the rules it overrides: a media query adds no specificity, so order decides. */
+@media (prefers-reduced-motion: reduce) {
+  .site .live-dot::after { display: none; }
+  .site .grep-hit { animation: none; }
+  .site .grep-grow { transition: none; }
+  .site.armed [data-build][data-quiet] { animation: none; }
+}
 
 /* Physics icons in the skills section */
 /* pan-y: an up/down swipe that starts on an icon still scrolls the page on phones; sideways drags grab it. */
 .site .icon-body { cursor: grab; touch-action: pan-y; will-change: transform; user-select: none; }
 .site .icon-body:active { cursor: grabbing; }
 
-/* PR check spinners */
-.site .spin { animation: site-spin 0.8s linear infinite; }
+.site [data-building] .spin { animation: site-spin 0.8s linear infinite; }
 @keyframes site-spin { to { transform: rotate(360deg); } }
 
 /* Hero: name on the left, a line on the right, the bust standing between them over quiet background lines. */
