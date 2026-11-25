@@ -64,6 +64,13 @@ body:has(.site) {
 @keyframes build-quiet {
   from { opacity: 0; transform: translateY(6px); }
 }
+/* Text wipes in from the left instead. */
+.site.armed [data-build="text"][data-quiet] {
+  animation: build-wipe 450ms ease-out both;
+}
+@keyframes build-wipe {
+  from { clip-path: inset(-4px calc(100% - var(--tx0, 0px)) -4px -4px); }
+}
 
 /* Wireframe boxes the agents drag out */
 .site-layer {
