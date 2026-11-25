@@ -23,7 +23,7 @@ type Agent = { x: number; y: number; seen: boolean; job: Job | null; done: numbe
 type Pose = { x: number; y: number; t: number; bw: number; bh: number; fade: number; pressed: boolean; done: boolean };
 
 const COLORS = ["#5b5bf0", "#e2563b", "#11a37f", "#d99a06"];
-// Each agent has its own hand: how far its path bows sideways (share of the trip) and how fast it works.
+// How far each agent's path bows sideways, as a share of the trip.
 const ARC = [0.2, -0.16, 0.12, -0.24];
 const SPEED = [1, 0.82, 1.18, 0.92];
 const MAX_ACTIVE = 2;
@@ -32,6 +32,7 @@ const MAX_ACTIVE = 2;
 const AGENT_JOBS = 3;
 const QUIET_AFTER = 1800; // ms a job may wait for an agent before it fades in by itself
 const PRESS = 140;
+const STILL_MS = 120; // how long the page must stop scrolling before agents start work
 const WORK: Record<Kind, number> = { box: 650, text: 900, image: 550, data: 1500, check: 550 };
 const SETTLE = 420;
 
@@ -63,7 +64,7 @@ export default function BuildEngine() {
     root.classList.add("armed");
     items.forEach((it) => it.el.style.setProperty("--t", "0"));
 
-    // Phones have no pointer, so a fake one would look out of place: everything just fades in.
+    // A fake mouse pointer looks out of place on a touch screen, so there everything just fades in.
     let budget = window.matchMedia("(pointer: fine)").matches ? AGENT_JOBS : 0;
 
     function measure() {
@@ -94,6 +95,8 @@ export default function BuildEngine() {
     const pending: number[] = [];
     const queued = new Map<number, number>(); // item → when it became work
     let raf = 0;
+    let lastY = window.scrollY;
+    let movedAt = 0;
 
     function finishNow(i: number) {
       const it = items[i];
@@ -111,7 +114,7 @@ export default function BuildEngine() {
       return vt + items[i].h > 0 && vt < vh;
     };
 
-    // Where agent a's cursor is, and how far its element is built, `e` ms into the job.
+    // `e` is ms since the job started.
     function pose(a: number, job: Job, e: number): Pose {
       const it = items[job.i];
       const sweep = it.kind === "text" || it.kind === "data";
@@ -176,11 +179,14 @@ export default function BuildEngine() {
       const vw = document.documentElement.clientWidth;
       const sx = window.scrollX;
       const sy = window.scrollY;
+      if (sy !== lastY) movedAt = now;
+      lastY = sy;
+      const scrolling = now - movedAt < STILL_MS;
       let busy = false;
 
       items.forEach((it, i) => {
         if (it.t >= 1 || queued.has(i)) return;
-        const what = arrival(it.top - sy, it.h, vh, budget - pending.length);
+        const what = arrival(it.top - sy, it.h, vh, budget - pending.length, scrolling);
         if (what === "wait") return;
         queued.set(i, now);
         if (what === "finish") finishNow(i);
@@ -199,7 +205,7 @@ export default function BuildEngine() {
       }
       pending.sort((x, y) => items[x].top - items[y].top);
 
-      while (pending.length && agents.filter((g) => g.job).length < MAX_ACTIVE) {
+      while (!scrolling && pending.length && agents.filter((g) => g.job).length < MAX_ACTIVE) {
         const i = pending.shift()!;
         budget--;
         const idle = agents.map((_, a) => a).filter((a) => !agents[a].job);
@@ -217,6 +223,9 @@ export default function BuildEngine() {
         const c = cursorRefs.current[a];
         let job = g.job;
         if (job && !onScreen(job.i, sy, vh)) {
+          // A smooth scroll to a #link passes sections on the way; a job dropped before the cursor
+          // got there goes back, so the agents still build where the reader lands.
+          if (now - job.start < job.travel) budget++;
           items[job.i].overlay.style.display = "none";
           finishNow(job.i);
           g.job = job = null;
@@ -252,7 +261,7 @@ export default function BuildEngine() {
         }
       });
 
-      raf = busy || pending.length ? requestAnimationFrame(frame) : 0;
+      raf = busy || scrolling || pending.length ? requestAnimationFrame(frame) : 0;
     }
 
     const kick = () => {
