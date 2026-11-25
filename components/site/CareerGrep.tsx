@@ -3,7 +3,7 @@
 // "Search my experience": type a skill from a job posting, get the real lines where Lincoln used it.
 // Plain language up front (for recruiters); the terminal framing is only a light touch.
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { grep, suggest, SKILL_COUNT } from "@/lib/careerIndex";
@@ -78,11 +78,27 @@ export default function CareerGrep() {
   // One demo search when the section first scrolls in, unless the visitor got there first.
   useEffect(() => {
     if (!inView || touched.current) return;
-    const t = window.setTimeout(() => !touched.current && run(DEMO), 1400);
+    const t = window.setTimeout(() => !touched.current && run(DEMO), 250);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  // The results window copies its content's height so CSS can animate it. While the agent types it
+  // keeps its old height, so swapping one list for another is one move, not a collapse and a regrow.
+  const outer = useRef<HTMLDivElement>(null);
+  const inner = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const o = outer.current!;
+    const i = inner.current!;
+    const fit = () => {
+      if (!i.dataset.typing) o.style.height = `${i.offsetHeight}px`;
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(i);
+    return () => ro.disconnect();
+  }, [typing]);
 
   return (
     <div ref={ref} className="card mt-10 overflow-hidden">
@@ -165,7 +181,8 @@ export default function CareerGrep() {
         ))}
       </div>
 
-      <div className="min-h-[220px] px-5 pb-5 pt-5" aria-live="polite">
+      <div ref={outer} className="grep-grow">
+      <div ref={inner} data-typing={typing || undefined} className="min-h-[220px] px-5 pb-5 pt-5" aria-live="polite">
         {!query ? (
           <p className="text-sm text-[#a8a29a]">Every result is a real line from my work, never a guess.</p>
         ) : typing ? null : hits.length ? (
@@ -181,7 +198,7 @@ export default function CareerGrep() {
                   <li
                     key={h.path}
                     className="grep-hit grid grid-cols-[28px_1fr] items-center gap-x-3 gap-y-1 rounded-xl border border-[#efebe3] bg-[#fdfcfa] px-3 py-2.5 sm:items-start"
-                    style={{ animationDelay: `${i * 70}ms` }}
+                    style={{ animationDelay: `${i * 60}ms` }}
                   >
                     {/* Phones: logo beside the place line, the result itself full width below it. */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -226,6 +243,7 @@ export default function CareerGrep() {
             </p>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

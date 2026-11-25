@@ -56,11 +56,13 @@ body:has(.site) {
   opacity: clamp(0, calc(var(--r) * 58 - var(--col)), 1);
 }
 
-/* Registered so a quiet (agent-less) finish can transition --t smoothly. */
-@property --t {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
+/* Work no agent builds. --t jumps to 1 and this opacity/transform animation runs off the main
+   thread; animating --t instead restyled the element's whole subtree every frame. */
+.site.armed [data-build][data-quiet] {
+  animation: build-quiet 600ms ease-out both;
+}
+@keyframes build-quiet {
+  from { opacity: 0; transform: translateY(6px); }
 }
 
 /* Wireframe boxes the agents drag out */
@@ -121,11 +123,16 @@ body:has(.site) {
   color: var(--soft);
 }
 .site .live-dot {
+  position: relative;
   width: 8px; height: 8px; border-radius: 99px; background: #11a37f;
-  box-shadow: 0 0 0 0 rgba(17, 163, 127, 0.5);
+}
+/* The ring scales and fades instead of growing a box-shadow, so it runs off the main thread. */
+.site .live-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: rgba(17, 163, 127, 0.5);
   animation: site-pulse 2s infinite;
 }
-@keyframes site-pulse { 70% { box-shadow: 0 0 0 8px rgba(17, 163, 127, 0); } 100% { box-shadow: 0 0 0 0 rgba(17, 163, 127, 0); } }
+@keyframes site-pulse { 70%, 100% { transform: scale(3); opacity: 0; } }
 
 .site .tick {
   opacity: clamp(0, calc((var(--r) - 0.9) * 10), 1);
@@ -135,21 +142,26 @@ body:has(.site) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site .live-dot { animation: none; }
+  .site .live-dot::after { display: none; }
+  .site .grep-hit { animation: none; }
+  .site .grep-grow { transition: none; }
 }
 
 /* Sparks that fly up off Lincoln's laptop as agents work */
 /* Career grep results land one after another */
-.site .grep-hit { animation: grep-in 260ms ease-out both; }
-@keyframes grep-in { from { opacity: 0; transform: translateY(4px); } }
+.site .grep-hit { animation: grep-in 450ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes grep-in { from { opacity: 0; transform: translateY(12px); } }
+.site .grep-grow { overflow: hidden; transition: height 350ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 
 /* Physics icons in the skills section */
 /* pan-y: an up/down swipe that starts on an icon still scrolls the page on phones; sideways drags grab it. */
 .site .icon-body { cursor: grab; touch-action: pan-y; will-change: transform; user-select: none; }
 .site .icon-body:active { cursor: grabbing; }
+.site .icon-in { animation: icon-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes icon-in { from { opacity: 0; scale: 0.6; } }
 
-/* PR check spinners */
-.site .spin { animation: site-spin 0.8s linear infinite; }
+/* PR check spinners, only while an agent is building the check. They're hidden once it's done. */
+.site [data-building] .spin { animation: site-spin 0.8s linear infinite; }
 @keyframes site-spin { to { transform: rotate(360deg); } }
 
 /* Hero: name on the left, a line on the right, the bust standing between them over quiet background lines. */

@@ -1,7 +1,6 @@
 "use client";
 
-// framework icons shoot up from the section's bottom corners, fall into a pile behind
-// the career window, and can be grabbed and thrown into each other.
+// framework icons sit in a pile behind the career window and can be grabbed and thrown into each other.
 
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -39,7 +38,6 @@ export default function IconPile() {
     let raf = 0;
     let last = 0;
     let acc = 0;
-    const timers: number[] = [];
 
     function draw() {
       bodies.forEach((b, i) => {
@@ -58,8 +56,7 @@ export default function IconPile() {
       }
       if (bodies.some((b) => b.held)) wakeAll(bodies);
       draw();
-      const waiting = bodies.some((b) => !b.live);
-      raf = waiting || !settled(bodies) ? requestAnimationFrame(frame) : 0;
+      raf = settled(bodies) ? 0 : requestAnimationFrame(frame);
     }
     const kick = () => {
       if (raf) return;
@@ -79,59 +76,54 @@ export default function IconPile() {
       b.still = 0;
     }
 
-    if (reduced) {
-      // Already landed: simulate the whole fall up front and show the final pile.
+    // Simulate the whole fall out of sight, so the icons appear already landed in their pile.
+    function settle() {
       bodies.forEach(launch);
       for (let n = 0; n < 120 * 8 && !(n > 120 && settled(bodies)); n++) step(bodies, DT, w, h);
       draw();
+    }
+
+    if (reduced) {
+      settle();
       return;
     }
 
     draw();
-    // Launch only once the agents have finished building this section, so the icons fly into a
-    // calm, finished layout instead of competing with the build for attention.
-    const section = layer.parentElement!;
-    let launched = false;
-    function sectionBuilt() {
-      return [...section.querySelectorAll<HTMLElement>("[data-build]")].every((el) => el.dataset.done === "1");
-    }
-    function launchAll() {
-      if (launched) return;
-      launched = true;
-      mo.disconnect();
-      bodies.forEach((b, i) =>
-        timers.push(
-          window.setTimeout(() => {
-            launch(b, i);
-            kick();
-          }, 400 + 160 * i),
-        ),
-      );
-    }
-    const mo = new MutationObserver(() => {
-      if (inView && sectionBuilt()) launchAll();
-    });
-    mo.observe(section, { subtree: true, attributes: true, attributeFilter: ["data-done"] });
-    let inView = false;
+    // When the section scrolls in, the pile fades in from the bottom up.
     const io = new IntersectionObserver(
       ([e]) => {
-        inView = e.isIntersecting;
-        if (inView && sectionBuilt()) launchAll();
-        if (launched) io.disconnect();
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        settle();
+        const order = bodies.map((_, i) => i).sort((a, b) => bodies[b].y - bodies[a].y);
+        order.forEach((i, k) => {
+          const el = els.current[i];
+          if (!el) return;
+          el.style.animationDelay = `${k * 40}ms`;
+          el.classList.add("icon-in");
+        });
       },
       { threshold: 0.35 },
     );
     io.observe(layer);
 
+    // The floor is the section's bottom edge, so it moves when the search results grow or shrink.
+    // Carry the pile with it instead of waking every icon to fall.
     const ro = new ResizeObserver(() => {
-      fit();
-      w = layer.clientWidth;
+      const dh = layer.clientHeight - h;
       h = layer.clientHeight;
-      wakeAll(bodies);
-      kick();
+      if (!dh) return;
+      bodies.forEach((b) => (b.y += dh));
+      draw();
     });
     ro.observe(layer);
-    ro.observe(document.documentElement);
+    const onResize = () => {
+      fit();
+      w = layer.clientWidth;
+      wakeAll(bodies);
+      kick();
+    };
+    window.addEventListener("resize", onResize);
 
     // Grab and throw. Velocity comes from the last few pointer moves.
     const cleanups = els.current.map((el, i) => {
@@ -191,11 +183,10 @@ export default function IconPile() {
     });
 
     return () => {
-      mo.disconnect();
       cancelAnimationFrame(raf);
-      timers.forEach(clearTimeout);
       io.disconnect();
       ro.disconnect();
+      window.removeEventListener("resize", onResize);
       cleanups.forEach((c) => c());
     };
   }, [reduced]);

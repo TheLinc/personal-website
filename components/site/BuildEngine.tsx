@@ -94,9 +94,10 @@ export default function BuildEngine() {
       it.t = 1;
       it.el.style.setProperty("--t", "1");
       it.el.dataset.done = "1";
+      delete it.el.dataset.building;
     }
     function fadeIn(i: number) {
-      items[i].el.style.transition = "--t 700ms ease-out";
+      items[i].el.dataset.quiet = "1";
       finishNow(i);
     }
     const onScreen = (i: number, sy: number, vh: number) => {
@@ -205,6 +206,7 @@ export default function BuildEngine() {
         const it = items[i];
         const dist = Math.hypot(it.left - g.x, it.top - g.y);
         items[i].overlay.style.setProperty("--c", COLORS[a]);
+        items[i].el.dataset.building = "1";
         g.job = { i, start: now, fromX: g.x, fromY: g.y, travel: Math.min(950, Math.max(280, dist * 0.55)) / SPEED[a] };
       }
 
