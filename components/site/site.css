@@ -157,8 +157,6 @@ body:has(.site) {
 /* pan-y: an up/down swipe that starts on an icon still scrolls the page on phones; sideways drags grab it. */
 .site .icon-body { cursor: grab; touch-action: pan-y; will-change: transform; user-select: none; }
 .site .icon-body:active { cursor: grabbing; }
-.site .icon-in { animation: icon-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-@keyframes icon-in { from { opacity: 0; scale: 0.6; } }
 
 /* PR check spinners, only while an agent is building the check. They're hidden once it's done. */
 .site [data-building] .spin { animation: site-spin 0.8s linear infinite; }
