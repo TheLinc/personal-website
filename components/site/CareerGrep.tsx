@@ -182,68 +182,68 @@ export default function CareerGrep() {
       </div>
 
       <div ref={outer} className="grep-grow">
-      <div ref={inner} data-typing={typing || undefined} className="min-h-[220px] px-5 pb-5 pt-5" aria-live="polite">
-        {!query ? (
-          <p className="text-sm text-[#a8a29a]">Every result is a real line from my work, never a guess.</p>
-        ) : typing ? null : hits.length ? (
-          <>
-            <p className="text-sm font-semibold text-[#1d1c1a]">
-              {hits.length} place{hits.length === 1 ? "" : "s"} I&apos;ve used &ldquo;{query}&rdquo;
-              {hits.length > 6 && <span className="font-normal text-[#6d6962]"> · showing the top 6</span>}
-            </p>
-            <ol className="mt-3 space-y-2">
-              {hits.slice(0, 6).map((h, i) => {
-                const l = label(h.path);
-                return (
-                  <li
-                    key={h.path}
-                    className="grep-hit grid grid-cols-[28px_1fr] items-center gap-x-3 gap-y-1 rounded-xl border border-[#efebe3] bg-[#fdfcfa] px-3 py-2.5 sm:items-start"
-                    style={{ animationDelay: `${i * 60}ms` }}
-                  >
-                    {/* Phones: logo beside the place line, the result itself full width below it. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={h.logo}
-                      alt=""
-                      className={`size-7 rounded-lg sm:row-span-2 sm:mt-0.5 ${TILES.has(h.logo ?? "") ? "object-cover" : "border border-[#e8e3da] bg-white object-contain p-0.5"}`}
-                    />
-                    <p className="min-w-0 text-[13px]">
-                      <b className="text-[#1d1c1a]">{l.place}</b>
-                      <span className="text-[#6d6962]"> · {l.area}</span>
-                    </p>
-                    <p className="col-span-2 text-[14px] leading-snug text-[#3a3733] sm:col-span-1 sm:col-start-2">
-                      <Highlight text={h.text} q={query} />
-                    </p>
-                  </li>
-                );
-              })}
-            </ol>
-          </>
-        ) : (
-          <div className="text-sm text-[#6d6962]">
-            <p>Nothing on &ldquo;{query}&rdquo; yet.</p>
-            {near.length > 0 && (
-              <p className="mt-1">
-                Did you mean{" "}
-                {near.map((n, i) => (
-                  <button key={n} type="button" onClick={() => run(n)} className="text-[#5b5bf0] underline underline-offset-2">
-                    {n}
-                    {i < near.length - 1 ? ", " : ""}
-                  </button>
-                ))}
-                ?
+        <div ref={inner} data-typing={typing || undefined} className="min-h-[220px] px-5 pb-5 pt-5" aria-live="polite">
+          {!query ? (
+            <p className="text-sm text-[#a8a29a]">Every result is a real line from my work, never a guess.</p>
+          ) : typing ? null : hits.length ? (
+            <>
+              <p className="text-sm font-semibold text-[#1d1c1a]">
+                {hits.length} place{hits.length === 1 ? "" : "s"} I&apos;ve used &ldquo;{query}&rdquo;
+                {hits.length > 6 && <span className="font-normal text-[#6d6962]"> · showing the top 6</span>}
               </p>
-            )}
-            <p className="mt-1">
-              Not here?{" "}
-              <a href="mailto:lincolnlaylor@gmail.com" className="text-[#5b5bf0] underline underline-offset-2">
-                Ask me about it
-              </a>
-              .
-            </p>
-          </div>
-        )}
-      </div>
+              <ol className="mt-3 space-y-2">
+                {hits.slice(0, 6).map((h, i) => {
+                  const l = label(h.path);
+                  return (
+                    <li
+                      key={h.path}
+                      className="grep-hit grid grid-cols-[28px_1fr] items-center gap-x-3 gap-y-1 rounded-xl border border-[#efebe3] bg-[#fdfcfa] px-3 py-2.5 sm:items-start"
+                      style={{ animationDelay: `${i * 60}ms` }}
+                    >
+                      {/* Phones: logo beside the place line, the result itself full width below it. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={h.logo}
+                        alt=""
+                        className={`size-7 rounded-lg sm:row-span-2 sm:mt-0.5 ${TILES.has(h.logo ?? "") ? "object-cover" : "border border-[#e8e3da] bg-white object-contain p-0.5"}`}
+                      />
+                      <p className="min-w-0 text-[13px]">
+                        <b className="text-[#1d1c1a]">{l.place}</b>
+                        <span className="text-[#6d6962]"> · {l.area}</span>
+                      </p>
+                      <p className="col-span-2 text-[14px] leading-snug text-[#3a3733] sm:col-span-1 sm:col-start-2">
+                        <Highlight text={h.text} q={query} />
+                      </p>
+                    </li>
+                  );
+                })}
+              </ol>
+            </>
+          ) : (
+            <div className="text-sm text-[#6d6962]">
+              <p>Nothing on &ldquo;{query}&rdquo; yet.</p>
+              {near.length > 0 && (
+                <p className="mt-1">
+                  Did you mean{" "}
+                  {near.map((n, i) => (
+                    <button key={n} type="button" onClick={() => run(n)} className="text-[#5b5bf0] underline underline-offset-2">
+                      {n}
+                      {i < near.length - 1 ? ", " : ""}
+                    </button>
+                  ))}
+                  ?
+                </p>
+              )}
+              <p className="mt-1">
+                Not here?{" "}
+                <a href="mailto:lincolnlaylor@gmail.com" className="text-[#5b5bf0] underline underline-offset-2">
+                  Ask me about it
+                </a>
+                .
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@
 // reveal; this engine draws the wireframe boxes and flies the agent cursors.
 
 import { useEffect, useRef } from "react";
+import { arrival } from "@/lib/buildQueue";
 
 type Kind = "box" | "text" | "image" | "data" | "check";
 type Item = {
@@ -32,7 +33,7 @@ const AGENT_JOBS = 3;
 const QUIET_AFTER = 1800; // ms a job may wait for an agent before it fades in by itself
 const PRESS = 140;
 const WORK: Record<Kind, number> = { box: 650, text: 900, image: 550, data: 1500, check: 550 };
-const SETTLE = 420; // after letting go, the content settles in while the cursor steps aside
+const SETTLE = 420;
 
 const clamp = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const inOut = (q: number) => (q < 0.5 ? 4 * q * q * q : 1 - (-2 * q + 2) ** 3 / 2);
@@ -67,6 +68,7 @@ export default function BuildEngine() {
 
     function measure() {
       const range = document.createRange();
+      const textEdges: [HTMLElement, string, string][] = [];
       items.forEach((it) => {
         const box = it.el.getBoundingClientRect();
         let r = box;
@@ -74,13 +76,17 @@ export default function BuildEngine() {
           range.selectNodeContents(it.el);
           const tr = range.getBoundingClientRect();
           if (tr.width > 0) r = tr;
-          it.el.style.setProperty("--tx0", `${r.left - box.left}px`);
-          it.el.style.setProperty("--tw", `${r.width}px`);
+          textEdges.push([it.el, `${r.left - box.left}px`, `${r.width}px`]);
         }
         it.top = r.top + window.scrollY;
         it.left = r.left + window.scrollX;
         it.w = r.width;
         it.h = r.height;
+      });
+      // Written after every read, so the reads don't force a style recalc each.
+      textEdges.forEach(([el, x0, w]) => {
+        el.style.setProperty("--tx0", x0);
+        el.style.setProperty("--tw", w);
       });
     }
 
@@ -106,9 +112,6 @@ export default function BuildEngine() {
     };
 
     // Where agent a's cursor is, and how far its element is built, `e` ms into the job.
-    // Box-like elements: travel to the top-left corner, press, drag the outline to the bottom-right,
-    // let go and step aside while the content settles in. Text: press at the start of the line and
-    // sweep across it, the words appearing right behind the cursor.
     function pose(a: number, job: Job, e: number): Pose {
       const it = items[job.i];
       const sweep = it.kind === "text" || it.kind === "data";
@@ -175,12 +178,13 @@ export default function BuildEngine() {
       const sy = window.scrollY;
       let busy = false;
 
-      // Anything that has entered the viewport (or is above it) becomes work.
       items.forEach((it, i) => {
         if (it.t >= 1 || queued.has(i)) return;
-        if (it.top - sy >= vh * 0.98) return;
+        const what = arrival(it.top - sy, it.h, vh, budget - pending.length);
+        if (what === "wait") return;
         queued.set(i, now);
-        if (pending.length < budget) pending.push(i);
+        if (what === "finish") finishNow(i);
+        else if (what === "agent") pending.push(i);
         else fadeIn(i);
       });
       // Nobody is watching work that has left the screen: finish it instantly.
@@ -195,7 +199,6 @@ export default function BuildEngine() {
       }
       pending.sort((x, y) => items[x].top - items[y].top);
 
-      // The least-busy idle agent takes the next job, starting from wherever its cursor is.
       while (pending.length && agents.filter((g) => g.job).length < MAX_ACTIVE) {
         const i = pending.shift()!;
         budget--;
