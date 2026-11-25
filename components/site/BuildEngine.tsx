@@ -97,7 +97,6 @@ export default function BuildEngine() {
     let raf = 0;
     let lastY = window.scrollY;
     let movedAt = 0;
-    // A jump lasts from a load with a #hash, or a click on a #link, until the page stops scrolling.
     let jumping = location.hash !== "";
     let jumpAt = performance.now();
 

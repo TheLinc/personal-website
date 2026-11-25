@@ -17,7 +17,7 @@ export function contributionStats(cal: Calendar) {
   return { busiest, best, daysAgo };
 }
 
-/** GitHub-style year grid. The data agent paints it column by column via --r (see site.css). */
+/** GitHub-style year grid. When an agent builds it, it paints column by column via --r (see site.css). */
 export default function ContributionGraph({ cal }: { cal: Calendar }) {
   const max = maxCount(cal);
   return (

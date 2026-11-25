@@ -155,6 +155,7 @@ body:has(.site) {
   .site .live-dot::after { display: none; }
   .site .grep-hit { animation: none; }
   .site .grep-grow { transition: none; }
+  .site.armed [data-build][data-quiet] { animation: none; }
 }
 
 /* Physics icons in the skills section */
